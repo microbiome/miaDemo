@@ -9,7 +9,7 @@ Authors@R:
              email = "leo.lahti@iki.fi",
              comment = c(ORCID = "0000-0001-5537-637X")))
 Description: This package for miaverse demonstrate how to utilize
-SummarizedExperiment-based methods for analyzing microbiome data.
+    SummarizedExperiment-based methods for analyzing microbiome data.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
