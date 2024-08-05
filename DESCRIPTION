@@ -1,16 +1,15 @@
-Package: BuildABiocWorkshop
+Package: miaDemoEuroBioC2024
 Title: Bioconductor or R Workshop Template and Github Actions
 Version: 2.0.1
 Authors@R: 
-    person(given = "Sean",
-           family = "Davis",
-           role = c("aut", "cre"),
-           email = "seandavi@gmail.com",
-           comment = c(ORCID = "0000-0002-8991-6458"))
-Description: This package serves as a template for using github actions to 
-    prepare a Bioconductor Workshop package for use. In particular,
-    a pkgdown website and docker image are generated based on workflow 
-    settings. 
+    c(person(given = "Tuomas", family = "Borman", role = c("aut", "cre"),
+             email = "tuomas.v.borman@utu.fi",
+             comment = c(ORCID = "0000-0002-8563-8884")),
+      person(given = "Leo", family = "Lahti", role = c("aut"),
+             email = "leo.lahti@iki.fi",
+             comment = c(ORCID = "0000-0001-5537-637X")))
+Description: This package for miaverse demonstrate how to utilize
+SummarizedExperiment-based methods for analyzing microbiome data.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
@@ -18,11 +17,93 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.0
 Depends: 
     Biobase
-Suggests: 
+Suggests:
+    ALDEx2,
+    ANCOMBC,
+    ape,
+    biclust,
+    BiocBook,
+    BiocManager,
+    BiocParallel,
+    Biostrings,
+    bluster,
+    caret,
+    circlize,
+    cluster,
+    cobiclust,
+    ComplexHeatmap,
+    corpcor,
+    curatedMetagenomicData,
+    dada2,
+    dendextend,
+    devtools,
+    DirichletMultinomial,
+    dplyr,
+    DT,
+    factoextra,
+    forcats,
+    fido,
+    ggplot2,
+    ggpubr,
+    ggtree,
+    glmnet,
+    glue,
+    grid,
+    gtools,
+    gsEasy,
+    igraph,
+    kableExtra,
     knitr,
+    Maaslin2,
+    mia,
+    miaTime,
+    miaViz,
+    microbiome,
+    microbiomeDataSets,
+    MicrobiomeStat,
+    mikropml,
+    MMUPHin,
+    MOFA2,
+    multiview,
+    NetCoMi,
+    NbClust,
+    NMF,
+    patchwork,
+    phyloseq,
+    pkgdown,
+    plotly,
+    purrr,
+    qgraph,
+    RColorBrewer,
+    rebook,
+    reshape2,
+    reticulate,
+    rgl,
     rmarkdown,
-    pkgdown
-URL: https://seandavi.github.io/BuildABiocWorkshop/
-BugReports: https://github.com/seandavi/BuildABiocWorkshop/issues/new/choose
+    ROCR,
+    scales,
+    scater,
+    sechm,
+    sessioninfo,
+    shadowtext,
+    SpiecEasi,
+    SPRING,
+    stats,
+    stringr,
+    SuperLearner,
+    tidyverse,
+    topGO,
+    vegan,
+    WGCNA,
+    xgboost
+Remotes:
+    github::microbiome/mia,
+    github::microbiome/miaViz,
+    github::microbiome/miaTime,
+    github::stefpeschel/NetCoMi,
+    github::zdk123/SpiecEasi,
+    github::GraceYoon/SPRING
+URL: https://microbiome.github.io/miaDemoEuroBioC2024/
+BugReports: https://github.com/microbiome/miaDemoEuroBioC2024/issues/
 VignetteBuilder: knitr
-DockerImage: ghcr.io/seandavi/buildabiocworkshop:latest
+DockerImage: ghcr.io/microbiome/miademoeurobioc2024:latest

@@ -1,15 +1,16 @@
 ---
-title: "An Example Workshop"
-author: Sean Davis^[seandavi@gmail.com]
+title: "mia demo"
+author: Tuomas Borman^[tvborm@utu.fi]
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{An Example Workshop}
+  %\VignetteIndexEntry{mia demo}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
+```{r}
+#| include: false
 
-```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -19,10 +20,10 @@ knitr::opts_chunk$set(
 # Workshop Title
 
 Authors:
-    Author Name^[Institution],
-    Another Author^[Another Institution].
+    Tuomas Borman^[University of Turku],
+    Leo Lahti^[University of Turku].
     <br/>
-Last modified: 14 May, 2018.
+Last modified: 5 August, 2024.
 
 ## Overview
 
