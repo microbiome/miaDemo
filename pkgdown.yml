@@ -2,9 +2,8 @@ pandoc: '3.2'
 pkgdown: 2.1.0
 pkgdown_sha: ~
 articles:
-  HOWTO_BUILD_WORKSHOP: HOWTO_BUILD_WORKSHOP.html
-  workshop_example: workshop_example.html
-last_built: 2024-08-05T13:29Z
+  mia_demo: mia_demo.html
+last_built: 2024-08-05T15:00Z
 urls:
-  reference: https://seandavi.github.io/BuildABiocWorkshop/reference
-  article: https://seandavi.github.io/BuildABiocWorkshop/articles
+  reference: https://microbiome.github.io/miaDemoEuroBioC2024/reference
+  article: https://microbiome.github.io/miaDemoEuroBioC2024/articles
