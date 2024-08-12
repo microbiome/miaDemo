@@ -1,4 +1,4 @@
-# mia workshop in EuroBioC2024 <img src="inst/images/mia_logo.png" align="right" width="120" />
+# mia workshop in EuroBioC2024 <img src="vignettes/figures/mia_logo.png" align="right" width="120" />
 
 This workshop introduces the miaverse framework, a powerful tool within the
 _SummarizedExperiment_ framework designed specifically for microbiome data

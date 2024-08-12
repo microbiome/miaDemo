@@ -1,21 +1,11 @@
 ---
-title: |
-  ![](../inst/images/EuroBioC2024.png){width=1in}
-  ![](../inst/images/mia_logo.png){width=1in}  
-  mia workshop in EuroBioC2024
+title: mia workshop in EuroBioC2024
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{mia workshop in EuroBioC2024}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
-
-<style>
-    pre {
-        border: 0;
-    }
-</style>
-
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
@@ -29,6 +19,8 @@ Authors:
     Leo Lahti^[University of Turku].
     <br/>
 Last modified: 12 August, 2024.
+
+<img src="figures/EuroBioC2024.png" width="150"/> <img src="figures/mia_logo.png" width="150"/>
 
 ## Overview
 
@@ -119,7 +111,7 @@ shared methods and standardized formats, which facilitates collaborative
 research and reduces redundant efforts.
 
 ```{r se_structure, fig.align = 'center', out.width = "80%", fig.cap = "_SummarizedExperiment_ class", echo=FALSE}
-knitr::include_graphics(here::here("inst", "images", "SE.png"))
+knitr::include_graphics(here::here("vignettes", "figures", "SE.png"))
 ```
 
 However, microbiome data science relied on alternative approaches. To
@@ -127,7 +119,7 @@ integrate microbiome data science within the _SE_ ecosystem, the
 _TreeSummarizedExperiment_ (_TreeSE_) was developed.
 
 ```{r treese_structure, fig.align = 'center', out.width = "80%", fig.cap = "_TreeSummarizedExperiment_ class", echo=FALSE}
-knitr::include_graphics(here::here("inst", "images", "TreeSE.png"))
+knitr::include_graphics(here::here("vignettes", "figures", "TreeSE.png"))
 ```
 
 Subsequently, a suite of _mia_* (MIcrobiome Analysis) packages was developed to
