@@ -1,9 +1,9 @@
-pandoc: '3.2'
+pandoc: '3.3'
 pkgdown: 2.1.0
 pkgdown_sha: ~
 articles:
   mia_demo: mia_demo.html
-last_built: 2024-08-05T15:53Z
+last_built: 2024-08-12T09:28Z
 urls:
   reference: https://microbiome.github.io/miaDemoEuroBioC2024/reference
   article: https://microbiome.github.io/miaDemoEuroBioC2024/articles
