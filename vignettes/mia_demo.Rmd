@@ -18,7 +18,7 @@ Authors:
     Tuomas Borman^[University of Turku, tvborm@utu.fi],
     Leo Lahti^[University of Turku].
     <br/>
-Last modified: 12 August, 2024.
+Last modified: 29 August, 2024.
 
 <img src="figures/EuroBioC2024.png" width="150"/> <img src="figures/mia_logo.png" width="150"/>
 
