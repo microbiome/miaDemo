@@ -1,5 +1,5 @@
 ---
-title: mia workshop in EuroBioC2024
+title: Orchestrating Microbiome Analysis with Bioconductor (EuroBioC2024)
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{mia workshop in EuroBioC2024}
@@ -42,7 +42,7 @@ will have time to discuss the framework, ask questions, and explore the tools
 and methods covered.
 
 By the end of the workshop, attendees will have a understanding of how to
-apply the miaverse framework to their microbiome data analysis and will be
+apply the miaverse framework to their microbiome research and will be
 well-prepared to further explore the framework independently.
 
 ### Pre-requisites
@@ -51,29 +51,29 @@ well-prepared to further explore the framework independently.
 * Familiarity with Bioconductor
 * Understanding of microbiome research
 
-If your time allows, we recommend to spend some time to explore
+If your time allows, we recommend to spend some time to explore beforehand
 [Orchestrating Microbiome Analysis (OMA) online book](https://microbiome.github.io/OMA/docs/devel/).
 
 ### Participation
 
-Participants are encouraged to ask questions at any time during the workshop
-to facilitate a more interactive learning experience. The workshop will
-follow a demo from the
+Participants are encouraged to ask questions throughout the workshop. The
+session will follow a demo from the
 [OMA online book](https://microbiome.github.io/OMA/docs/devel/pages/introductory_workflow.html),
-and participants will be guided through hands-on exercises.
+with participants running the tutorial alongside the instructor.
 
-Bioconductor provides
+To facilitate this, Bioconductor provides
 [pre-installed virtual machines with all necessary packages](https://workshop.bioconductor.org/).
-These machines will allow participants to run the workshop exercises and
-follow along with the instructor.
 
 ### _R_ / _Bioconductor_ packages used
 
 In this workshop, we will focus on the usage of the
-[_mia_ package](https://bioconductor.org/packages/devel/bioc/html/mia.html),
-which is designed for microbiome data science. This package is part of the
+This package is part of the
 Bioconductor project and provides essential tools for analyzing
 microbiome data using the _SummarizedExperiment_ framework.
+
+In this workshop, we will focus on
+[the _mia_ package](https://bioconductor.org/packages/devel/bioc/html/mia.html),
+which is designed for microbiome data science. The _mia_ package provides essential tools for analyzing microbiome data using the SummarizedExperiment framework.
 
 ### Time outline
 
@@ -87,43 +87,42 @@ microbiome data using the _SummarizedExperiment_ framework.
 
 #### Learning goals
 
-- **Understand miaverse**: Gain insight into the _miaverse_ framework and its role within the _SummarizedExperiment_ framework.
+- **Understand miaverse**: Explore the _miaverse_ framework and its integration with the _SummarizedExperiment_ framework.
 
-- **Use _TreeSummarizedExperiment_**: Learn to use the _TreeSummarizedExperiment_ class for microbiome data analysis.
+- **Use _TreeSE_**: Learn to utilize the _TreeSummarizedExperiment_ class for effective microbiome data analysis.
 
 - **Access resources**: Get familiar with additional tools and resources, including the OMA online book.
 
 #### Learning objectives
 
-- **Analyze and apply methods**: Use the _miaverse_ framework to process microbiome data and apply methods.
+- **Analyze and apply methods**:  Apply the _miaverse_ framework to process and analyze microbiome data.
 
-- **Create visualizations**: Generate and interpret visualizations of microbiome data with _miaverse_.
+- **Create visualizations**: Generate and interpret visualizations of microbiome data using _miaverse_.
 
-- **Explore documentation**: Navigate the OMA online book for additional tools and methods.
+- **Explore documentation**: Navigate the OMA online book to discover additional tools and methods.
 
 ## Workshop
 
 ### 1 Background
 
-The _SummarizedExperiment_ (_SE_) is a widely used data container in Bioconductor,
-applicable across various fields. It fosters synergy by enabling the use of
-shared methods and standardized formats, which facilitates collaborative
-research and reduces redundant efforts.
+The _SummarizedExperiment_ (_SE_) is a versatile data container in Bioconductor,
+widely used across diverse fields. It promotes synergy through shared methods
+and standardized formats, enhancing collaborative research and minimizing
+redundant efforts.
 
 ```{r se_structure, fig.align = 'center', out.width = "80%", fig.cap = "_SummarizedExperiment_ class", echo=FALSE}
 knitr::include_graphics(here::here("vignettes", "figures", "SE.png"))
 ```
 
-However, microbiome data science relied on alternative approaches. To
-integrate microbiome data science within the _SE_ ecosystem, the
+To integrate microbiome data science within the _SE_ ecosystem, the
 _TreeSummarizedExperiment_ (_TreeSE_) was developed.
 
 ```{r treese_structure, fig.align = 'center', out.width = "80%", fig.cap = "_TreeSummarizedExperiment_ class", echo=FALSE}
 knitr::include_graphics(here::here("vignettes", "figures", "TreeSE.png"))
 ```
 
-Subsequently, a suite of _mia_* (MIcrobiome Analysis) packages was developed to
-offer microbiome-specific methods within the _SE_ ecosystem:
+Subsequently, a suite of _mia_* (MIcrobiome Analysis) packages was developed
+to provide microbiome-specific methods within the _SE_ ecosystem:
 
 - [_mia_](https://www.bioconductor.org/packages/release/bioc/html/mia.html): Data analysis.
 - [_miaViz_](https://www.bioconductor.org/packages/release/bioc/html/miaViz.html): Visualization.
@@ -136,21 +135,24 @@ introducing a range of additional methods. For more details, see
 
 To support microbiome data science, the online book
 [Orchestrating Microbiome Analysis with Bioconductor (OMA)](https://microbiome.github.io/OMA/docs/devel)
-was created. It aims to help users conduct microbiome data science by providing
-examples and best practices developed through collaborative efforts. The book
-will soon be published on Bioconductor.
+was created. It offers examples and best practices developed collaboratively,
+with plans for its upcoming publication on Bioconductor.
 
 ### 2 Demonstration
 
 In this demo, we will follow
 [the introductory workflow from OMA](https://microbiome.github.io/OMA/docs/devel/pages/introductory_workflow.html)
-by copy-pasting code examples provided there. The goal is not only to
-familiarize participants with the _TreeSE_ and related methods but also to introduce
-them to OMA, supporting their learning beyond the workshop.
+by copy-pasting code examples provided there. The goal is to familiarize you with
+_TreeSE_ and related methods while introducing you to OMA to support continued
+learning beyond the workshop.
+
+1. Set up your local computer or access an [an online environment](https://workshop.bioconductor.org/).
+2. Go to [the introductory workflow](https://microbiome.github.io/OMA/docs/devel/pages/introductory_workflow.html).
+3. Be ready to follow along with the demonstration.
 
 ### 3 Q&A and free exploration
 
-Time for questions. You are also encouraged to explore and run examples from
+Time for discussion. You are also encouraged to explore and run examples from
 [OMA](https://microbiome.github.io/OMA/docs/devel/) on your own.
 
 ```{r session_info}
