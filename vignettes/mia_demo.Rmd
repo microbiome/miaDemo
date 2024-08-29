@@ -154,7 +154,3 @@ learning beyond the workshop.
 
 Time for discussion. You are also encouraged to explore and run examples from
 [OMA](https://microbiome.github.io/OMA/docs/devel/) on your own.
-
-```{r session_info}
-sessionInfo()
-```
