@@ -18,7 +18,7 @@ Authors:
     Tuomas Borman^[University of Turku, tvborm@utu.fi],
     Leo Lahti^[University of Turku].
     <br/>
-Last modified: 30 August, 2024.
+Last modified: 31 August, 2024.
 
 <img src="figures/EuroBioC2024.png" width="150"/> <img src="figures/mia_logo.png" width="150"/>
 
@@ -26,14 +26,11 @@ Last modified: 30 August, 2024.
 
 ### Description
 
-This workshop introduces the _miaverse_, a _SummarizedExperiment_
-framework tailored for microbiome data science. Participants will gain
-hands-on experience with the
-_TreeSummarizedExperiment_ class, which is central to the _miaverse_
-framework. In this session, we will also learn how to utilize _miaverse_ methods
-and navigate the
-[Orchestrating Microbiome Analysis (OMA) online book](https://microbiome.github.io/OMA/docs/devel/)
-for additional resource.
+Learn how _miaverse_
+integrates microbiome data science with the _SummarizedExperiment_ ecosystem,
+and discover the benefits this brings. We will cover key methods, explore
+[the OMA online book](https://microbiome.github.io/OMA/docs/devel), and discuss
+the integration's advantages.
 
 We will start with a brief overview of the framework, followed by an
 instructor-led live demonstration. The demonstration will showcase selected
@@ -42,7 +39,7 @@ will have time to discuss the framework, ask questions, and explore the tools
 and methods covered.
 
 By the end of the workshop, attendees will have a understanding of how to
-apply the _miaverse_ framework to their microbiome research and will be
+apply the framework to their microbiome research and will be
 well-prepared to further explore the framework independently.
 
 ### Pre-requisites
@@ -57,8 +54,8 @@ If your time allows, we recommend to spend some time to explore beforehand
 ### Participation
 
 Participants are encouraged to ask questions throughout the workshop. The
-session will follow a demo from the
-[OMA online book](https://microbiome.github.io/OMA/docs/devel/pages/introductory_workflow.html),
+session will follow
+[a tutorial from the OMA online book](https://microbiome.github.io/OMA/docs/devel/pages/introductory_workflow.html),
 with participants running the tutorial alongside the instructor.
 
 To facilitate this, Bioconductor provides
@@ -84,26 +81,26 @@ _SummarizedExperiment_ framework.
 
 #### Learning goals
 
-- **Understand miaverse**: Explore the _miaverse_ framework and its integration with the _SummarizedExperiment_ framework.
+- **Methods for microbiome analysis**: Learn to harness _SummarizedExperiment_ ecosystem in your project.
 
-- **Use _TreeSE_**: Learn to utilize the _TreeSummarizedExperiment_ class for effective microbiome data analysis.
+- **Data structure**: Understand how to utilize the _TreeSummarizedExperiment_ class for effective microbiome data analysis.
 
-- **Access resources**: Get familiar with additional tools and resources, including the OMA online book.
+- **Access resources**: Get familiar with additional tools and resources, including [the OMA online book](https://microbiome.github.io/OMA/docs/devel).
 
 #### Learning objectives
 
-- **Analyze and apply methods**:  Apply the _miaverse_ framework to process and analyze microbiome data.
+- **Analyze and apply methods**:  Apply the framework to process and analyze microbiome data.
 
-- **Create visualizations**: Generate and interpret visualizations of microbiome data using _miaverse_.
+- **Create visualizations**: Generate and interpret visualizations.
 
-- **Explore documentation**: Navigate the OMA online book to discover additional tools and methods.
+- **Explore documentation**: Use the [OMA](https://microbiome.github.io/OMA/docs/devel) to explore additional tools and methods.
 
 ## Workshop
 
 ### 1 Background
 
-The _SummarizedExperiment_ (_SE_) is a versatile data container in Bioconductor,
-widely used across diverse fields. It promotes synergy through shared methods
+The _SummarizedExperiment_ class is a cornerstone of Bioconductor, facilitating
+standardized data management across various research domains. It promotes synergy through shared methods
 and standardized formats, enhancing collaborative research and minimizing
 redundant efforts.
 
@@ -151,3 +148,10 @@ learning beyond the workshop.
 
 Time for discussion. You are also encouraged to explore and run examples from
 [OMA](https://microbiome.github.io/OMA/docs/devel/) on your own.
+
+### Thank you for your time!
+
+Thank you for participating in the workshop! Stay tuned for the upcoming
+publication of _miaverse_ and continue exploring its capabilities.
+
+For any future questions or additional support, please refer to [the OMA support page](https://microbiome.github.io/OMA/docs/devel/pages/support.html).
