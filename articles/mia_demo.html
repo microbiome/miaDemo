@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">miaDemoEuroBioC2024</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.3</span>
       </span>
     </div>
 
@@ -86,7 +86,7 @@ Bioconductor (EuroBioC2024)</h1>
     
     
 <p>Authors: Tuomas Borman<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>, Leo Lahti<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>. <br> Last modified:
-30 August, 2024.</p>
+31 August, 2024.</p>
 <p><img src="figures/EuroBioC2024.png" width="150"><img src="figures/mia_logo.png" width="150"></p>
 <div class="section level2">
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
@@ -94,22 +94,18 @@ Bioconductor (EuroBioC2024)</h1>
 <div class="section level3">
 <h3 id="description">Description<a class="anchor" aria-label="anchor" href="#description"></a>
 </h3>
-<p>This workshop introduces the <em>miaverse</em>, a
-<em>SummarizedExperiment</em> framework tailored for microbiome data
-science. Participants will gain hands-on experience with the
-<em>TreeSummarizedExperiment</em> class, which is central to the
-<em>miaverse</em> framework. In this session, we will also learn how to
-utilize <em>miaverse</em> methods and navigate the <a href="https://microbiome.github.io/OMA/docs/devel/" class="external-link">Orchestrating
-Microbiome Analysis (OMA) online book</a> for additional resource.</p>
+<p>Learn how <em>miaverse</em> integrates microbiome data science with
+the <em>SummarizedExperiment</em> ecosystem, and discover the benefits
+this brings. We will cover key methods, explore <a href="https://microbiome.github.io/OMA/docs/devel" class="external-link">the OMA online
+book</a>, and discuss the integration’s advantages.</p>
 <p>We will start with a brief overview of the framework, followed by an
 instructor-led live demonstration. The demonstration will showcase
 selected key features and functionalities of <em>miaverse</em>. After
 the demo, participant will have time to discuss the framework, ask
 questions, and explore the tools and methods covered.</p>
 <p>By the end of the workshop, attendees will have a understanding of
-how to apply the <em>miaverse</em> framework to their microbiome
-research and will be well-prepared to further explore the framework
-independently.</p>
+how to apply the framework to their microbiome research and will be
+well-prepared to further explore the framework independently.</p>
 </div>
 <div class="section level3">
 <h3 id="pre-requisites">Pre-requisites<a class="anchor" aria-label="anchor" href="#pre-requisites"></a>
@@ -127,9 +123,9 @@ Microbiome Analysis (OMA) online book</a>.</p>
 <h3 id="participation">Participation<a class="anchor" aria-label="anchor" href="#participation"></a>
 </h3>
 <p>Participants are encouraged to ask questions throughout the workshop.
-The session will follow a demo from the <a href="https://microbiome.github.io/OMA/docs/devel/pages/introductory_workflow.html" class="external-link">OMA
-online book</a>, with participants running the tutorial alongside the
-instructor.</p>
+The session will follow <a href="https://microbiome.github.io/OMA/docs/devel/pages/introductory_workflow.html" class="external-link">a
+tutorial from the OMA online book</a>, with participants running the
+tutorial alongside the instructor.</p>
 <p>To facilitate this, Bioconductor provides <a href="https://workshop.bioconductor.org/" class="external-link">pre-installed virtual machines
 with all necessary packages</a>.</p>
 </div>
@@ -173,27 +169,27 @@ microbiome data using the <em>SummarizedExperiment</em> framework.</p>
 <h4 id="learning-goals">Learning goals<a class="anchor" aria-label="anchor" href="#learning-goals"></a>
 </h4>
 <ul>
-<li><p><strong>Understand miaverse</strong>: Explore the
-<em>miaverse</em> framework and its integration with the
-<em>SummarizedExperiment</em> framework.</p></li>
-<li><p><strong>Use <em>TreeSE</em></strong>: Learn to utilize the
+<li><p><strong>Methods for microbiome analysis</strong>: Learn to
+harness <em>SummarizedExperiment</em> ecosystem in your
+project.</p></li>
+<li><p><strong>Data structure</strong>: Understand how to utilize the
 <em>TreeSummarizedExperiment</em> class for effective microbiome data
 analysis.</p></li>
 <li><p><strong>Access resources</strong>: Get familiar with additional
-tools and resources, including the OMA online book.</p></li>
+tools and resources, including <a href="https://microbiome.github.io/OMA/docs/devel" class="external-link">the OMA online
+book</a>.</p></li>
 </ul>
 </div>
 <div class="section level4">
 <h4 id="learning-objectives">Learning objectives<a class="anchor" aria-label="anchor" href="#learning-objectives"></a>
 </h4>
 <ul>
-<li><p><strong>Analyze and apply methods</strong>: Apply the
-<em>miaverse</em> framework to process and analyze microbiome
-data.</p></li>
+<li><p><strong>Analyze and apply methods</strong>: Apply the framework
+to process and analyze microbiome data.</p></li>
 <li><p><strong>Create visualizations</strong>: Generate and interpret
-visualizations of microbiome data using <em>miaverse</em>.</p></li>
-<li><p><strong>Explore documentation</strong>: Navigate the OMA online
-book to discover additional tools and methods.</p></li>
+visualizations.</p></li>
+<li><p><strong>Explore documentation</strong>: Use the <a href="https://microbiome.github.io/OMA/docs/devel" class="external-link">OMA</a> to explore
+additional tools and methods.</p></li>
 </ul>
 </div>
 </div>
@@ -204,10 +200,11 @@ book to discover additional tools and methods.</p></li>
 <div class="section level3">
 <h3 id="background">1 Background<a class="anchor" aria-label="anchor" href="#background"></a>
 </h3>
-<p>The <em>SummarizedExperiment</em> (<em>SE</em>) is a versatile data
-container in Bioconductor, widely used across diverse fields. It
-promotes synergy through shared methods and standardized formats,
-enhancing collaborative research and minimizing redundant efforts.</p>
+<p>The <em>SummarizedExperiment</em> class is a cornerstone of
+Bioconductor, facilitating standardized data management across various
+research domains. It promotes synergy through shared methods and
+standardized formats, enhancing collaborative research and minimizing
+redundant efforts.</p>
 <div class="figure" style="text-align: center">
 <img src="figures/SE.png" alt="_SummarizedExperiment_ class" width="80%"><p class="caption">
 <em>SummarizedExperiment</em> class
@@ -268,6 +265,15 @@ introductory workflow</a>.</li>
 <p>Time for discussion. You are also encouraged to explore and run
 examples from <a href="https://microbiome.github.io/OMA/docs/devel/" class="external-link">OMA</a> on your
 own.</p>
+</div>
+<div class="section level3">
+<h3 id="thank-you-for-your-time">Thank you for your time!<a class="anchor" aria-label="anchor" href="#thank-you-for-your-time"></a>
+</h3>
+<p>Thank you for participating in the workshop! Stay tuned for the
+upcoming publication of <em>miaverse</em> and continue exploring its
+capabilities.</p>
+<p>For any future questions or additional support, please refer to <a href="https://microbiome.github.io/OMA/docs/devel/pages/support.html" class="external-link">the
+OMA support page</a>.</p>
 </div>
 </div>
 <div class="footnotes footnotes-end-of-document">
