@@ -1,6 +1,6 @@
 # mia workshop in EuroBioC2024 <img src="vignettes/figures/mia_logo.png" align="right" width="120" />
 
-Learn how _miaverse_
+Learn how _miaverse_ framework
 integrates microbiome data science with the _SummarizedExperiment_ ecosystem,
 and discover the benefits this brings. We will cover key methods, explore
 [the OMA online book](https://microbiome.github.io/OMA/docs/devel), and discuss

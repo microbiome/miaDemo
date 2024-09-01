@@ -18,7 +18,7 @@ Authors:
     Tuomas Borman^[University of Turku, tvborm@utu.fi],
     Leo Lahti^[University of Turku].
     <br/>
-Last modified: 31 August, 2024.
+Last modified: 1 September, 2024.
 
 <img src="figures/EuroBioC2024.png" width="150"/> <img src="figures/mia_logo.png" width="150"/>
 
@@ -26,7 +26,7 @@ Last modified: 31 August, 2024.
 
 ### Description
 
-Learn how _miaverse_
+Learn how _miaverse_ framework
 integrates microbiome data science with the _SummarizedExperiment_ ecosystem,
 and discover the benefits this brings. We will cover key methods, explore
 [the OMA online book](https://microbiome.github.io/OMA/docs/devel), and discuss
