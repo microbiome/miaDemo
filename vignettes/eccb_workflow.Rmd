@@ -23,10 +23,65 @@ Authors:
 <br/>
 Last modified: 12 September, 2024.
 
-TODO: UPDATE DESCRIPTION
 
 width="150"/> <img src="figures/mia_logo.png" width="150"/>
 
+TODO:
+
+- rename the workflow
+UPDATE DESCRIPTION
+
+THINGS TO CONSIDER
+- We should probably use same dataset. Data integration part requires multiomics data. 
+- I added idea for story but feel free to modify.
+
+PRELIMINARY SCHEDULE
+
+13:00-13:20 Leo
+ - Idea: Introduction and TreeSE
+ - Introduction to Bioconductor
+ - Overview of data containers
+ - Introduction to TreeSE
+13:20-13:25 short Q&A
+ - Participants have time to explore on their own
+13:25-13:30 short break
+ - Time to set up for the next session
+ 
+13:30-13:50 Pande
+ - Idea: After introducing TreeSE, we can now use methods from mia.
+ - What are diversity and composition?
+ - How to calculate and plot alpha diversity indices?
+ - How to calculate and plot PCoA(?)
+13:50-13:55 short Q&A
+ - Participants have time to explore on their own
+13:55-14:00 short break
+ - Time to set up for the next session
+ 
+14:00-14:20 Tuomas
+ - Idea: Now participants know that we can utilize methods from mia. Introduce slots and show how to handle complex data.
+ - reducedDim slot was briefly introduced in Pande's session. (That highlights the idea of slots hopefully since the result is the same as already calculated.)
+ - Introduce agglomerateByRanks() and altExp slot
+ - Add another omics to altExp and demonstrating column subsetting to show sample linkage
+ - Calculate cross-association?
+14:20-14:30 short Q&A
+ - Participants have time to explore on their own
+
+15:00-15:20 Stefanie
+ - Idea: Show what additional capabilities there are
+ - Maybe: we can calculate simple correlation network based on cross-association results (Tuomas's session) but this can be further extended?
+15:20-15:25 short Q&A
+ - Participants have time to explore on their own
+15:25-15:30 short break
+ - Time to set up for the next session
+ 
+15:30-15:50 Giulio
+ - Idea: Show what additional capabilities there are
+ - Maybe: the analyses performed earlier can be done in graphical interface?
+15:50-15:55 short Q&A
+ - Participants have time to explore on their own
+15:55-16:00 short break
+ - Time to set up for the next session
+ 
 ## Overview
 
 ### Description
@@ -151,7 +206,8 @@ if( !require("BiocManager") ){
 # If there are packages that need to be installed, installs them with BiocManager
 # Updates old packages.
 if( length(packages_need_to_install) > 0 ) {
-   install(packages_need_to_install, ask = FALSE)
+    install(version = "devel")
+    install(packages_need_to_install, ask = FALSE)
 }
 
 # Load all packages into session. Stop if there are packages that were not
