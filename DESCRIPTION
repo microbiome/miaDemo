@@ -1,6 +1,6 @@
-Package: miaDemoEuroBioC2024
+Package: miaDemo
 Title: Package Demo: mia
-Version: 2.0.3
+Version: 2.0.4
 Authors@R: 
     c(person(given = "Tuomas", family = "Borman", role = c("aut", "cre"),
              email = "tuomas.v.borman@utu.fi",
@@ -102,7 +102,7 @@ Remotes:
     github::stefpeschel/NetCoMi,
     github::zdk123/SpiecEasi,
     github::GraceYoon/SPRING
-URL: https://microbiome.github.io/miaDemoEuroBioC2024/
-BugReports: https://github.com/microbiome/miaDemoEuroBioC2024/issues/
-VignetteBuilder: knitr
-DockerImage: ghcr.io/microbiome/miademoeurobioc2024:latest
+URL: https://microbiome.github.io/miaDemo/
+BugReports: https://github.com/microbiome/miaDemo/issues/
+VignetteBuilder: quarto
+DockerImage: ghcr.io/microbiome/miaDemo:latest

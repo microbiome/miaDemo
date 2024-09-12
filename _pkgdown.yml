@@ -1,4 +1,4 @@
-url: https://microbiome.github.io/miaDemoEuroBioC2024/
+url: https://microbiome.github.io/miaDemo/
 
 template:
   params:
@@ -6,13 +6,13 @@ template:
     #ganalytics: UA-99999999-9
 
 home:
-  title: "miaDemoEuroBioC2024"
+  title: "miaDemo"
   type: inverse
 
 
 navbar:
   right:
    - icon: fa-github
-     href: https://github.com/microbiome/miaDemoEuroBioC2024
+     href: https://github.com/microbiome/miaDemo
      
 

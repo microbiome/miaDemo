@@ -3,16 +3,13 @@ title: Orchestrating Microbiome Analysis with Bioconductor (EuroBioC2024)
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{mia workshop in EuroBioC2024}
-  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
+execute:
+  echo: true
+  comment: "#>"
+  collapse: true
 ---
-
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
-```
 
 Authors:
     Tuomas Borman^[University of Turku, tvborm@utu.fi],
