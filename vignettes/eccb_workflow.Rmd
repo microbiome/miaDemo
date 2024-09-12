@@ -180,7 +180,7 @@ we can tranform the data.
 First, we load the required packages into the session. The following script
 ensures that any packages not already installed are automatically installed.
 
-```{r setup}
+```{r setup, echo=FALSE}
 # List of packages that we need
 packages <- c(
     "ComplexHeatmap",
@@ -409,7 +409,7 @@ We’re now ready to perform the cross-association analysis. We will examine the
 associations between microbial families and the most abundant pathways. To
 visualize the results, we’ll use a heatmap.
 
-```{r cross_association}
+```{r cross_association, fig.height=15, fig.width=15}
 # Perform cross-associaton
 res <- getCrossAssociation(
     tse,
