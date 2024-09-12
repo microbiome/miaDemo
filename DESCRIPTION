@@ -51,6 +51,7 @@ Suggests:
     gtools,
     gsEasy,
     igraph,
+    iSEEtree,
     kableExtra,
     knitr,
     Maaslin2,
@@ -96,7 +97,6 @@ Suggests:
     WGCNA,
     xgboost
 Remotes:
-    github::microbiome/iSEEtree,
     github::microbiome/mia,
     github::microbiome/miaViz,
     github::microbiome/miaTime,
