@@ -262,40 +262,7 @@ common operations. For instance, we can tranform the data. ”</p>
 <p>First, we load the required packages into the session. The following
 script ensures that any packages not already installed are automatically
 installed.</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># List of packages that we need</span></span>
-<span><span class="va">packages</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>    <span class="st">"ComplexHeatmap"</span>,</span>
-<span>    <span class="st">"curatedMetagenomicData"</span>,</span>
-<span>    <span class="st">"mia"</span>,</span>
-<span>    <span class="st">"miaViz"</span>,</span>
-<span>    <span class="st">"scater"</span>,</span>
-<span>    <span class="st">"shadowtext"</span></span>
-<span>    <span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Get packages that are already installed</span></span>
-<span><span class="va">packages_already_installed</span> <span class="op">&lt;-</span> <span class="va">packages</span><span class="op">[</span> <span class="va">packages</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/installed.packages.html" class="external-link">installed.packages</a></span><span class="op">(</span><span class="op">)</span> <span class="op">]</span></span>
-<span></span>
-<span><span class="co"># Get packages that need to be installed</span></span>
-<span><span class="va">packages_need_to_install</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sets.html" class="external-link">setdiff</a></span><span class="op">(</span> <span class="va">packages</span>, <span class="va">packages_already_installed</span> <span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Loads BiocManager into the session. Install it if it is not already installed.</span></span>
-<span><span class="kw">if</span><span class="op">(</span> <span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://bioconductor.github.io/BiocManager/" class="external-link">"BiocManager"</a></span><span class="op">)</span> <span class="op">)</span><span class="op">{</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span></span>
-<span>    <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://bioconductor.github.io/BiocManager/" class="external-link">"BiocManager"</a></span><span class="op">)</span></span>
-<span><span class="op">}</span></span>
-<span><span class="co">#&gt; Loading required package: BiocManager</span></span>
-<span></span>
-<span><span class="co"># If there are packages that need to be installed, installs them with BiocManager</span></span>
-<span><span class="co"># Updates old packages.</span></span>
-<span><span class="kw">if</span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">packages_need_to_install</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span> <span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="fu"><a href="https://bioconductor.github.io/BiocManager/reference/install.html" class="external-link">install</a></span><span class="op">(</span>version <span class="op">=</span> <span class="st">"devel"</span><span class="op">)</span></span>
-<span>    <span class="fu"><a href="https://bioconductor.github.io/BiocManager/reference/install.html" class="external-link">install</a></span><span class="op">(</span><span class="va">packages_need_to_install</span>, ask <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="op">}</span></span>
-<span></span>
-<span><span class="co"># Load all packages into session. Stop if there are packages that were not</span></span>
-<span><span class="co"># successfully loaded</span></span>
-<span><span class="va">pkgs_not_loaded</span> <span class="op">&lt;-</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="va">packages</span>, <span class="va">require</span>, character.only <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<pre><code><span><span class="co">#&gt; Loading required package: BiocManager</span></span>
 <span><span class="co">#&gt; Loading required package: ComplexHeatmap</span></span>
 <span><span class="co">#&gt; Loading required package: grid</span></span>
 <span><span class="co">#&gt; ========================================</span></span>
@@ -407,13 +374,7 @@ installed.</p>
 <span><span class="co">#&gt;     plotNMDS</span></span>
 <span><span class="co">#&gt; Loading required package: scater</span></span>
 <span><span class="co">#&gt; Loading required package: scuttle</span></span>
-<span><span class="co">#&gt; Loading required package: shadowtext</span></span>
-<span><span class="va">pkgs_not_loaded</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">pkgs_not_loaded</span><span class="op">)</span><span class="op">[</span> <span class="va">pkgs_not_loaded</span> <span class="op">]</span></span>
-<span><span class="kw">if</span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">pkgs_not_loaded</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span> <span class="op">)</span><span class="op">{</span></span>
-<span>    <span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span></span>
-<span>        <span class="st">"Error in loading the following packages into the session: '"</span>,</span>
-<span>        <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">pkgs_not_loaded</span>, collapse <span class="op">=</span> <span class="st">"', '"</span><span class="op">)</span>, <span class="st">"'"</span><span class="op">)</span></span>
-<span><span class="op">}</span></span></code></pre></div>
+<span><span class="co">#&gt; Loading required package: shadowtext</span></span></code></pre>
 <p>If you encountered an error, install packages manually.</p>
 </div>
 <div class="section level3">
@@ -725,7 +686,7 @@ abundant pathways. To visualize the results, we’ll use a heatmap.</p>
 <span>    column_names_max_height <span class="op">=</span> <span class="fu">unit</span><span class="op">(</span><span class="fl">20</span>, <span class="st">"cm"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="va">p</span></span></code></pre></div>
-<p><img src="eccb_workflow_files/figure-html/cross_association-1.png" width="700"></p>
+<p><img src="eccb_workflow_files/figure-html/cross_association-1.png" width="1440"></p>
 <p>Enterobacteriaceae shows a positive correlation with certain pathways
 (indicated by x, which denotes statistical significance with an adjusted
 p-value &lt; 0.05) that other microbial families are negatively
