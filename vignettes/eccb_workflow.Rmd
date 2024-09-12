@@ -1,13 +1,13 @@
 ---
-title: Orchestrating Microbiome Analysis with Bioconductor (EuroBioC2024)
+title: Orchestrating Microbiome Analysis with Bioconductor
 output: rmarkdown::html_vignette
 vignette: >
-    %\VignetteIndexEntry{mia workshop in EuroBioC2024}
-%\VignetteEngine{knitr::rmarkdown}
-%\VignetteEncoding{UTF-8}
+    %\VignetteIndexEntry{ECCB workshop}
+    %\VignetteEngine{knitr::rmarkdown}
+    %\VignetteEncoding{UTF-8}
 ---
     
-    ```{r, include = FALSE}
+```{r, include = FALSE}
 knitr::opts_chunk$set(
     collapse = TRUE,
     comment = "#>"
@@ -377,9 +377,18 @@ prevalence.
 
 ```{r agglomerate_func}
 # Agglomerate based on pathways function
-altExp(tse, "pathway_func") <- agglomerateByVariable(altExp(tse, "pathway"), by = "rows", "pathway")
+altExp(tse, "pathway_func") <- agglomerateByVariable(
+    altExp(tse, "pathway"),
+    by = "rows",
+    f = "pathway"
+    )
 # Agglomerate based on prevalence
-altExp(tse, "pathway_prev") <- agglomerateByPrevalence(altExp(tse, "pathway_func"), assay.type = "pathway_abundance", prevalence = 0.2, detection = 0.001)
+altExp(tse, "pathway_prev") <- agglomerateByPrevalence(
+    altExp(tse, "pathway_func"),
+    assay.type = "pathway_abundance",
+    prevalence = 0.2,
+    detection = 0.001
+    )
 ```
 
 The data now includes the most prevalent pathways, each representing a single
@@ -387,7 +396,12 @@ metabolic activity. Next, we apply a transformation as the final preprocessing
 step for our functional data.
 
 ```{r transform_func}
-altExp(tse, "pathway_prev") <- transformAssay(altExp(tse, "pathway_prev"), assay.type = "pathway_abundance", method = "clr", pseudocount = 1)
+altExp(tse, "pathway_prev") <- transformAssay(
+    altExp(tse, "pathway_prev"),
+    assay.type = "pathway_abundance",
+    method = "clr",
+    pseudocount = 1
+    )
 altExp(tse, "pathway_prev")
 ```
 
@@ -399,8 +413,13 @@ visualize the results, we’ll use a heatmap.
 # Perform cross-associaton
 res <- getCrossAssociation(
     tse,
-    altexp1 = "family", "pathway_prev",
-    assay.type1 = "clr", assay.type2 = "clr", mode = "matrix", test.signif = TRUE)
+    altexp1 = "family",
+    altexp2 = "pathway_prev",
+    assay.type1 = "clr",
+    assay.type2 = "clr",
+    mode = "matrix",
+    test.signif = TRUE
+    )
 
 
 # Function for marking significant correlations with "X"
@@ -420,7 +439,8 @@ p <- Heatmap(
     cell_fun = add_signif,
     heatmap_legend_param = list(
      title = "correlation", legend_height = unit(5, "cm")),
-    column_names_rot = 45, column_names_max_height = unit(20, "cm")
+    column_names_rot = 45,
+    column_names_max_height = unit(20, "cm")
 )
 p
 ```
