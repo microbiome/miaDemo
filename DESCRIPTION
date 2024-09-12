@@ -73,7 +73,6 @@ Suggests:
     plotly,
     purrr,
     qgraph,
-    quarto,
     RColorBrewer,
     rebook,
     reshape2,
@@ -106,5 +105,5 @@ Remotes:
     github::GraceYoon/SPRING
 URL: https://microbiome.github.io/miaDemo/
 BugReports: https://github.com/microbiome/miaDemo/issues/
-VignetteBuilder: quarto
+VignetteBuilder: knitr
 DockerImage: ghcr.io/microbiome/miaDemo:latest
