@@ -1,0 +1,406 @@
+---
+title: Orchestrating Microbiome Analysis with Bioconductor (EuroBioC2024)
+output: rmarkdown::html_vignette
+vignette: >
+    %\VignetteIndexEntry{mia workshop in EuroBioC2024}
+%\VignetteEngine{knitr::rmarkdown}
+%\VignetteEncoding{UTF-8}
+---
+    
+    ```{r, include = FALSE}
+knitr::opts_chunk$set(
+    collapse = TRUE,
+    comment = "#>"
+)
+```
+
+Authors:
+    Tuomas Borman,
+    Pande Erawijantari,
+    Giulio Benedetti,
+    Stefanie Peschel,
+    Leo Lahti.
+<br/>
+Last modified: 12 September, 2024.
+
+TODO: UPDATE DESCRIPTION
+
+width="150"/> <img src="figures/mia_logo.png" width="150"/>
+
+## Overview
+
+### Description
+
+Learn how _miaverse_ framework
+integrates microbiome data science with the _SummarizedExperiment_ ecosystem,
+and discover the benefits this brings. We will cover key methods, explore
+[the OMA online book](https://microbiome.github.io/OMA/docs/devel), and discuss
+the integration's advantages.
+
+We will start with a brief overview of the framework, followed by an
+instructor-led live demonstration. The demonstration will showcase selected
+key features and functionalities of _miaverse_. After the demo, participant
+will have time to discuss the framework, ask questions, and explore the tools
+and methods covered.
+
+By the end of the workshop, attendees will have a understanding of how to
+apply the framework to their microbiome research and will be
+well-prepared to further explore the framework independently.
+
+### Pre-requisites
+
+* Basic knowledge of R coding
+* Familiarity with Bioconductor
+* Understanding of microbiome research
+
+If your time allows, we recommend to spend some time to explore beforehand
+[Orchestrating Microbiome Analysis (OMA) online book](https://microbiome.github.io/OMA/docs/devel/).
+
+### Participation
+
+Participants are encouraged to ask questions throughout the workshop. The
+session will follow
+[a tutorial from the OMA online book](https://microbiome.github.io/OMA/docs/devel/pages/introductory_workflow.html),
+with participants running the tutorial alongside the instructor.
+
+To facilitate this, Bioconductor provides
+[pre-installed virtual machines with all necessary packages](https://workshop.bioconductor.org/).
+
+### _R_ / _Bioconductor_ packages used
+
+In this workshop, we will focus on
+[the _mia_ package](https://bioconductor.org/packages/devel/bioc/html/mia.html),
+which is designed for microbiome data science. The _mia_ package provides
+essential tools for analyzing microbiome data using the
+_SummarizedExperiment_ framework.
+
+### Time outline
+
+| Activity                          | Time |
+|-----------------------------------|------|
+| Background                        | 10m  |
+| Demo                              | 20m  |
+| Questions and free exploration    | 10m  |
+
+### Workshop goals and objectives
+
+#### Learning goals
+
+- **Methods for microbiome analysis**: Learn to harness _SummarizedExperiment_ ecosystem in your project.
+
+- **Data structure**: Understand how to utilize the _TreeSummarizedExperiment_ class for effective microbiome data analysis.
+
+- **Access resources**: Get familiar with additional tools and resources, including [the OMA online book](https://microbiome.github.io/OMA/docs/devel).
+
+#### Learning objectives
+
+- **Analyze and apply methods**:  Apply the framework to process and analyze microbiome data.
+
+- **Create visualizations**: Generate and interpret visualizations.
+
+- **Explore documentation**: Use the [OMA](https://microbiome.github.io/OMA/docs/devel) to explore additional tools and methods.
+
+## Workshop
+
+## Introduction
+
+In this workflow, we demonstrate how to analyze data from publicly available
+microbiome resources using Bioconductor methods. We will cover essential data
+wrangling steps, explore alpha and beta diversity metrics, and introduce the
+fundamentals of data integration and microbial network analysis. Additionally,
+we will explore how to utilize the tools through a graphical interface.
+
+## Bioconductor resources for microbiome data science (Leo)
+
+Idea for the story:
+
+"
+TreeSE is the primary data container used in miaverse framework.It is extension to SE.
+It works like this. mia package has methods for common operations. For instance, 
+we can tranform the data.
+"
+
+### Load packages
+
+First, we load the required packages into the session. The following script
+ensures that any packages not already installed are automatically installed.
+
+```{r setup}
+# List of packages that we need
+packages <- c(
+    "ComplexHeatmap",
+    "CuratedMetagenomicData",
+    "mia",
+    "miaViz",
+    "scater",
+    "shadowtext"
+    )
+
+# Get packages that are already installed
+packages_already_installed <- packages[ packages %in% installed.packages() ]
+
+# Get packages that need to be installed
+packages_need_to_install <- setdiff( packages, packages_already_installed )
+
+# Loads BiocManager into the session. Install it if it is not already installed.
+if( !require("BiocManager") ){
+    install.packages("BiocManager")
+    library("BiocManager")
+}
+
+# If there are packages that need to be installed, installs them with BiocManager
+# Updates old packages.
+if( length(packages_need_to_install) > 0 ) {
+   install(packages_need_to_install, ask = FALSE)
+}
+
+# Load all packages into session. Stop if there are packages that were not
+# successfully loaded
+pkgs_not_loaded <- !sapply(packages, require, character.only = TRUE)
+pkgs_not_loaded <- names(pkgs_not_loaded)[ pkgs_not_loaded ]
+if( length(pkgs_not_loaded) > 0 ){
+    stop(
+        "Error in loading the following packages into the session: '",
+        paste0(pkgs_not_loaded, collapse = "', '"), "'")
+}
+```
+
+If you encountered an error, install packages manually.
+
+### Importing data
+
+There are several openly available datasets listed in [@sec-example-data]. In
+this workflow, we will retrieve data from the curatedMetagenomicData resource.
+We'll focus on a dataset that includes both colorectal cancer (CRC) patients
+and control subjects. Our goal is to investigate whether CRC is associated
+with alterations in the gut microbiota.
+
+Let's fetch the data from the database.
+
+```{r import_dataset}
+# Study from which we want to fetch data
+study <- "GuptaA_2019"
+# Experiments that we want to fetch
+experiments <- c("pathway_abundance", "relative_abundance") |>
+    paste0(collapse = "|")
+search_pattern <- paste0(study, ".(", experiments, ")")
+
+# Fetch data
+data_list <- curatedMetagenomicData(
+    search_pattern, dryrun = FALSE, counts = TRUE, rownames = "short")
+
+# Add new names
+names(data_list) <- c("pathway", "taxonomy")
+
+# The assay name for taxonomy profile is incorrect since we have counts, not
+# relative abundances
+tse <- data_list[["taxonomy"]]
+assayNames(tse) <- "counts"
+data_list[["taxonomy"]] <- tse
+
+# For pathway data, extract pathway information from rownames and add them to
+# rowData
+tse <- data_list[["pathway"]]
+rowData(tse)[["full_name"]] <- rownames(tse)
+rowData(tse)[["pathway"]] <- sub("\\|.*", "", rowData(tse)[["full_name"]])
+data_list[["pathway"]] <- tse
+
+# Get taxonomy object
+tse <- data_list[["taxonomy"]]
+tse
+```
+
+The output is a `TreeSummarizedExperiment` (`TreeSE`) object. For details on
+how to handle and access the data, refer to [@sec-containers].
+
+### Preprocess
+
+A common step in microbiome workflows is agglomeration, where we summarize
+data at specific taxonomy ranks. Additionally, preprocessing involves
+transforming the data to address the unique characteristics of microbiome
+profiling data, for instance. Details on agglomeration and transformation are
+covered in [@sec-agglomeration] and [@sec-assay-transform], respectively.
+
+```{r preprocess}
+# Agglomerate data
+tse_family <- agglomerateByRank(tse, rank = "family")
+
+# Transform the main TreeSE
+tse <- transformAssay(tse, method = "relabundance")
+tse <- transformAssay(tse, method = "clr", pseudocount = 1)
+# Transform agglomerated data
+tse_family <- transformAssay(tse_family, method = "relabundance")
+tse_family <- transformAssay(tse_family, method = "clr", pseudocount = 1)
+```
+
+## Analysis of community diversity and composition (Pande)
+
+Idea for the story:
+
+"
+After preprocessing the data, we can continue to analysis. It is common to analyze the alpha diversity
+of samples. ...
+
+To analyze similarity between samples, we can perform PCoA. ...
+"
+
+##  Microbiome data integration (Tuomas)
+
+As demonstrated, CRC patients appear to have altered microbiota. However, this
+observation only indicates an association and does not imply causality or reveal
+underlying mechanisms. To explore complex mechanisms, we often need more comprehensive
+data. Efficiently handling data from multiple experiments requires integrating
+these datasets into a unified data container. Bioconductor offers two approaches
+for this:
+
+ - Using the `altExp` slot within the `TreeSE` object, which is a straightforward method.
+ - Employing `MultiAssayExperiment`, a more general and flexible approach, though it comes with a more complex data structure compared to `TreeSE`.
+
+For detailed information on both approaches, refer to [@sec-containers]. In this
+tutorial, we will focus on the simpler method using the `altExp` slot.
+
+The data fetched at the beginning of this workflow is a `list` containing
+multiple experiments, each represented as a unique `(Tree)SE` object. Managing
+this list and the connections between samples can be error-prone and cumbersome.
+To simplify this, we can use the `altExp` slot to handle the bookkeeping.
+Let’s start by checking which experiments are available:
+
+```{r show_experiments}
+names(data_list)
+```
+
+As we see, we have metabolic pathway predictions in addition to taxonomic
+profiling. We can add the entire list of experiments to the `altExp` slot.
+
+```{r add_altexp}
+altExps(tse) <- data_list
+tse
+```
+
+With the `altExp` slot now populated, you can access the data using the
+`altExp()` function and specify which experiment you want to retrieve.
+
+```{r access_altxp}
+altExp(tse, "pathway")
+```
+
+As mentioned earlier, the advantage of the `altExp` slot is that it handles
+sample linkages for us. For example, if we select a subset of data, the object
+automatically subsets all associated experiments accordingly.
+
+For example, let’s select only the samples from senior patients.
+
+```{r subset_altexp}
+tse_sub <- tse[ , tse$age_category == "senior"]
+tse_sub
+
+# Check that all sample names still match
+all( colnames(altExp(tse_sub, "pathway")) == colnames(tse_sub) )
+```
+
+Now, we can see that the data has been successfully subsetted, with all sample
+names matching across experiments.
+
+In addition to adding the entire list, we can also add individual experiments.
+Let’s add the agglomerated data separately to keep the whole dataset organized.
+
+```{r add_agg}
+altExp(tse, "family") <- tse_family
+tse
+```
+
+Now that the entire dataset is well-organized and in one place, let’s dive
+into analyzing the interconnections between experiments. Specifically, we’ll
+examine whether the abundance of certain bacteria is associated with specific
+metabolic activity pathway.
+
+We’ll perform a simple cross-association analysis to explore these
+relationships. First, we’ll preprocess the functional annotation data by
+agglomerating the pathways based on each pathway's function, and then further by
+prevalence.
+
+```{r agglomerate_func}
+# Agglomerate based on pathways function
+altExp(tse, "pathway_func") <- agglomerateByVariable(altExp(tse, "pathway"), by = "rows", "pathway")
+# Agglomerate based on prevalence
+altExp(tse, "pathway_prev") <- agglomerateByPrevalence(altExp(tse, "pathway_func"), assay.type = "pathway_abundance", prevalence = 0.2, detection = 0.001)
+```
+
+The data now includes the most prevalent pathways, each representing a single
+metabolic activity. Next, we apply a transformation as the final preprocessing
+step for our functional data.
+
+```{r transform_func}
+altExp(tse, "pathway_prev") <- transformAssay(altExp(tse, "pathway_prev"), assay.type = "pathway_abundance", method = "clr", pseudocount = 1)
+altExp(tse, "pathway_prev")
+```
+
+We’re now ready to perform the cross-association analysis. We will examine the
+associations between microbial families and the most abundant pathways. To
+visualize the results, we’ll use a heatmap.
+
+```{r cross_association}
+# Perform cross-associaton
+res <- getCrossAssociation(
+    tse,
+    altexp1 = "family", "pathway_prev",
+    assay.type1 = "clr", assay.type2 = "clr", mode = "matrix", test.signif = TRUE)
+
+
+# Function for marking significant correlations with "X"
+add_signif <- function(j, i, x, y, width, height, fill) {
+    # If the p-value is under threshold
+    if( !is.na(res$p_adj[i, j]) & res$p_adj[i, j] < 0.05 ){
+        # Print "X"
+        grid.shadowtext(
+            sprintf("%s", "X"), x, y, gp = gpar(fontsize = 8, col = "#f5f5f5"))
+    }
+}
+
+# Create a heatmap
+p <- Heatmap(
+    res$cor,
+    # Print values to cells
+    cell_fun = add_signif,
+    heatmap_legend_param = list(
+     title = "correlation", legend_height = unit(5, "cm")),
+    column_names_rot = 45, column_names_max_height = unit(20, "cm")
+)
+p
+```
+
+Enterobacteriaceae shows a positive correlation with certain pathways
+(indicated by x, which denotes statistical significance with an adjusted
+p-value < 0.05) that other microbial families are negatively correlated with.
+For example, L-isoleucine biosynthesis is a pathway that demonstrates this kind
+of association.
+
+For more information on data integration, see the following sections:
+
+ - [@sec-cross-correlation]
+ - [@sec-multiassay_ordination]
+ - [@sec-multi-omics-integration]
+
+## Microbial network analysis (Stefanie)
+ 
+Idea for the story:
+
+"
+We performed cross-association analysis in previous session. Analyzing microbial
+networks, however, usually requires more sophisticated apporoaches. 
+
+"
+
+## Interactive microbiome data exploration with iSEEtree (Giulio)
+
+Idea for the story:
+
+"
+For interactive analysis, iSEEtree is available. It allows to perform common analyses in graphical interface.
+
+"
+
+```{r session_info}
+sessionInfo()
+```
+
