@@ -1,5 +1,5 @@
 ---
-title: Orchestrating Microbiome Analysis with Bioconductor
+title: Orchestrating Microbiome Analysis with Bioconductor (ECCB)
 output: rmarkdown::html_vignette
 vignette: >
     %\VignetteIndexEntry{ECCB workshop}
