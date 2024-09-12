@@ -23,8 +23,7 @@ Authors:
 <br/>
 Last modified: 12 September, 2024.
 
-
-width="150"/> <img src="figures/mia_logo.png" width="150"/>
+<img src="figures/mia_logo.png" width="150"/>
 
 TODO:
 
