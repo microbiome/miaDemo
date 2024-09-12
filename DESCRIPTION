@@ -73,6 +73,7 @@ Suggests:
     plotly,
     purrr,
     qgraph,
+    quarto,
     RColorBrewer,
     rebook,
     reshape2,
