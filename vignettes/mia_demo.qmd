@@ -101,14 +101,27 @@ standardized data management across various research domains. It promotes synerg
 and standardized formats, enhancing collaborative research and minimizing
 redundant efforts.
 
-```{r se_structure, fig.align = 'center', out.width = "80%", fig.cap = "_SummarizedExperiment_ class", echo=FALSE}
+```{r}
+#| label: se_sturcture
+#| fig-align: center
+#| out-width: 80%
+#| fig-cap: _SummarizedExperiment_ class
+#| echo: false
+
 knitr::include_graphics(here::here("vignettes", "figures", "SE.png"))
 ```
 
 To integrate microbiome data science within the _SE_ ecosystem, the
 _TreeSummarizedExperiment_ (_TreeSE_) was developed.
 
-```{r treese_structure, fig.align = 'center', out.width = "80%", fig.cap = "_TreeSummarizedExperiment_ class", echo=FALSE}
+```{r}
+#| label: treese_sturcture
+#| fig-align: center
+#| out-width: 80%
+#| fig-cap: _TreeSummarizedExperiment_ class
+#| echo: false
+
+
 knitr::include_graphics(here::here("vignettes", "figures", "TreeSE.png"))
 ```
 

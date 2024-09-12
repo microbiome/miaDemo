@@ -96,6 +96,7 @@ Suggests:
     WGCNA,
     xgboost
 Remotes:
+    github::microbiome/iSEEtree,
     github::microbiome/mia,
     github::microbiome/miaViz,
     github::microbiome/miaTime,
