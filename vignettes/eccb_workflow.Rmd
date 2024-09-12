@@ -184,7 +184,7 @@ ensures that any packages not already installed are automatically installed.
 # List of packages that we need
 packages <- c(
     "ComplexHeatmap",
-    "CuratedMetagenomicData",
+    "curatedMetagenomicData",
     "mia",
     "miaViz",
     "scater",
