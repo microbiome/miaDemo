@@ -231,6 +231,88 @@ tse_family <- transformAssay(tse_family, method = "clr", pseudocount = 1)
 
 ## Analysis of community diversity and composition
 
+Now that the data has been pre-processed, we could start to analyze the overview of the microbiome profile. For the dataset above, we can continue to perform analysis, for example to answer these questions:
+
+1.  How does the microbial community differ between the CRC (n=30) vs healthy group (n=30)?
+
+2.How does the beta diversity compare between the CRC (n=30) vs healthy group (n=30)?
+
+3. What species shows significantly different relative abundance between 2 groups?
+
+For those, let's do the analysis in the species level.
+```{r preprocess species}
+# Agglomerate data
+tse_spec <- agglomerateByRank(tse, rank = "species", name="species")
+
+# Transform agglomerated data
+tse_spec <- transformAssay(tse_spec, method = "relabundance")
+tse_spec <- transformAssay(tse_spec, method = "clr", pseudocount = 1)
+```
+
+Let's start with analyzing the differences on microbial community diversity between CRC and healthy control group. 
+Community diversity is a central concept in microbiome research, and in the human microbiome study it has been shown that the microbial diversity associated with the host health status.
+Several diversity indices are available in the ecological literature. You can explore further [in the OMA book ](https://microbiome.github.io/OMA/docs/devel/pages/14_alpha_diversity.html) about what analysis in-term of community diversity can be analyzed using mia package.
+
+For simplicity, let's calculate the microbial richness and alpha diversity using the Shannon index (other calculation using different index also available, and you can explore further)
+```{r alpha diversity}
+tse_spec <- estimateRichness(tse_spec, 
+                             assay.type = "counts", 
+                             index = "observed", 
+                             name="observed")
+
+tse_spec <- estimateDiversity(tse_spec,
+                              assay.type = "counts",
+                              index = "shannon", 
+                              name = "shannon")
+#to see the shannon calculation
+head(tse_spec$shannon)
+
+```
+
+To see the differences between healthy and CRC group, let's visualize the shannon diversity using violin plot (you can also experiment with boxplot). The information about diseases state is available from the colData of tse object, in the "diseases" column.
+
+```{r alpha diversity viz}
+library(ggsignif)
+library(ggplot2)
+library(patchwork)
+df <- as.data.frame(colData(tse_spec))
+  # Changes old levels with new levels
+  df$disease <- factor(df[["disease"]])
+# For significance testing, all different combinations are determined
+comb <- split(t(combn(levels(df$disease ), 2)), 
+           seq(nrow(t(combn(levels(df$disease ), 2)))))
+
+# Observed richness plot
+observed_plot <- ggplot(df, aes(x = disease, y = observed)) +
+  geom_boxplot(outlier.shape = NA) + 
+  geom_jitter(width = 0.2) + 
+  geom_signif(comparisons = comb, map_signif_level = FALSE, correction = "fdr") +
+  theme_minimal() + 
+  theme(text = element_text(size = 10)) +
+  labs(title = "Observed Richness", y = "Observed Species")
+
+# Shannon diversity plot
+shannon_plot <- ggplot(df, aes(x = disease, y = shannon)) +
+  geom_boxplot(outlier.shape = NA) + 
+  geom_jitter(width = 0.2) + 
+  geom_signif(comparisons = comb, map_signif_level = FALSE, correction = "fdr") +
+  theme_minimal() + 
+  theme(text = element_text(size = 10)) +
+  labs(title = "Shannon Diversity", y = "Shannon Index")
+
+# Combine the two plots into a grid
+combined_plot <- observed_plot + shannon_plot
+
+# Display the combined plot
+print(combined_plot)
+```
+
+
+**Thinking box**
+> Can you also do the diversity analysis using different indexes?
+> What can you inffer by this observation?
+
+
 ##  Microbiome data integration
 
 As demonstrated, CRC patients appear to have altered microbiota. However, this
