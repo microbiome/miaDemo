@@ -275,6 +275,7 @@ You can explore further [in the OMA book ](https://microbiome.github.io/OMA/docs
 
 For simplicity, let's calculate the microbial richness and alpha diversity 
 using the Shannon index (other calculation using different index also available, and you can explore further)
+
 ```{r alpha diversity}
 tse <- addAlpha(tse, 
                              assay.type = "counts", 
@@ -375,7 +376,7 @@ p1 <- p + labs(
 p1
 ```
 
-Sometimes, we also want to create elipse to guide our visualization wheter the microbial community in two groups is different. You achieve it using the code below.
+Sometimes, we also want to create elipse to guide our visualization whether the microbial community in two groups is different. You can achieve it using the code below.
 
 ```{r PCoA elipse}
 # Add ellipses with ggplot manual
@@ -414,12 +415,12 @@ Please explore the comprehensive example in the [OMA book](https://microbiome.gi
 > Above is the example for unsupervised ordination, can you give example of it supervised counterpart?
 > Can you distinguish between both method and when to use it?
 
-OMA book also provide further exploration to explore the microbial community structure in the table, for example based on [community typing](https://microbiome.github.io/OMA/docs/devel/pages/clustering.html). 
+OMA book also provide further exploration to explore the microbial community structure, for example based on [community typing](https://microbiome.github.io/OMA/docs/devel/pages/clustering.html). 
 
 
 Another primary analysis that usually can be done 
-in microbiome study is **differential abundancemanalysis (DAA)** 
-analysis for example to answer the research question 3. 
+in microbiome study is **differential abundance analysis (DAA)** 
+for example to answer the research question 3. 
 However, due to limited time slots, we will not demonstrate in this tutorial.
 You can explore various example in OMA book 
 for [DAA here](https://microbiome.github.io/OMA/docs/devel/pages/differential_abundance.html)
