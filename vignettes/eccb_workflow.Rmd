@@ -566,7 +566,7 @@ For more information on data integration, see the following sections:
 
 After having analyzed associations between microbial families and pathways in the last section, we are now interested in the microbial associations itself, which helps us to understand the complex interplay of microbial communities. 
 
-In a typical microbiome network, nodes are ASVs or taxa on a certain rank (here family). The nodes are connected by edges, which represent microbial associations. Higher edge thickness corresponds to higher edge weight. Edges with a positive underlying association are green, those with a negative association are red.
+In a typical microbiome network, nodes are ASVs or taxa on a certain rank (here family). The nodes are connected by edges, which represent microbial associations. Higher edge thickness corresponds to higher edge weight. Edges with a positive underlying association are blue, those with a negative association are red.
 
 ```{r microbiome-network, echo=FALSE, out.width='90%', fig.cap="An exemplary microbiome network."}
 knitr::include_graphics("figures/Exemplary_microbiome_network.png")
@@ -581,11 +581,11 @@ An essential step in microbial network learning is to obtain an adjacency matrix
 knitr::include_graphics("figures/From_counts_to_networks.png")
 ```
 
-Association estimation methods need to take the typical characteristics of microbiome data into account. Here is a brief overview of the typical data characteristics and common approaches to solve them:
+Association estimation methods need to take the typical characteristics of microbiome data into account. Here is a brief **overview of the typical data characteristics** and common approaches to solve them:
 
 **Compositionality**
 
-* Data transformation (e.g., clr)
+* Data transformation (e.g., clr or rclr)
 * See the [OMA chapter](https://microbiome.github.io/OMA/docs/devel/pages/transformation.html) on data transformations
 
 **Zero-inflation**
@@ -608,7 +608,9 @@ Sparse association estimation. Depending on the desired type of association, the
 * Proportionality
   + propr ([`propr`](https://cran.r-project.org/web/packages/propr/index.html) package)
 
-These methods are also available through the R package [`NetCoMi`](https://github.com/stefpeschel/NetCoMi), which we will use to construct and analyze a microbial association network. The complete workflow implemented in `NetCoMi` is shown in the [OMA chapter](https://microbiome.github.io/OMA/docs/devel/pages/network_learning.html#sec-network-learning-workflow) on network learning.
+These methods are also available through the R package [`NetCoMi`](https://github.com/stefpeschel/NetCoMi), which we will use to construct and analyze an association network for the gut microbiome. 
+
+The complete workflow implemented in `NetCoMi` is shown in the [OMA chapter](https://microbiome.github.io/OMA/docs/devel/pages/network_learning.html#sec-network-learning-workflow) on network learning.
 
 ### Network learning with NetCoMi
 
@@ -616,14 +618,14 @@ These methods are also available through the R package [`NetCoMi`](https://githu
 library(NetCoMi)
 ```
 
-The function for network construction `netConstruct()` offers the possibility to filter samples and taxa according to certain criteria. Here, we keep only taxa occurring in at least 10% of the samples.
+The function for network construction `netConstruct()` offers the possibility to **filter** samples and taxa according to certain criteria. Here, we keep only **taxa occurring in at least 10% of the samples**.
 
-We use the `SpiecEasi` (Sparse Inverse Covariance for Ecological StatisticalInference) method to estimate microbial associations. The package offers two graphical model inference procedures: 1) Meinhausen and Bühlmann's neighborhood selection (the MB method) and 2) inverse covariance selection (the glasso
-method). We will use glasso here. 
+We use the `SpiecEasi` (Sparse Inverse Covariance for Ecological StatisticalInference) method to **estimate microbial associations**. The package offers two graphical model inference procedures: 1) Meinhausen and Bühlmann's neighborhood selection (the MB method) and 2) inverse covariance selection (the glasso
+method). We will use **glasso** here. 
 
-`SpiecEasi` uses the StARS ("Stability Approach to Regularization Selection")
-method to obtain a sparse association matrix. We set the StARS threshold to 0.1
-to get a denser graph (default is 0.05).
+`SpiecEasi` uses the **StARS** ("Stability Approach to Regularization Selection")
+method to obtain a **sparse association matrix**. We set the StARS threshold to 0.1
+to get a denser graph (the default is 0.05).
 
 Since zero replacement, normalization, and sparsification (model selection) is done by `SpiecEasi`, we set the corresponding `netConstruct` arguments to "none". 
 
@@ -658,7 +660,7 @@ net <- readRDS("data/spieceasi_network.rds")
 
 `netConstruct()` returns an object of the class `microNet`, which contains all matrices generated during network construction.
 
-The object also contains an edge list, giving each edge’s estimated association, dissimilarity, and adjacency. Let’s take a quick look at the edges with the highest and lowest edge weights:
+The object also contains an **edge list**, giving each edge’s estimated association, dissimilarity, and adjacency. Let’s take a quick look at the edges with the highest and lowest edge weights:
 
 ```{r network_edgelist}
 edgelist <- net$edgelist1[order(net$edgelist1$adja, 
@@ -667,7 +669,7 @@ head(edgelist)
 tail(edgelist)
 ```
 
-The `microNet` object is now passed to `netAnalyze()` to perform network analysis.
+The `microNet` object is now passed to `netAnalyze()` to perform **network analysis**.
 
 The function computes several common network characteristics such as centrality
 measures, hubs, cluster assignment, and global network measures.
@@ -684,11 +686,11 @@ netprops <- netAnalyze(net,
                        gcmHeat = FALSE)
 ```
 
-We use `NetCoMi's` plot function to visualize the network.
+We use `NetCoMi's` plot function to **visualize the network**.
 
-In the first plot, node colors represent the detected clusters and node
-sizes are scaled by eigenvector centrality. Hub nodes are highlighted by
-default. Singletons are not included in the plot.
+In the first plot, **node colors** represent the detected **clusters** and **node
+sizes** are scaled by **eigenvector centrality**. **Hub nodes** are highlighted by
+default. Unconnected nodes are not included in the plot.
 
 Note that nodes are sometimes placed too close together so that the labels
 overlap. You may need to play around with the `repulsion` argument until you
@@ -696,6 +698,10 @@ find a value where the labels are legible, but also the clusters are still
 well recognizable.
 
 ```{r network_plot_clusters, fig.width=13, fig.height=10, out.width='100%'}
+# Palette with distinguishable colors
+nodecols <- c("#E69F00", "#56B4E9", "#009E73",  "#CC79A7", "#F0E442", 
+              "#0072B2", "#D55E00")
+
 plot(netprops,
      repulsion = 1,
      rmSingles = TRUE,
@@ -704,6 +710,9 @@ plot(netprops,
      nodeSize = "eigenvector",
      nodeSizeSpread = 3,
      nodeColor = "cluster",
+     colorVec = nodecols,
+     nodeTransp = 20,
+     posCol = c("#5C7aee", "#273cc2"),
      hubBorderCol = "gray40",
      cexNodes = 1.8,
      edgeTranspHigh = 20,
@@ -712,22 +721,38 @@ plot(netprops,
      cexTitle = 2,
      mar = c(1, 3, 4, 8))
 
-legend(0.7, 1.1, cex = 1.7, title = "estimated correlation:",
-       legend = c("+","-"), lty = 1, lwd = 3, col = c("#009900","red"),
+legend(0.9, 1.1, cex = 1.7, title = "estimated correlation:",
+       legend = c("+","-"), lty = 1, lwd = 3, col = c("#273cc2","red"),
        bty = "n", horiz = TRUE)
+
+par(xpd = TRUE)
+legend(0.7, -0.7, cex = 1.5, bty = "n",
+       legend = c("Node color: Clusters", 
+                  "Node size: Eigenvector centrality",
+                  "Hubs: Highest eigen. centrality"))
 ```
 
-We now color nodes according to their phylum. The node sizes are proportional to a taxon's sum of mclr-transformed abundances.
+We now **color** nodes according to their **phylum**. The **node sizes** are proportional to a taxon's sum of **mclr-transformed abundances**.
 
 ```{r network_plot_phyla, fig.width=15, fig.height=10, out.width='100%'}
 # Generate vector with phylum names for node coloring
-phyla <- rowData(tse)$phylum
-phyla[is.na(phyla)] <- "NA"
-phyla <- as.factor(phyla)
-names(phyla) <- rowData(tse)$family
+phyla <- rowData(tse_family)$phylum
 
-# Create color vector
-colvec <- RColorBrewer::brewer.pal(length(levels(phyla)), "Set3")
+# Replace phyla that occur only once with "other"
+phylum_counts <- table(phyla)
+phyla <- ifelse(phyla %in% names(phylum_counts[phylum_counts == 1]) | 
+                  is.na(phyla), "Other", phyla)
+
+phyla <- as.factor(phyla)
+
+# Make level "Other" the last one
+levels(phyla) <- c(setdiff(levels(phyla), "Other"), "Other")
+
+# Assign family names
+names(phyla) <- rowData(tse_family)$family
+
+# Node colors (phylum "Other" should be gray)
+colors_phylum <- c(nodecols[1:(nlevels(phyla) - 1)], "#999999")
 
 plot(netprops,
      repulsion = 1,
@@ -737,10 +762,12 @@ plot(netprops,
      nodeSize = "mclr",
      nodeColor = "feature",
      featVecCol = phyla,
-     colorVec =  colvec,
+     colorVec = colors_phylum,
      nodeTransp = 20,
+     posCol = c("#5C7aee", "#273cc2"),
      highlightHubs = FALSE,
      cexNodes = 1.8,
+     edgeWidth = 0.8,
      edgeTranspHigh = 20,
      title1 = "Data features highlighted",
      showTitle = TRUE,
@@ -749,22 +776,34 @@ plot(netprops,
 
 # Add legends
 legend(0.7, 1.1, cex = 1.7, title = "estimated correlation:",
-       legend = c("+","-"), lty = 1, lwd = 3, col = c("#009900","red"),
+       legend = c("+","-"), lty = 1, lwd = 3, col = c("#273cc2","red"),
        bty = "n", horiz = TRUE)
 
 # Colors used in the legend should be equally transparent as in the plot
-col_transp <- colToTransp(colvec, 20)
+col_transp <- colToTransp(colors_phylum, 20)
 
 legend(-1.8, 1.1, cex = 1.7, pt.cex = 2.5, title = "Phylum:",
        legend=levels(phyla), col = col_transp, bty = "n", pch = 16)
+
+par(xpd = TRUE)
+legend(0.5, -0.8, cex = 1.5, bty = "n",
+       legend = c("Node color: Phylum", 
+                  "Node size: Sum of mclr abundances"))
 ```
 
-In addition to the visual analysis, we can also have a look at the computed network properties. 
-
+In addition to the visual analysis, we can also have a look at the computed **network properties**. 
 ```{r network_summary}
 summary(netprops, numbNodes = 5)
 ```
+The network consists of one large connected component (lcc) with 28 nodes and 8 unconnected nodes. 
 
+Akkermansiaceae and Odoribacteraceae are identified as hub nodes (highly connected families), which are nodes with an eigenvector centrality above the 95% quantile of all computed eigenvector centrality values.
+
+### Network comparison
+
+As next step, we might be interested in whether the microbial network differs between **colorectal cancer (CRC) patients** and **control subjects**. 
+
+This task could be performed with the NetCoMi function `netCompare`, as described in the [OMA chapter](https://microbiome.github.io/OMA/docs/devel/pages/network_comparison.html) on network comparison.
 
 ## Interactive microbiome data exploration with iSEEtree
 
