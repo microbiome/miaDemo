@@ -612,7 +612,7 @@ These methods are also available through the R package [`NetCoMi`](https://githu
 
 The complete workflow implemented in `NetCoMi` is shown in the [OMA chapter](https://microbiome.github.io/OMA/docs/devel/pages/network_learning.html#sec-network-learning-workflow) on network learning.
 
-### Network learning with NetCoMi
+### Network learning
 
 ```{r load_netcomi, message=FALSE, warning=FALSE}
 library(NetCoMi)
@@ -668,6 +668,8 @@ edgelist <- net$edgelist1[order(net$edgelist1$adja,
 head(edgelist)
 tail(edgelist)
 ```
+
+### Network analysis
 
 The `microNet` object is now passed to `netAnalyze()` to perform **network analysis**.
 
