@@ -97,7 +97,7 @@ in network and interactive data exploration session, respectively.
 
 - **Analyze and apply methods**:  Apply the framework to process and analyze microbiome data.
 
-- **Create visualizations**: Generate and interpret visualizations.
+- **Visualize data**: Generate and interpret common graphs for microbiome data
 
 - **Explore documentation**: Use the [OMA](https://microbiome.github.io/OMA/docs/devel) to explore additional tools and methods.
 
@@ -123,6 +123,7 @@ ensures that any packages not already installed are automatically installed.
 packages <- c(
     "ComplexHeatmap",
     "curatedMetagenomicData",
+    "iSEEtree",
     "mia",
     "miaViz",
     "scater",
@@ -390,6 +391,45 @@ For more information on data integration, see the following sections:
 ## Microbial network analysis
 
 ## Interactive microbiome data exploration with iSEEtree
+
+[iSEEtree](https://microbiome.github.io/iSEEtree/) is a shiny app that provides
+a Graphical User Interface (GUI) to visualize and interactively explore TreeSE
+objects. We will demonstrate its capability by reproducing some of the plots
+that were previously created in this workshop, this time without the need of
+coding.
+
+Launching the app is easy. All you need to do is run the command `iSEE` on the
+TreeSE object that you want to explore.
+
+```{r}
+library(iSEEtree)
+
+# Launch app
+if (interactive()) {
+  iSEE(tse_family)
+}
+```
+
+The default panel layout does not contain the so-called `ColumnDataTable` panel,
+which plots variables from the `colData.` Therefore, we need to specify a custom
+panel layout with the `initial` argument to generate the alpha diversity plot.
+
+```{r}
+# Launch app with custom layout
+if (interactive()) {
+  iSEE(tse_family, initial = c(ColumnDataTable(), ColumnDataPlot()))
+}
+```
+
+If interested, you can explore further functionality and the panel catalogue in the
+[iSEEtree vignettes](https://microbiome.github.io/iSEEtree/articles/iSEEtree.html).
+
+Ideas for self-learning:
+
+- Learn what different panels show by reading their help page
+- Adjust a plot to deliver the message you want
+- Use selection parameters to show a subset of the data
+- Save a plot to image and/or access its R code
 
 ## Session info
 
