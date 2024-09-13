@@ -120,13 +120,19 @@ ensures that any packages not already installed are automatically installed.
 
 ```{r setup, message=FALSE}
 # List of packages that we need
+library(dplyr)
+library(tidyr)
 packages <- c(
     "ComplexHeatmap",
     "curatedMetagenomicData",
     "mia",
     "miaViz",
     "scater",
-    "shadowtext"
+    "shadowtext",
+    "ggsignif",
+    "patchwork",
+    "dplyr",
+    "tidyr"
     )
 
 # Get packages that are already installed
@@ -231,77 +237,83 @@ tse_family <- transformAssay(tse_family, method = "clr", pseudocount = 1)
 
 ## Analysis of community diversity and composition
 
-Now that the data has been pre-processed, we could start to analyze the overview of the microbiome profile. For the dataset above, we can continue to perform analysis, for example to answer these questions:
+Now that the data has been pre-processed, we could start to analyze the overview of the microbiome profile. 
+For the dataset above, we can continue to perform analysis, for example to answer these questions:
 
 1.  How does the microbial community differ between the CRC (n=30) vs healthy group (n=30)?
 
-2.How does the beta diversity compare between the CRC (n=30) vs healthy group (n=30)?
+2. How does the beta diversity compare between the CRC (n=30) vs healthy group (n=30)?
 
 3. What species shows significantly different relative abundance between 2 groups?
 
-For those, let's do the analysis in the species level.
-```{r preprocess species}
-# Agglomerate data
-tse_spec <- agglomerateByRank(tse, rank = "species", name="species")
-
-# Transform agglomerated data
-tse_spec <- transformAssay(tse_spec, method = "relabundance")
-tse_spec <- transformAssay(tse_spec, method = "clr", pseudocount = 1)
-```
 
 Let's start with analyzing the differences on microbial community diversity between CRC and healthy control group. 
-Community diversity is a central concept in microbiome research, and in the human microbiome study it has been shown that the microbial diversity associated with the host health status.
-Several diversity indices are available in the ecological literature. You can explore further [in the OMA book ](https://microbiome.github.io/OMA/docs/devel/pages/14_alpha_diversity.html) about what analysis in-term of community diversity can be analyzed using mia package.
+Community diversity is a central concept in microbiome research,
+and in the human microbiome study it has been shown that 
+the microbial diversity associated with the host health status.
+Several diversity indices are available in the ecological literature. 
+You can explore further [in the OMA book ](https://microbiome.github.io/OMA/docs/devel/pages/alpha_diversity.html) about what analysis in-term of community diversity can be analyzed using mia package.
 
-For simplicity, let's calculate the microbial richness and alpha diversity using the Shannon index (other calculation using different index also available, and you can explore further)
+For simplicity, let's calculate the microbial richness and alpha diversity 
+using the Shannon index (other calculation using different index also available, and you can explore further)
 ```{r alpha diversity}
-tse_spec <- estimateRichness(tse_spec, 
+tse <- addAlpha(tse, 
                              assay.type = "counts", 
-                             index = "observed", 
-                             name="observed")
+                             index = c("observed","shannon"), 
+                             name=c("observed","shannon"))
 
-tse_spec <- estimateDiversity(tse_spec,
-                              assay.type = "counts",
-                              index = "shannon", 
-                              name = "shannon")
-#to see the shannon calculation
-head(tse_spec$shannon)
+#to see the observed and shannon calculation
+head(tse$observed)
+head(tse$shannon)
 
 ```
 
-To see the differences between healthy and CRC group, let's visualize the shannon diversity using violin plot (you can also experiment with boxplot). The information about diseases state is available from the colData of tse object, in the "diseases" column.
+To see the differences between healthy and CRC group, 
+let's visualize the species richness and shannon diversity using violin plot (you can also experiment with boxplot). 
+Additionally, let's also calculate the statistical significance 
+and plot it together using ggsignif with the wilcoxon test. 
+Please notes that the package does not support p-value adjustment
+(such as with "fdr"). 
+For more complex test, please see [example here](https://microbiome.github.io/OMA/docs/devel/pages/alpha_diversity.html#visualizing-significance-in-group-wise-comparisons) on how
+you can calculate p-value with adjustment using
+`stat_compare_means`
+function from the ggpubr package, 
+and  add visually appealing p-values to the plots or if you
+want to perform more than two groups comparison.
+
+The information about diseases state is available from the colData of tse object, in the "diseases" column.
 
 ```{r alpha diversity viz}
-library(ggsignif)
-library(ggplot2)
-library(patchwork)
-df <- as.data.frame(colData(tse_spec))
-  # Changes old levels with new levels
-  df$disease <- factor(df[["disease"]])
+#calculate p-value
+index <- c("observed", "shannon")
+# Changes old levels with new levels
+tse$disease <- factor(tse$disease)
 # For significance testing, all different combinations are determined
 comb <- split(t(combn(levels(df$disease ), 2)), 
            seq(nrow(t(combn(levels(df$disease ), 2)))))
 
 # Observed richness plot
-observed_plot <- ggplot(df, aes(x = disease, y = observed)) +
-  geom_boxplot(outlier.shape = NA) + 
-  geom_jitter(width = 0.2) + 
-  geom_signif(comparisons = comb, map_signif_level = FALSE, correction = "fdr") +
-  theme_minimal() + 
-  theme(text = element_text(size = 10)) +
-  labs(title = "Observed Richness", y = "Observed Species")
+observed_plot <- scater::plotColData(tse, 
+                           y = "observed", 
+                           x = "disease",
+                           colour_by = "disease") + 
+  geom_signif(comparisons = comb, 
+              map_signif_level = FALSE) +
+  theme_bw() + 
+  theme(text = element_text(size = 8))
 
 # Shannon diversity plot
-shannon_plot <- ggplot(df, aes(x = disease, y = shannon)) +
-  geom_boxplot(outlier.shape = NA) + 
-  geom_jitter(width = 0.2) + 
-  geom_signif(comparisons = comb, map_signif_level = FALSE, correction = "fdr") +
-  theme_minimal() + 
-  theme(text = element_text(size = 10)) +
-  labs(title = "Shannon Diversity", y = "Shannon Index")
+shannon_plot <- scater::plotColData(tse, 
+                           y = "shannon", 
+                           x = "disease",
+                           colour_by = "disease") +
+  geom_signif(comparisons = comb, 
+              map_signif_level = FALSE) +
+  theme_bw() + 
+  theme(text = element_text(size = 8))
 
 # Combine the two plots into a grid
-combined_plot <- observed_plot + shannon_plot
+combined_plot <- observed_plot + shannon_plot + plot_layout(guides = "collect")
 
 # Display the combined plot
 print(combined_plot)
@@ -310,8 +322,88 @@ print(combined_plot)
 
 **Thinking box**
 > Can you also do the diversity analysis using different indexes?
-> What can you inffer by this observation?
+> What can you inffer by these observations?
 
+Let's continue observing the beta-diversity between 2 groups.
+Beta diversity quantifies the dissimilarity between communities (multiple samples), 
+as opposed to alpha diversity, which focuses on variation within a community (one sample). This [OMA book section](https://microbiome.github.io/OMA/docs/devel/pages/beta_diversity.html) 
+explained various indexes that commonly used in the microbial ecology context.
+
+For this tutorial, let's try to calculate 
+the bray-curtis distance and plot the PCoA. 
+
+```{r PCoA}
+
+tse <- runMDS(
+    tse,
+    FUN = vegan::vegdist,
+    method = "bray",
+    assay.type = "relabundance",
+    name = "MDS_bray")
+
+# Create ggplot object
+p <- plotReducedDim(tse, "MDS_bray", colour_by = "disease")
+
+# Calculate explained variance
+e <- attr(reducedDim(tse, "MDS_bray"), "eig")
+rel_eig <- e / sum(e[e > 0])
+
+# Add explained variance for each axis
+p1 <- p + labs(
+    x = paste("PCoA 1 (", round(100 * rel_eig[[1]], 1), "%", ")", sep = ""),
+    y = paste("PCoA 2 (", round(100 * rel_eig[[2]], 1), "%", ")", sep = "")
+    )
+p1
+```
+
+Sometimes, we also want to create elipse to guide our visualization wheter the microbial community in two groups is different. You achieve it using the code below.
+
+```{r PCoA elipse}
+# Add ellipses with ggplot manual
+
+# Extract PCoA coordinates
+pcoa_coords <- as.data.frame(reducedDim(tse, "MDS_bray"))
+colnames(pcoa_coords) <- c("PC1", "PC2")
+
+# Add metadata
+pcoa_coords$disease <- colData(tse)[["disease"]]
+
+# Filter out NA values in the variable column
+pcoa_coords <- na.omit(pcoa_coords)
+
+# Create the plot with ellipses
+p_elipse <- ggplot(pcoa_coords, aes(x = PC1, y = PC2, color = disease)) +
+    geom_point(alpha=0.8, size=0.5) +
+    theme_classic() + 
+    stat_ellipse(aes(color = disease), level = 0.95) +  # Ellipses based on disease
+    labs(x = paste("PC1 (", round(100 * rel_eig[1], 1), "%)", sep = ""),
+         y = paste("PC2 (", round(100 * rel_eig[2], 1), "%)", sep = ""),
+         title = "PCA Plot with Ellipses") +
+    theme(legend.title = element_blank(),
+          legend.text = element_text(size = 8),
+          legend.position = 'bottom')
+
+# Print the plot
+print(p_elipse)
+```
+
+Additionally, we may want to also perform PERMANOVA analysis 
+to further estimate whether the microbial community is statistically different. 
+Please explore the comprehensive example in the [OMA book](https://microbiome.github.io/OMA/docs/devel/pages/beta_diversity.html#redundancy-analysis).
+
+**Thinking box**
+> Above is the example for unsupervised ordination, can you give example of it supervised counterpart?
+> Can you distinguish between both method and when to use it?
+
+OMA book also provide further exploration to explore the microbial community structure in the table, for example based on [community typing](https://microbiome.github.io/OMA/docs/devel/pages/clustering.html). 
+
+
+Another primary analysis that usually can be done 
+in microbiome study is **differential abundancemanalysis (DAA)** 
+analysis for example to answer the research question 3. 
+However, due to limited time slots, we will not demonstrate in this tutorial.
+You can explore various example in OMA book 
+for [DAA here](https://microbiome.github.io/OMA/docs/devel/pages/differential_abundance.html)
 
 ##  Microbiome data integration
 
