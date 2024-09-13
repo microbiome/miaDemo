@@ -25,6 +25,7 @@ Last modified: 12 September, 2024.
 
 <img src="figures/mia_logo.png" width="150"/>
 
+<!--
 TODO:
 
 - rename the workflow
@@ -154,6 +155,8 @@ _SummarizedExperiment_ framework.
 
 - **Explore documentation**: Use the [OMA](https://microbiome.github.io/OMA/docs/devel) to explore additional tools and methods.
 
+-->
+
 ## Workshop
 
 ## Introduction
@@ -164,8 +167,9 @@ wrangling steps, explore alpha and beta diversity metrics, and introduce the
 fundamentals of data integration and microbial network analysis. Additionally,
 we will explore how to utilize the tools through a graphical interface.
 
-## Bioconductor resources for microbiome data science (Leo)
+## Bioconductor resources for microbiome data science
 
+<!--
 Idea for the story:
 
 "
@@ -173,13 +177,14 @@ TreeSE is the primary data container used in miaverse framework.It is extension 
 It works like this. mia package has methods for common operations. For instance, 
 we can tranform the data.
 "
+-->
 
 ### Load packages
 
 First, we load the required packages into the session. The following script
 ensures that any packages not already installed are automatically installed.
 
-```{r setup, echo=FALSE}
+```{r setup, include=FALSE}
 # List of packages that we need
 packages <- c(
     "ComplexHeatmap",
@@ -288,8 +293,9 @@ tse_family <- transformAssay(tse_family, method = "relabundance")
 tse_family <- transformAssay(tse_family, method = "clr", pseudocount = 1)
 ```
 
-## Analysis of community diversity and composition (Pande)
+## Analysis of community diversity and composition
 
+<!--
 Idea for the story:
 
 "
@@ -298,6 +304,8 @@ of samples. ...
 
 To analyze similarity between samples, we can perform PCoA. ...
 "
+
+-->
 
 ##  Microbiome data integration (Tuomas)
 
@@ -456,8 +464,9 @@ For more information on data integration, see the following sections:
  - [@sec-multiassay_ordination]
  - [@sec-multi-omics-integration]
 
-## Microbial network analysis (Stefanie)
+## Microbial network analysis
  
+<!--
 Idea for the story:
 
 "
@@ -465,15 +474,20 @@ We performed cross-association analysis in previous session. Analyzing microbial
 networks, however, usually requires more sophisticated apporoaches. 
 
 "
+-->
 
-## Interactive microbiome data exploration with iSEEtree (Giulio)
+## Interactive microbiome data exploration with iSEEtree
 
+<!--
 Idea for the story:
 
 "
 For interactive analysis, iSEEtree is available. It allows to perform common analyses in graphical interface.
 
 "
+-->
+
+## Session info
 
 ```{r session_info}
 sessionInfo()
