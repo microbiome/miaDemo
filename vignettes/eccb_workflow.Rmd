@@ -373,37 +373,15 @@ p1 <- p + labs(
     y = paste("PCoA 2 (", round(100 * rel_eig[[2]], 1), "%", ")", sep = "")
     )
 p1
+
+
 ```
 
 Sometimes, we also want to create elipse to guide our visualization whether the microbial community in two groups is different. You can achieve it using the code below.
 
 ```{r PCoA elipse}
-# Add ellipses with ggplot manual
-
-# Extract PCoA coordinates
-pcoa_coords <- as.data.frame(reducedDim(tse, "MDS_bray"))
-colnames(pcoa_coords) <- c("PC1", "PC2")
-
-# Add metadata
-pcoa_coords$disease <- colData(tse)[["disease"]]
-
-# Filter out NA values in the variable column
-pcoa_coords <- na.omit(pcoa_coords)
-
-# Create the plot with ellipses
-p_elipse <- ggplot(pcoa_coords, aes(x = PC1, y = PC2, color = disease)) +
-    geom_point(alpha=0.8, size=0.5) +
-    theme_classic() + 
-    stat_ellipse(aes(color = disease), level = 0.95) +  # Ellipses based on disease
-    labs(x = paste("PC1 (", round(100 * rel_eig[1], 1), "%)", sep = ""),
-         y = paste("PC2 (", round(100 * rel_eig[2], 1), "%)", sep = ""),
-         title = "PCA Plot with Ellipses") +
-    theme(legend.title = element_blank(),
-          legend.text = element_text(size = 8),
-          legend.position = 'bottom')
-
-# Print the plot
-print(p_elipse)
+p_elipse <- p1 + stat_ellipse(aes(color = colour_by), level = 0.95)
+p_elipse
 ```
 
 Additionally, we may want to also perform PERMANOVA analysis 
