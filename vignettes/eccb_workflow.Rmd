@@ -593,9 +593,9 @@ Association estimation methods need to take the typical characteristics of micro
 * Adding small pseudo counts (to the zeros only!)
 * More sophisticated zero imputation methods, e.g., the R package [zCompositions](https://cran.r-project.org/web/packages/zCompositions/zCompositions.pdf)
 
-**High dimensionality**
+**High dimensionality (p>>n)**
 
-Sparse association estimation. Depending on the desired type of association, there's a wide range of existing methods and R packages:
+Sparse association estimation (sparsity assumption is needed due to the underdetermined mathematical system). Depending on the desired type of association, there's a wide range of existing methods and R packages:
 
 * Correlation:
   + SparCC ([`sparcc()`](https://rdrr.io/github/zdk123/SpiecEasi/man/sparcc.html) from `SpiecEasi` package)
