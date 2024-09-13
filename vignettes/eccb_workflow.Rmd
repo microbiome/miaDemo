@@ -339,8 +339,9 @@ print(combined_plot)
 ```
 
 
-**Thinking box**
+**Let's pause and think**
 > Can you also do the diversity analysis using different indexes?
+
 > What can you inffer by these observations?
 
 Let's continue observing the beta-diversity between 2 groups.
@@ -388,8 +389,9 @@ Additionally, we may want to also perform PERMANOVA analysis
 to further estimate whether the microbial community is statistically different. 
 Please explore the comprehensive example in the [OMA book](https://microbiome.github.io/OMA/docs/devel/pages/beta_diversity.html#redundancy-analysis).
 
-**Thinking box**
+**Let's pause and think**
 > Above is the example for unsupervised ordination, can you give example of it supervised counterpart?
+
 > Can you distinguish between both method and when to use it?
 
 OMA book also provide further exploration to explore the microbial community structure, for example based on [community typing](https://microbiome.github.io/OMA/docs/devel/pages/clustering.html). 
