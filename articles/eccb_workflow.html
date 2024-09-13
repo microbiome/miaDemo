@@ -782,7 +782,7 @@ of microbial communities.</p>
 <p>In a typical microbiome network, nodes are ASVs or taxa on a certain
 rank (here family). The nodes are connected by edges, which represent
 microbial associations. Higher edge thickness corresponds to higher edge
-weight. Edges with a positive underlying association are green, those
+weight. Edges with a positive underlying association are blue, those
 with a negative association are red.</p>
 <div class="figure">
 <img src="figures/Exemplary_microbiome_network.png" alt="An exemplary microbiome network." width="90%"><p class="caption">
@@ -798,11 +798,11 @@ matrix:</p>
 <p><img src="figures/From_counts_to_networks.png" width="90%"></p>
 <p>Association estimation methods need to take the typical
 characteristics of microbiome data into account. Here is a brief
-overview of the typical data characteristics and common approaches to
-solve them:</p>
+<strong>overview of the typical data characteristics</strong> and common
+approaches to solve them:</p>
 <p><strong>Compositionality</strong></p>
 <ul>
-<li>Data transformation (e.g., clr)</li>
+<li>Data transformation (e.g., clr or rclr)</li>
 <li>See the <a href="https://microbiome.github.io/OMA/docs/devel/pages/transformation.html" class="external-link">OMA
 chapter</a> on data transformations</li>
 </ul>
@@ -845,9 +845,10 @@ package)</li>
 </li>
 </ul>
 <p>These methods are also available through the R package <a href="https://github.com/stefpeschel/NetCoMi" class="external-link"><code>NetCoMi</code></a>,
-which we will use to construct and analyze a microbial association
-network. The complete workflow implemented in <code>NetCoMi</code> is
-shown in the <a href="https://microbiome.github.io/OMA/docs/devel/pages/network_learning.html#sec-network-learning-workflow" class="external-link">OMA
+which we will use to construct and analyze an association network for
+the gut microbiome.</p>
+<p>The complete workflow implemented in <code>NetCoMi</code> is shown in
+the <a href="https://microbiome.github.io/OMA/docs/devel/pages/network_learning.html#sec-network-learning-workflow" class="external-link">OMA
 chapter</a> on network learning.</p>
 </div>
 <div class="section level3">
@@ -856,19 +857,19 @@ chapter</a> on network learning.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">NetCoMi</span><span class="op">)</span></span></code></pre></div>
 <p>The function for network construction <code><a href="https://rdrr.io/pkg/NetCoMi/man/netConstruct.html" class="external-link">netConstruct()</a></code>
-offers the possibility to filter samples and taxa according to certain
-criteria. Here, we keep only taxa occurring in at least 10% of the
-samples.</p>
+offers the possibility to <strong>filter</strong> samples and taxa
+according to certain criteria. Here, we keep only <strong>taxa occurring
+in at least 10% of the samples</strong>.</p>
 <p>We use the <code>SpiecEasi</code> (Sparse Inverse Covariance for
-Ecological StatisticalInference) method to estimate microbial
-associations. The package offers two graphical model inference
+Ecological StatisticalInference) method to <strong>estimate microbial
+associations</strong>. The package offers two graphical model inference
 procedures: 1) Meinhausen and Bühlmann’s neighborhood selection (the MB
 method) and 2) inverse covariance selection (the glasso method). We will
-use glasso here.</p>
-<p><code>SpiecEasi</code> uses the StARS (“Stability Approach to
-Regularization Selection”) method to obtain a sparse association matrix.
-We set the StARS threshold to 0.1 to get a denser graph (default is
-0.05).</p>
+use <strong>glasso</strong> here.</p>
+<p><code>SpiecEasi</code> uses the <strong>StARS</strong> (“Stability
+Approach to Regularization Selection”) method to obtain a <strong>sparse
+association matrix</strong>. We set the StARS threshold to 0.1 to get a
+denser graph (the default is 0.05).</p>
 <p>Since zero replacement, normalization, and sparsification (model
 selection) is done by <code>SpiecEasi</code>, we set the corresponding
 <code>netConstruct</code> arguments to “none”.</p>
@@ -894,9 +895,9 @@ selection) is done by <code>SpiecEasi</code>, we set the corresponding
 <p><code><a href="https://rdrr.io/pkg/NetCoMi/man/netConstruct.html" class="external-link">netConstruct()</a></code> returns an object of the class
 <code>microNet</code>, which contains all matrices generated during
 network construction.</p>
-<p>The object also contains an edge list, giving each edge’s estimated
-association, dissimilarity, and adjacency. Let’s take a quick look at
-the edges with the highest and lowest edge weights:</p>
+<p>The object also contains an <strong>edge list</strong>, giving each
+edge’s estimated association, dissimilarity, and adjacency. Let’s take a
+quick look at the edges with the highest and lowest edge weights:</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">edgelist</span> <span class="op">&lt;-</span> <span class="va">net</span><span class="op">$</span><span class="va">edgelist1</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="va">net</span><span class="op">$</span><span class="va">edgelist1</span><span class="op">$</span><span class="va">adja</span>, </span>
 <span>                                decreasing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, <span class="op">]</span></span>
@@ -917,7 +918,8 @@ the edges with the highest and lowest edge weights:</p>
 <span><span class="co">#&gt; 12  Akkermansiaceae    Selenomonadaceae -0.1423893 0.7557742 0.2442258</span></span>
 <span><span class="co">#&gt; 41 Lactobacillaceae Methanobacteriaceae -0.2651769 0.7953543 0.2046457</span></span></code></pre></div>
 <p>The <code>microNet</code> object is now passed to
-<code><a href="https://rdrr.io/pkg/NetCoMi/man/netAnalyze.html" class="external-link">netAnalyze()</a></code> to perform network analysis.</p>
+<code><a href="https://rdrr.io/pkg/NetCoMi/man/netAnalyze.html" class="external-link">netAnalyze()</a></code> to perform <strong>network
+analysis</strong>.</p>
 <p>The function computes several common network characteristics such as
 centrality measures, hubs, cluster assignment, and global network
 measures.</p>
@@ -931,17 +933,23 @@ the arguments.</p>
 <span>                       hubPar <span class="op">=</span> <span class="st">"eigenvector"</span>,</span>
 <span>                       normDeg <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>                       gcmHeat <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<p>We use <code>NetCoMi's</code> plot function to visualize the
-network.</p>
-<p>In the first plot, node colors represent the detected clusters and
-node sizes are scaled by eigenvector centrality. Hub nodes are
-highlighted by default. Singletons are not included in the plot.</p>
+<p>We use <code>NetCoMi's</code> plot function to <strong>visualize the
+network</strong>.</p>
+<p>In the first plot, <strong>node colors</strong> represent the
+detected <strong>clusters</strong> and <strong>node sizes</strong> are
+scaled by <strong>eigenvector centrality</strong>. <strong>Hub
+nodes</strong> are highlighted by default. Unconnected nodes are not
+included in the plot.</p>
 <p>Note that nodes are sometimes placed too close together so that the
 labels overlap. You may need to play around with the
 <code>repulsion</code> argument until you find a value where the labels
 are legible, but also the clusters are still well recognizable.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">netprops</span>,</span>
+<code class="sourceCode R"><span><span class="co"># Palette with distinguishable colors</span></span>
+<span><span class="va">nodecols</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#E69F00"</span>, <span class="st">"#56B4E9"</span>, <span class="st">"#009E73"</span>,  <span class="st">"#CC79A7"</span>, <span class="st">"#F0E442"</span>, </span>
+<span>              <span class="st">"#0072B2"</span>, <span class="st">"#D55E00"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">netprops</span>,</span>
 <span>     repulsion <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>     rmSingles <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>     shortenLabels <span class="op">=</span> <span class="st">"none"</span>,</span>
@@ -949,6 +957,9 @@ are legible, but also the clusters are still well recognizable.</p>
 <span>     nodeSize <span class="op">=</span> <span class="st">"eigenvector"</span>,</span>
 <span>     nodeSizeSpread <span class="op">=</span> <span class="fl">3</span>,</span>
 <span>     nodeColor <span class="op">=</span> <span class="st">"cluster"</span>,</span>
+<span>     colorVec <span class="op">=</span> <span class="va">nodecols</span>,</span>
+<span>     nodeTransp <span class="op">=</span> <span class="fl">20</span>,</span>
+<span>     posCol <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#5C7aee"</span>, <span class="st">"#273cc2"</span><span class="op">)</span>,</span>
 <span>     hubBorderCol <span class="op">=</span> <span class="st">"gray40"</span>,</span>
 <span>     cexNodes <span class="op">=</span> <span class="fl">1.8</span>,</span>
 <span>     edgeTranspHigh <span class="op">=</span> <span class="fl">20</span>,</span>
@@ -957,21 +968,39 @@ are legible, but also the clusters are still well recognizable.</p>
 <span>     cexTitle <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>     mar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">8</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="fl">0.7</span>, <span class="fl">1.1</span>, cex <span class="op">=</span> <span class="fl">1.7</span>, title <span class="op">=</span> <span class="st">"estimated correlation:"</span>,</span>
-<span>       legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"+"</span>,<span class="st">"-"</span><span class="op">)</span>, lty <span class="op">=</span> <span class="fl">1</span>, lwd <span class="op">=</span> <span class="fl">3</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#009900"</span>,<span class="st">"red"</span><span class="op">)</span>,</span>
-<span>       bty <span class="op">=</span> <span class="st">"n"</span>, horiz <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="fl">0.9</span>, <span class="fl">1.1</span>, cex <span class="op">=</span> <span class="fl">1.7</span>, title <span class="op">=</span> <span class="st">"estimated correlation:"</span>,</span>
+<span>       legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"+"</span>,<span class="st">"-"</span><span class="op">)</span>, lty <span class="op">=</span> <span class="fl">1</span>, lwd <span class="op">=</span> <span class="fl">3</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#273cc2"</span>,<span class="st">"red"</span><span class="op">)</span>,</span>
+<span>       bty <span class="op">=</span> <span class="st">"n"</span>, horiz <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>xpd <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="fl">0.7</span>, <span class="op">-</span><span class="fl">0.7</span>, cex <span class="op">=</span> <span class="fl">1.5</span>, bty <span class="op">=</span> <span class="st">"n"</span>,</span>
+<span>       legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Node color: Clusters"</span>, </span>
+<span>                  <span class="st">"Node size: Eigenvector centrality"</span>,</span>
+<span>                  <span class="st">"Hubs: Highest eigen. centrality"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="eccb_workflow_files/figure-html/network_plot_clusters-1.png" width="100%"></p>
-<p>We now color nodes according to their phylum. The node sizes are
-proportional to a taxon’s sum of mclr-transformed abundances.</p>
+<p>We now <strong>color</strong> nodes according to their
+<strong>phylum</strong>. The <strong>node sizes</strong> are
+proportional to a taxon’s sum of <strong>mclr-transformed
+abundances</strong>.</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Generate vector with phylum names for node coloring</span></span>
-<span><span class="va">phyla</span> <span class="op">&lt;-</span> <span class="fu">rowData</span><span class="op">(</span><span class="va">tse</span><span class="op">)</span><span class="op">$</span><span class="va">phylum</span></span>
-<span><span class="va">phyla</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">phyla</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"NA"</span></span>
-<span><span class="va">phyla</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="va">phyla</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">phyla</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu">rowData</span><span class="op">(</span><span class="va">tse</span><span class="op">)</span><span class="op">$</span><span class="va">family</span></span>
+<span><span class="va">phyla</span> <span class="op">&lt;-</span> <span class="fu">rowData</span><span class="op">(</span><span class="va">tse_family</span><span class="op">)</span><span class="op">$</span><span class="va">phylum</span></span>
 <span></span>
-<span><span class="co"># Create color vector</span></span>
-<span><span class="va">colvec</span> <span class="op">&lt;-</span> <span class="fu">RColorBrewer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html" class="external-link">brewer.pal</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/levels.html" class="external-link">levels</a></span><span class="op">(</span><span class="va">phyla</span><span class="op">)</span><span class="op">)</span>, <span class="st">"Set3"</span><span class="op">)</span></span>
+<span><span class="co"># Replace phyla that occur only once with "other"</span></span>
+<span><span class="va">phylum_counts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">phyla</span><span class="op">)</span></span>
+<span><span class="va">phyla</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">phyla</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">phylum_counts</span><span class="op">[</span><span class="va">phylum_counts</span> <span class="op">==</span> <span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op">|</span> </span>
+<span>                  <span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">phyla</span><span class="op">)</span>, <span class="st">"Other"</span>, <span class="va">phyla</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">phyla</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="va">phyla</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Make level "Other" the last one</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/levels.html" class="external-link">levels</a></span><span class="op">(</span><span class="va">phyla</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://generics.r-lib.org/reference/setops.html" class="external-link">setdiff</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/levels.html" class="external-link">levels</a></span><span class="op">(</span><span class="va">phyla</span><span class="op">)</span>, <span class="st">"Other"</span><span class="op">)</span>, <span class="st">"Other"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Assign family names</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">phyla</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu">rowData</span><span class="op">(</span><span class="va">tse_family</span><span class="op">)</span><span class="op">$</span><span class="va">family</span></span>
+<span></span>
+<span><span class="co"># Node colors (phylum "Other" should be gray)</span></span>
+<span><span class="va">colors_phylum</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">nodecols</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nlevels.html" class="external-link">nlevels</a></span><span class="op">(</span><span class="va">phyla</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span><span class="op">]</span>, <span class="st">"#999999"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">netprops</span>,</span>
 <span>     repulsion <span class="op">=</span> <span class="fl">1</span>,</span>
@@ -981,10 +1010,12 @@ proportional to a taxon’s sum of mclr-transformed abundances.</p>
 <span>     nodeSize <span class="op">=</span> <span class="st">"mclr"</span>,</span>
 <span>     nodeColor <span class="op">=</span> <span class="st">"feature"</span>,</span>
 <span>     featVecCol <span class="op">=</span> <span class="va">phyla</span>,</span>
-<span>     colorVec <span class="op">=</span>  <span class="va">colvec</span>,</span>
+<span>     colorVec <span class="op">=</span> <span class="va">colors_phylum</span>,</span>
 <span>     nodeTransp <span class="op">=</span> <span class="fl">20</span>,</span>
+<span>     posCol <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#5C7aee"</span>, <span class="st">"#273cc2"</span><span class="op">)</span>,</span>
 <span>     highlightHubs <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>     cexNodes <span class="op">=</span> <span class="fl">1.8</span>,</span>
+<span>     edgeWidth <span class="op">=</span> <span class="fl">0.8</span>,</span>
 <span>     edgeTranspHigh <span class="op">=</span> <span class="fl">20</span>,</span>
 <span>     title1 <span class="op">=</span> <span class="st">"Data features highlighted"</span>,</span>
 <span>     showTitle <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -993,17 +1024,22 @@ proportional to a taxon’s sum of mclr-transformed abundances.</p>
 <span></span>
 <span><span class="co"># Add legends</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="fl">0.7</span>, <span class="fl">1.1</span>, cex <span class="op">=</span> <span class="fl">1.7</span>, title <span class="op">=</span> <span class="st">"estimated correlation:"</span>,</span>
-<span>       legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"+"</span>,<span class="st">"-"</span><span class="op">)</span>, lty <span class="op">=</span> <span class="fl">1</span>, lwd <span class="op">=</span> <span class="fl">3</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#009900"</span>,<span class="st">"red"</span><span class="op">)</span>,</span>
+<span>       legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"+"</span>,<span class="st">"-"</span><span class="op">)</span>, lty <span class="op">=</span> <span class="fl">1</span>, lwd <span class="op">=</span> <span class="fl">3</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#273cc2"</span>,<span class="st">"red"</span><span class="op">)</span>,</span>
 <span>       bty <span class="op">=</span> <span class="st">"n"</span>, horiz <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Colors used in the legend should be equally transparent as in the plot</span></span>
-<span><span class="va">col_transp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/NetCoMi/man/colToTransp.html" class="external-link">colToTransp</a></span><span class="op">(</span><span class="va">colvec</span>, <span class="fl">20</span><span class="op">)</span></span>
+<span><span class="va">col_transp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/NetCoMi/man/colToTransp.html" class="external-link">colToTransp</a></span><span class="op">(</span><span class="va">colors_phylum</span>, <span class="fl">20</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1.8</span>, <span class="fl">1.1</span>, cex <span class="op">=</span> <span class="fl">1.7</span>, pt.cex <span class="op">=</span> <span class="fl">2.5</span>, title <span class="op">=</span> <span class="st">"Phylum:"</span>,</span>
-<span>       legend<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/levels.html" class="external-link">levels</a></span><span class="op">(</span><span class="va">phyla</span><span class="op">)</span>, col <span class="op">=</span> <span class="va">col_transp</span>, bty <span class="op">=</span> <span class="st">"n"</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span></code></pre></div>
+<span>       legend<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/levels.html" class="external-link">levels</a></span><span class="op">(</span><span class="va">phyla</span><span class="op">)</span>, col <span class="op">=</span> <span class="va">col_transp</span>, bty <span class="op">=</span> <span class="st">"n"</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>xpd <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="op">-</span><span class="fl">0.8</span>, cex <span class="op">=</span> <span class="fl">1.5</span>, bty <span class="op">=</span> <span class="st">"n"</span>,</span>
+<span>       legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Node color: Phylum"</span>, </span>
+<span>                  <span class="st">"Node size: Sum of mclr abundances"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="eccb_workflow_files/figure-html/network_plot_phyla-1.png" width="100%"></p>
 <p>In addition to the visual analysis, we can also have a look at the
-computed network properties.</p>
+computed <strong>network properties</strong>.</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">netprops</span>, numbNodes <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">#&gt; </span></span>
@@ -1092,6 +1128,22 @@ computed network properties.</p>
 <span><span class="co">#&gt; Rikenellaceae    0.78864</span></span>
 <span><span class="co">#&gt; Tannerellaceae   0.76453</span></span>
 <span><span class="co">#&gt; Clostridiaceae   0.72856</span></span></code></pre>
+<p>The network consists of one large connected component (lcc) with 28
+nodes and 8 unconnected nodes.</p>
+<p>Akkermansiaceae and Odoribacteraceae are identified as hub nodes
+(highly connected families), which are nodes with an eigenvector
+centrality above the 95% quantile of all computed eigenvector centrality
+values.</p>
+</div>
+<div class="section level3">
+<h3 id="network-comparison">Network comparison<a class="anchor" aria-label="anchor" href="#network-comparison"></a>
+</h3>
+<p>As next step, we might be interested in whether the microbial network
+differs between <strong>colorectal cancer (CRC) patients</strong> and
+<strong>control subjects</strong>.</p>
+<p>This task could be performed with the NetCoMi function
+<code>netCompare</code>, as described in the <a href="https://microbiome.github.io/OMA/docs/devel/pages/network_comparison.html" class="external-link">OMA
+chapter</a> on network comparison.</p>
 </div>
 </div>
 <div class="section level2">
