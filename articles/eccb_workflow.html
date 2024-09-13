@@ -92,137 +92,131 @@ Bioconductor (ECCB)</h1>
 Stefanie Peschel, Leo Lahti. <br> Last modified: 12 September,
 2024.</p>
 <p><img src="figures/mia_logo.png" width="150"></p>
-<!--
-TODO:
-
-- rename the workflow
-UPDATE DESCRIPTION
-
-THINGS TO CONSIDER
-- We should probably use same dataset. Data integration part requires multiomics data. 
-- I added idea for story but feel free to modify.
-
-PRELIMINARY SCHEDULE
-
-13:00-13:20 Leo
- - Idea: Introduction and TreeSE
- - Introduction to Bioconductor
- - Overview of data containers
- - Introduction to TreeSE
-13:20-13:25 short Q&A
- - Participants have time to explore on their own
-13:25-13:30 short break
- - Time to set up for the next session
- 
-13:30-13:50 Pande
- - Idea: After introducing TreeSE, we can now use methods from mia.
- - What are diversity and composition?
- - How to calculate and plot alpha diversity indices?
- - How to calculate and plot PCoA(?)
-13:50-13:55 short Q&A
- - Participants have time to explore on their own
-13:55-14:00 short break
- - Time to set up for the next session
- 
-14:00-14:20 Tuomas
- - Idea: Now participants know that we can utilize methods from mia. Introduce slots and show how to handle complex data.
- - reducedDim slot was briefly introduced in Pande's session. (That highlights the idea of slots hopefully since the result is the same as already calculated.)
- - Introduce agglomerateByRanks() and altExp slot
- - Add another omics to altExp and demonstrating column subsetting to show sample linkage
- - Calculate cross-association?
-14:20-14:30 short Q&A
- - Participants have time to explore on their own
-
-15:00-15:20 Stefanie
- - Idea: Show what additional capabilities there are
- - Maybe: we can calculate simple correlation network based on cross-association results (Tuomas's session) but this can be further extended?
-15:20-15:25 short Q&A
- - Participants have time to explore on their own
-15:25-15:30 short break
- - Time to set up for the next session
- 
-15:30-15:50 Giulio
- - Idea: Show what additional capabilities there are
- - Maybe: the analyses performed earlier can be done in graphical interface?
-15:50-15:55 short Q&A
- - Participants have time to explore on their own
-15:55-16:00 short break
- - Time to set up for the next session
- 
-## Overview
-
-### Description
-
-Learn how _miaverse_ framework
-integrates microbiome data science with the _SummarizedExperiment_ ecosystem,
-and discover the benefits this brings. We will cover key methods, explore
-[the OMA online book](https://microbiome.github.io/OMA/docs/devel), and discuss
-the integration's advantages.
-
-We will start with a brief overview of the framework, followed by an
-instructor-led live demonstration. The demonstration will showcase selected
-key features and functionalities of _miaverse_. After the demo, participant
-will have time to discuss the framework, ask questions, and explore the tools
-and methods covered.
-
-By the end of the workshop, attendees will have a understanding of how to
-apply the framework to their microbiome research and will be
-well-prepared to further explore the framework independently.
-
-### Pre-requisites
-
-* Basic knowledge of R coding
-* Familiarity with Bioconductor
-* Understanding of microbiome research
-
-If your time allows, we recommend to spend some time to explore beforehand
-[Orchestrating Microbiome Analysis (OMA) online book](https://microbiome.github.io/OMA/docs/devel/).
-
-### Participation
-
-Participants are encouraged to ask questions throughout the workshop. The
-session will follow
-[a tutorial from the OMA online book](https://microbiome.github.io/OMA/docs/devel/pages/introductory_workflow.html),
-with participants running the tutorial alongside the instructor.
-
-To facilitate this, Bioconductor provides
-[pre-installed virtual machines with all necessary packages](https://workshop.bioconductor.org/).
-
-### _R_ / _Bioconductor_ packages used
-
-In this workshop, we will focus on
-[the _mia_ package](https://bioconductor.org/packages/devel/bioc/html/mia.html),
-which is designed for microbiome data science. The _mia_ package provides
-essential tools for analyzing microbiome data using the
-_SummarizedExperiment_ framework.
-
-### Time outline
-
-| Activity                          | Time |
-|-----------------------------------|------|
-| Background                        | 10m  |
-| Demo                              | 20m  |
-| Questions and free exploration    | 10m  |
-
-### Workshop goals and objectives
-
-#### Learning goals
-
-- **Methods for microbiome analysis**: Learn to harness _SummarizedExperiment_ ecosystem in your project.
-
-- **Data structure**: Understand how to utilize the _TreeSummarizedExperiment_ class for effective microbiome data analysis.
-
-- **Access resources**: Get familiar with additional tools and resources, including [the OMA online book](https://microbiome.github.io/OMA/docs/devel).
-
-#### Learning objectives
-
-- **Analyze and apply methods**:  Apply the framework to process and analyze microbiome data.
-
-- **Create visualizations**: Generate and interpret visualizations.
-
-- **Explore documentation**: Use the [OMA](https://microbiome.github.io/OMA/docs/devel) to explore additional tools and methods.
-
--->
+<div class="section level2">
+<h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
+</h2>
+<div class="section level3">
+<h3 id="description">Description<a class="anchor" aria-label="anchor" href="#description"></a>
+</h3>
+<p>This tutorial introduces the latest advances in Bioconductor tools
+and data structures supporting microbiome analysis. We will show how
+this can enhance interoperability across omics and walk through a
+typical microbiome data science workflow. You will learn from active
+developers how to access open microbiome data resources, utilize
+optimized data structures, assess community diversity and composition,
+integrate taxonomic and functional hierarchies, and visualize microbiome
+data. We will follow the online book <a href="https://microbiome.github.io/OMA/docs/devel/" class="external-link">“Orchestrating
+Microbiome Analysis with Bioconductor”</a> and Bioconductor
+SummarizedExperiment framework, supporting optimized analysis and
+integration of hierarchical, multi-domain microbiome data. Participants
+are encouraged to install the latest versions of R and Bioconductor.</p>
+</div>
+<div class="section level3">
+<h3 id="pre-requisites">Pre-requisites<a class="anchor" aria-label="anchor" href="#pre-requisites"></a>
+</h3>
+<ul>
+<li>Basic knowledge of R coding</li>
+<li>Understanding of microbiome research</li>
+</ul>
+<p>If your time allows, we recommend to spend some time to explore
+beforehand <a href="https://microbiome.github.io/OMA/docs/devel/" class="external-link">Orchestrating
+Microbiome Analysis (OMA) online book</a>.</p>
+</div>
+<div class="section level3">
+<h3 id="participation">Participation<a class="anchor" aria-label="anchor" href="#participation"></a>
+</h3>
+<p>We have instructor-led demonstrations where participants are expected
+to follow along. Questions are encouraged at any time during the
+workshop.</p>
+<p>It is preferred to use your own laptop. You can find help for
+installation from <a href="https://microbiome.github.io/OMA/docs/devel/pages/training.html" class="external-link">here</a>.
+There are also available <a href="https://workshop.bioconductor.org/" class="external-link">pre-installed virtual
+machines</a> by Galaxy/Bioconductor. (Under “EUROBIOC2024” tab, session
+called “Package Demo: mia”)</p>
+</div>
+<div class="section level3">
+<h3 id="r-bioconductor-packages-used">
+<em>R</em> / <em>Bioconductor</em> packages used<a class="anchor" aria-label="anchor" href="#r-bioconductor-packages-used"></a>
+</h3>
+<p>In this workshop, we will focus on <a href="https://bioconductor.org/packages/devel/bioc/html/mia.html" class="external-link">the
+<em>mia</em> package</a>, which is designed for microbiome data science.
+The <em>mia</em> package provides essential tools for analyzing
+microbiome data using the <em>SummarizedExperiment</em> framework.</p>
+<p>Additionally, we will cover <a href="https://github.com/stefpeschel/NetCoMi" class="external-link">NetCoMi</a> and <a href="https://www.bioconductor.org/packages/devel/bioc/html/iSEEtree.html" class="external-link">iSEEtree</a>
+in network and interactive data exploration session, respectively.</p>
+</div>
+<div class="section level3">
+<h3 id="time-outline">Time outline<a class="anchor" aria-label="anchor" href="#time-outline"></a>
+</h3>
+<table class="table">
+<thead><tr class="header">
+<th>Activity</th>
+<th>Time</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>Bioconductor resources for microbiome data science</td>
+<td>30m</td>
+</tr>
+<tr class="even">
+<td>Analysis of community diversity and composition</td>
+<td>30m</td>
+</tr>
+<tr class="odd">
+<td>Microbiome data integration</td>
+<td>30m</td>
+</tr>
+<tr class="even">
+<td>Coffee break</td>
+<td>30m</td>
+</tr>
+<tr class="odd">
+<td>Microbial network analysis</td>
+<td>30m</td>
+</tr>
+<tr class="even">
+<td>Interactive microbiome data exploration with iSEEtree</td>
+<td>30m</td>
+</tr>
+<tr class="odd">
+<td>Recap and Q&amp;A</td>
+<td>30m</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section level3">
+<h3 id="workshop-goals-and-objectives">Workshop goals and objectives<a class="anchor" aria-label="anchor" href="#workshop-goals-and-objectives"></a>
+</h3>
+<div class="section level4">
+<h4 id="learning-goals">Learning goals<a class="anchor" aria-label="anchor" href="#learning-goals"></a>
+</h4>
+<ul>
+<li><p><strong>Methods for microbiome analysis</strong>: Learn to
+harness <em>SummarizedExperiment</em> ecosystem in your
+project.</p></li>
+<li><p><strong>Data structure</strong>: Understand how to utilize the
+<em>TreeSummarizedExperiment</em> class for effective microbiome data
+analysis.</p></li>
+<li><p><strong>Access resources</strong>: Get familiar with additional
+tools and resources, including <a href="https://microbiome.github.io/OMA/docs/devel" class="external-link">the OMA online
+book</a>.</p></li>
+</ul>
+</div>
+<div class="section level4">
+<h4 id="learning-objectives">Learning objectives<a class="anchor" aria-label="anchor" href="#learning-objectives"></a>
+</h4>
+<ul>
+<li><p><strong>Analyze and apply methods</strong>: Apply the framework
+to process and analyze microbiome data.</p></li>
+<li><p><strong>Create visualizations</strong>: Generate and interpret
+visualizations.</p></li>
+<li><p><strong>Explore documentation</strong>: Use the <a href="https://microbiome.github.io/OMA/docs/devel" class="external-link">OMA</a> to explore
+additional tools and methods.</p></li>
+</ul>
+</div>
+</div>
+</div>
 <div class="section level2">
 <h2 id="workshop">Workshop<a class="anchor" aria-label="anchor" href="#workshop"></a>
 </h2>
@@ -240,15 +234,6 @@ the tools through a graphical interface.</p>
 <div class="section level2">
 <h2 id="bioconductor-resources-for-microbiome-data-science">Bioconductor resources for microbiome data science<a class="anchor" aria-label="anchor" href="#bioconductor-resources-for-microbiome-data-science"></a>
 </h2>
-<!--
-Idea for the story:
-
-"
-TreeSE is the primary data container used in miaverse framework.It is extension to SE.
-It works like this. mia package has methods for common operations. For instance, 
-we can tranform the data.
-"
--->
 <div class="section level3">
 <h3 id="load-packages">Load packages<a class="anchor" aria-label="anchor" href="#load-packages"></a>
 </h3>
@@ -260,11 +245,11 @@ installed.</p>
 <div class="section level3">
 <h3 id="importing-data">Importing data<a class="anchor" aria-label="anchor" href="#importing-data"></a>
 </h3>
-<p>There are several openly available datasets listed in <span class="citation">[@sec-example-data]</span>. In this workflow, we will
-retrieve data from the curatedMetagenomicData resource. We’ll focus on a
-dataset that includes both colorectal cancer (CRC) patients and control
-subjects. Our goal is to investigate whether CRC is associated with
-alterations in the gut microbiota.</p>
+<p>There are several openly available datasets listed in <a href="https://microbiome.github.io/OMA/docs/devel/pages/import.html#sec-example-data" class="external-link">OMA</a>.
+In this workflow, we will retrieve data from the curatedMetagenomicData
+resource. We’ll focus on a dataset that includes both colorectal cancer
+(CRC) patients and control subjects. Our goal is to investigate whether
+CRC is associated with alterations in the gut microbiota.</p>
 <p>Let’s fetch the data from the database.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Study from which we want to fetch data</span></span>
@@ -323,7 +308,8 @@ alterations in the gut microbiota.</p>
 <span><span class="co">#&gt; colTree: NULL</span></span></code></pre></div>
 <p>The output is a <code>TreeSummarizedExperiment</code>
 (<code>TreeSE</code>) object. For details on how to handle and access
-the data, refer to <span class="citation">[@sec-containers]</span>.</p>
+the data, refer to <a href="https://microbiome.github.io/OMA/docs/devel/pages/containers.html" class="external-link">data
+containers chapter in OMA</a>.</p>
 </div>
 <div class="section level3">
 <h3 id="preprocess">Preprocess<a class="anchor" aria-label="anchor" href="#preprocess"></a>
@@ -332,7 +318,9 @@ the data, refer to <span class="citation">[@sec-containers]</span>.</p>
 summarize data at specific taxonomy ranks. Additionally, preprocessing
 involves transforming the data to address the unique characteristics of
 microbiome profiling data, for instance. Details on agglomeration and
-transformation are covered in <span class="citation">[@sec-agglomeration]</span> and <span class="citation">[@sec-assay-transform]</span>, respectively.</p>
+transformation are covered in <a href="https://microbiome.github.io/OMA/docs/devel/pages/agglomeration.html" class="external-link">agglomeration</a>
+and <a href="https://microbiome.github.io/OMA/docs/devel/pages/transformation.html" class="external-link">transformation</a>
+chapters in OMA, respectively.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Agglomerate data</span></span>
 <span><span class="va">tse_family</span> <span class="op">&lt;-</span> <span class="fu">agglomerateByRank</span><span class="op">(</span><span class="va">tse</span>, rank <span class="op">=</span> <span class="st">"family"</span><span class="op">)</span></span>
@@ -351,20 +339,9 @@ transformation are covered in <span class="citation">[@sec-agglomeration]</span>
 <div class="section level2">
 <h2 id="analysis-of-community-diversity-and-composition">Analysis of community diversity and composition<a class="anchor" aria-label="anchor" href="#analysis-of-community-diversity-and-composition"></a>
 </h2>
-<!--
-Idea for the story:
-
-"
-After preprocessing the data, we can continue to analysis. It is common to analyze the alpha diversity
-of samples. ...
-
-To analyze similarity between samples, we can perform PCoA. ...
-"
-
--->
 </div>
 <div class="section level2">
-<h2 id="microbiome-data-integration-tuomas">Microbiome data integration (Tuomas)<a class="anchor" aria-label="anchor" href="#microbiome-data-integration-tuomas"></a>
+<h2 id="microbiome-data-integration">Microbiome data integration<a class="anchor" aria-label="anchor" href="#microbiome-data-integration"></a>
 </h2>
 <p>As demonstrated, CRC patients appear to have altered microbiota.
 However, this observation only indicates an association and does not
@@ -380,8 +357,9 @@ object, which is a straightforward method.</li>
 flexible approach, though it comes with a more complex data structure
 compared to <code>TreeSE</code>.</li>
 </ul>
-<p>For detailed information on both approaches, refer to <span class="citation">[@sec-containers]</span>. In this tutorial, we will
-focus on the simpler method using the <code>altExp</code> slot.</p>
+<p>For detailed information on both approaches, refer to [OMA](<a href="https://microbiome.github.io/OMA/docs/devel/pages/containers.html" class="external-link uri">https://microbiome.github.io/OMA/docs/devel/pages/containers.html</a>.
+In this tutorial, we will focus on the simpler method using the
+<code>altExp</code> slot.</p>
 <p>The data fetched at the beginning of this workflow is a
 <code>list</code> containing multiple experiments, each represented as a
 unique <code>(Tree)SE</code> object. Managing this list and the
@@ -551,7 +529,6 @@ abundant pathways. To visualize the results, we’ll use a heatmap.</p>
 <span><span class="co">#&gt; by: 1, function: stats::cor.test, method: kendall, test.signif: TRUE, p.adj.method: fdr, paired: FALSE, show.warnings: TRUE</span></span>
 <span><span class="co">#&gt; Converting table into matrices...</span></span>
 <span></span>
-<span></span>
 <span><span class="co"># Function for marking significant correlations with "X"</span></span>
 <span><span class="va">add_signif</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">j</span>, <span class="va">i</span>, <span class="va">x</span>, <span class="va">y</span>, <span class="va">width</span>, <span class="va">height</span>, <span class="va">fill</span><span class="op">)</span> <span class="op">{</span></span>
 <span>    <span class="co"># If the p-value is under threshold</span></span>
@@ -582,35 +559,20 @@ that demonstrates this kind of association.</p>
 <p>For more information on data integration, see the following
 sections:</p>
 <ul>
-<li><span class="citation">[@sec-cross-correlation]</span></li>
-<li><span class="citation">[@sec-multiassay_ordination]</span></li>
-<li><span class="citation">[@sec-multi-omics-integration]</span></li>
+<li><a href="https://microbiome.github.io/OMA/docs/devel/pages/cross_correlation.html" class="external-link">Cross-association</a></li>
+<li><a href="https://microbiome.github.io/OMA/docs/devel/pages/multiassay_ordination.html" class="external-link">Ordination-based
+Multiassay Analysis</a></li>
+<li><a href="https://microbiome.github.io/OMA/docs/devel/pages/integrated_learner.html" class="external-link">Multi-assay
+classification</a></li>
 </ul>
 </div>
 <div class="section level2">
 <h2 id="microbial-network-analysis">Microbial network analysis<a class="anchor" aria-label="anchor" href="#microbial-network-analysis"></a>
 </h2>
-<!--
-Idea for the story:
-
-"
-We performed cross-association analysis in previous session. Analyzing microbial
-networks, however, usually requires more sophisticated apporoaches. 
-
-"
--->
 </div>
 <div class="section level2">
 <h2 id="interactive-microbiome-data-exploration-with-iseetree">Interactive microbiome data exploration with iSEEtree<a class="anchor" aria-label="anchor" href="#interactive-microbiome-data-exploration-with-iseetree"></a>
 </h2>
-<!--
-Idea for the story:
-
-"
-For interactive analysis, iSEEtree is available. It allows to perform common analyses in graphical interface.
-
-"
--->
 </div>
 <div class="section level2">
 <h2 id="session-info">Session info<a class="anchor" aria-label="anchor" href="#session-info"></a>
