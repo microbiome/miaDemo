@@ -92,149 +92,137 @@ Bioconductor (ECCB)</h1>
 Stefanie Peschel, Leo Lahti. <br> Last modified: 12 September,
 2024.</p>
 <p><img src="figures/mia_logo.png" width="150"></p>
-<p>TODO:</p>
-<ul>
-<li>rename the workflow UPDATE DESCRIPTION</li>
-</ul>
-<p>THINGS TO CONSIDER - We should probably use same dataset. Data
-integration part requires multiomics data. - I added idea for story but
-feel free to modify.</p>
-<p>PRELIMINARY SCHEDULE</p>
-<p>13:00-13:20 Leo - Idea: Introduction and TreeSE - Introduction to
-Bioconductor - Overview of data containers - Introduction to TreeSE
-13:20-13:25 short Q&amp;A - Participants have time to explore on their
-own 13:25-13:30 short break - Time to set up for the next session</p>
-<p>13:30-13:50 Pande - Idea: After introducing TreeSE, we can now use
-methods from mia. - What are diversity and composition? - How to
-calculate and plot alpha diversity indices? - How to calculate and plot
-PCoA(?) 13:50-13:55 short Q&amp;A - Participants have time to explore on
-their own 13:55-14:00 short break - Time to set up for the next
-session</p>
-<p>14:00-14:20 Tuomas - Idea: Now participants know that we can utilize
-methods from mia. Introduce slots and show how to handle complex data. -
-reducedDim slot was briefly introduced in Pande’s session. (That
-highlights the idea of slots hopefully since the result is the same as
-already calculated.) - Introduce agglomerateByRanks() and altExp slot -
-Add another omics to altExp and demonstrating column subsetting to show
-sample linkage - Calculate cross-association? 14:20-14:30 short Q&amp;A
-- Participants have time to explore on their own</p>
-<p>15:00-15:20 Stefanie - Idea: Show what additional capabilities there
-are - Maybe: we can calculate simple correlation network based on
-cross-association results (Tuomas’s session) but this can be further
-extended? 15:20-15:25 short Q&amp;A - Participants have time to explore
-on their own 15:25-15:30 short break - Time to set up for the next
-session</p>
-<p>15:30-15:50 Giulio - Idea: Show what additional capabilities there
-are - Maybe: the analyses performed earlier can be done in graphical
-interface? 15:50-15:55 short Q&amp;A - Participants have time to explore
-on their own 15:55-16:00 short break - Time to set up for the next
-session</p>
-<div class="section level2">
-<h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
-</h2>
-<div class="section level3">
-<h3 id="description">Description<a class="anchor" aria-label="anchor" href="#description"></a>
-</h3>
-<p>Learn how <em>miaverse</em> framework integrates microbiome data
-science with the <em>SummarizedExperiment</em> ecosystem, and discover
-the benefits this brings. We will cover key methods, explore <a href="https://microbiome.github.io/OMA/docs/devel" class="external-link">the OMA online
-book</a>, and discuss the integration’s advantages.</p>
-<p>We will start with a brief overview of the framework, followed by an
-instructor-led live demonstration. The demonstration will showcase
-selected key features and functionalities of <em>miaverse</em>. After
-the demo, participant will have time to discuss the framework, ask
-questions, and explore the tools and methods covered.</p>
-<p>By the end of the workshop, attendees will have a understanding of
-how to apply the framework to their microbiome research and will be
-well-prepared to further explore the framework independently.</p>
-</div>
-<div class="section level3">
-<h3 id="pre-requisites">Pre-requisites<a class="anchor" aria-label="anchor" href="#pre-requisites"></a>
-</h3>
-<ul>
-<li>Basic knowledge of R coding</li>
-<li>Familiarity with Bioconductor</li>
-<li>Understanding of microbiome research</li>
-</ul>
-<p>If your time allows, we recommend to spend some time to explore
-beforehand <a href="https://microbiome.github.io/OMA/docs/devel/" class="external-link">Orchestrating
-Microbiome Analysis (OMA) online book</a>.</p>
-</div>
-<div class="section level3">
-<h3 id="participation">Participation<a class="anchor" aria-label="anchor" href="#participation"></a>
-</h3>
-<p>Participants are encouraged to ask questions throughout the workshop.
-The session will follow <a href="https://microbiome.github.io/OMA/docs/devel/pages/introductory_workflow.html" class="external-link">a
-tutorial from the OMA online book</a>, with participants running the
-tutorial alongside the instructor.</p>
-<p>To facilitate this, Bioconductor provides <a href="https://workshop.bioconductor.org/" class="external-link">pre-installed virtual machines
-with all necessary packages</a>.</p>
-</div>
-<div class="section level3">
-<h3 id="r-bioconductor-packages-used">
-<em>R</em> / <em>Bioconductor</em> packages used<a class="anchor" aria-label="anchor" href="#r-bioconductor-packages-used"></a>
-</h3>
-<p>In this workshop, we will focus on <a href="https://bioconductor.org/packages/devel/bioc/html/mia.html" class="external-link">the
-<em>mia</em> package</a>, which is designed for microbiome data science.
-The <em>mia</em> package provides essential tools for analyzing
-microbiome data using the <em>SummarizedExperiment</em> framework.</p>
-</div>
-<div class="section level3">
-<h3 id="time-outline">Time outline<a class="anchor" aria-label="anchor" href="#time-outline"></a>
-</h3>
-<table class="table">
-<thead><tr class="header">
-<th>Activity</th>
-<th>Time</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td>Background</td>
-<td>10m</td>
-</tr>
-<tr class="even">
-<td>Demo</td>
-<td>20m</td>
-</tr>
-<tr class="odd">
-<td>Questions and free exploration</td>
-<td>10m</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="section level3">
-<h3 id="workshop-goals-and-objectives">Workshop goals and objectives<a class="anchor" aria-label="anchor" href="#workshop-goals-and-objectives"></a>
-</h3>
-<div class="section level4">
-<h4 id="learning-goals">Learning goals<a class="anchor" aria-label="anchor" href="#learning-goals"></a>
-</h4>
-<ul>
-<li><p><strong>Methods for microbiome analysis</strong>: Learn to
-harness <em>SummarizedExperiment</em> ecosystem in your
-project.</p></li>
-<li><p><strong>Data structure</strong>: Understand how to utilize the
-<em>TreeSummarizedExperiment</em> class for effective microbiome data
-analysis.</p></li>
-<li><p><strong>Access resources</strong>: Get familiar with additional
-tools and resources, including <a href="https://microbiome.github.io/OMA/docs/devel" class="external-link">the OMA online
-book</a>.</p></li>
-</ul>
-</div>
-<div class="section level4">
-<h4 id="learning-objectives">Learning objectives<a class="anchor" aria-label="anchor" href="#learning-objectives"></a>
-</h4>
-<ul>
-<li><p><strong>Analyze and apply methods</strong>: Apply the framework
-to process and analyze microbiome data.</p></li>
-<li><p><strong>Create visualizations</strong>: Generate and interpret
-visualizations.</p></li>
-<li><p><strong>Explore documentation</strong>: Use the <a href="https://microbiome.github.io/OMA/docs/devel" class="external-link">OMA</a> to explore
-additional tools and methods.</p></li>
-</ul>
-</div>
-</div>
-</div>
+<!--
+TODO:
+
+- rename the workflow
+UPDATE DESCRIPTION
+
+THINGS TO CONSIDER
+- We should probably use same dataset. Data integration part requires multiomics data. 
+- I added idea for story but feel free to modify.
+
+PRELIMINARY SCHEDULE
+
+13:00-13:20 Leo
+ - Idea: Introduction and TreeSE
+ - Introduction to Bioconductor
+ - Overview of data containers
+ - Introduction to TreeSE
+13:20-13:25 short Q&A
+ - Participants have time to explore on their own
+13:25-13:30 short break
+ - Time to set up for the next session
+ 
+13:30-13:50 Pande
+ - Idea: After introducing TreeSE, we can now use methods from mia.
+ - What are diversity and composition?
+ - How to calculate and plot alpha diversity indices?
+ - How to calculate and plot PCoA(?)
+13:50-13:55 short Q&A
+ - Participants have time to explore on their own
+13:55-14:00 short break
+ - Time to set up for the next session
+ 
+14:00-14:20 Tuomas
+ - Idea: Now participants know that we can utilize methods from mia. Introduce slots and show how to handle complex data.
+ - reducedDim slot was briefly introduced in Pande's session. (That highlights the idea of slots hopefully since the result is the same as already calculated.)
+ - Introduce agglomerateByRanks() and altExp slot
+ - Add another omics to altExp and demonstrating column subsetting to show sample linkage
+ - Calculate cross-association?
+14:20-14:30 short Q&A
+ - Participants have time to explore on their own
+
+15:00-15:20 Stefanie
+ - Idea: Show what additional capabilities there are
+ - Maybe: we can calculate simple correlation network based on cross-association results (Tuomas's session) but this can be further extended?
+15:20-15:25 short Q&A
+ - Participants have time to explore on their own
+15:25-15:30 short break
+ - Time to set up for the next session
+ 
+15:30-15:50 Giulio
+ - Idea: Show what additional capabilities there are
+ - Maybe: the analyses performed earlier can be done in graphical interface?
+15:50-15:55 short Q&A
+ - Participants have time to explore on their own
+15:55-16:00 short break
+ - Time to set up for the next session
+ 
+## Overview
+
+### Description
+
+Learn how _miaverse_ framework
+integrates microbiome data science with the _SummarizedExperiment_ ecosystem,
+and discover the benefits this brings. We will cover key methods, explore
+[the OMA online book](https://microbiome.github.io/OMA/docs/devel), and discuss
+the integration's advantages.
+
+We will start with a brief overview of the framework, followed by an
+instructor-led live demonstration. The demonstration will showcase selected
+key features and functionalities of _miaverse_. After the demo, participant
+will have time to discuss the framework, ask questions, and explore the tools
+and methods covered.
+
+By the end of the workshop, attendees will have a understanding of how to
+apply the framework to their microbiome research and will be
+well-prepared to further explore the framework independently.
+
+### Pre-requisites
+
+* Basic knowledge of R coding
+* Familiarity with Bioconductor
+* Understanding of microbiome research
+
+If your time allows, we recommend to spend some time to explore beforehand
+[Orchestrating Microbiome Analysis (OMA) online book](https://microbiome.github.io/OMA/docs/devel/).
+
+### Participation
+
+Participants are encouraged to ask questions throughout the workshop. The
+session will follow
+[a tutorial from the OMA online book](https://microbiome.github.io/OMA/docs/devel/pages/introductory_workflow.html),
+with participants running the tutorial alongside the instructor.
+
+To facilitate this, Bioconductor provides
+[pre-installed virtual machines with all necessary packages](https://workshop.bioconductor.org/).
+
+### _R_ / _Bioconductor_ packages used
+
+In this workshop, we will focus on
+[the _mia_ package](https://bioconductor.org/packages/devel/bioc/html/mia.html),
+which is designed for microbiome data science. The _mia_ package provides
+essential tools for analyzing microbiome data using the
+_SummarizedExperiment_ framework.
+
+### Time outline
+
+| Activity                          | Time |
+|-----------------------------------|------|
+| Background                        | 10m  |
+| Demo                              | 20m  |
+| Questions and free exploration    | 10m  |
+
+### Workshop goals and objectives
+
+#### Learning goals
+
+- **Methods for microbiome analysis**: Learn to harness _SummarizedExperiment_ ecosystem in your project.
+
+- **Data structure**: Understand how to utilize the _TreeSummarizedExperiment_ class for effective microbiome data analysis.
+
+- **Access resources**: Get familiar with additional tools and resources, including [the OMA online book](https://microbiome.github.io/OMA/docs/devel).
+
+#### Learning objectives
+
+- **Analyze and apply methods**:  Apply the framework to process and analyze microbiome data.
+
+- **Create visualizations**: Generate and interpret visualizations.
+
+- **Explore documentation**: Use the [OMA](https://microbiome.github.io/OMA/docs/devel) to explore additional tools and methods.
+
+-->
 <div class="section level2">
 <h2 id="workshop">Workshop<a class="anchor" aria-label="anchor" href="#workshop"></a>
 </h2>
@@ -250,131 +238,23 @@ microbial network analysis. Additionally, we will explore how to utilize
 the tools through a graphical interface.</p>
 </div>
 <div class="section level2">
-<h2 id="bioconductor-resources-for-microbiome-data-science-leo">Bioconductor resources for microbiome data science (Leo)<a class="anchor" aria-label="anchor" href="#bioconductor-resources-for-microbiome-data-science-leo"></a>
+<h2 id="bioconductor-resources-for-microbiome-data-science">Bioconductor resources for microbiome data science<a class="anchor" aria-label="anchor" href="#bioconductor-resources-for-microbiome-data-science"></a>
 </h2>
-<p>Idea for the story:</p>
-<p>” TreeSE is the primary data container used in miaverse framework.It
-is extension to SE. It works like this. mia package has methods for
-common operations. For instance, we can tranform the data. ”</p>
+<!--
+Idea for the story:
+
+"
+TreeSE is the primary data container used in miaverse framework.It is extension to SE.
+It works like this. mia package has methods for common operations. For instance, 
+we can tranform the data.
+"
+-->
 <div class="section level3">
 <h3 id="load-packages">Load packages<a class="anchor" aria-label="anchor" href="#load-packages"></a>
 </h3>
 <p>First, we load the required packages into the session. The following
 script ensures that any packages not already installed are automatically
 installed.</p>
-<pre><code><span><span class="co">#&gt; Loading required package: BiocManager</span></span>
-<span><span class="co">#&gt; Loading required package: ComplexHeatmap</span></span>
-<span><span class="co">#&gt; Loading required package: grid</span></span>
-<span><span class="co">#&gt; ========================================</span></span>
-<span><span class="co">#&gt; ComplexHeatmap version 2.21.0</span></span>
-<span><span class="co">#&gt; Bioconductor page: http://bioconductor.org/packages/ComplexHeatmap/</span></span>
-<span><span class="co">#&gt; Github page: https://github.com/jokergoo/ComplexHeatmap</span></span>
-<span><span class="co">#&gt; Documentation: http://jokergoo.github.io/ComplexHeatmap-reference</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; If you use it in published research, please cite either one:</span></span>
-<span><span class="co">#&gt; - Gu, Z. Complex Heatmap Visualization. iMeta 2022.</span></span>
-<span><span class="co">#&gt; - Gu, Z. Complex heatmaps reveal patterns and correlations in multidimensional </span></span>
-<span><span class="co">#&gt;     genomic data. Bioinformatics 2016.</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; The new InteractiveComplexHeatmap package can directly export static </span></span>
-<span><span class="co">#&gt; complex heatmaps into an interactive Shiny app with zero effort. Have a try!</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; This message can be suppressed by:</span></span>
-<span><span class="co">#&gt;   suppressPackageStartupMessages(library(ComplexHeatmap))</span></span>
-<span><span class="co">#&gt; ========================================</span></span>
-<span><span class="co">#&gt; Loading required package: curatedMetagenomicData</span></span>
-<span><span class="co">#&gt; Loading required package: SummarizedExperiment</span></span>
-<span><span class="co">#&gt; Loading required package: MatrixGenerics</span></span>
-<span><span class="co">#&gt; Loading required package: matrixStats</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Attaching package: 'MatrixGenerics'</span></span>
-<span><span class="co">#&gt; The following objects are masked from 'package:matrixStats':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     colAlls, colAnyNAs, colAnys, colAvgsPerRowSet, colCollapse,</span></span>
-<span><span class="co">#&gt;     colCounts, colCummaxs, colCummins, colCumprods, colCumsums,</span></span>
-<span><span class="co">#&gt;     colDiffs, colIQRDiffs, colIQRs, colLogSumExps, colMadDiffs,</span></span>
-<span><span class="co">#&gt;     colMads, colMaxs, colMeans2, colMedians, colMins, colOrderStats,</span></span>
-<span><span class="co">#&gt;     colProds, colQuantiles, colRanges, colRanks, colSdDiffs, colSds,</span></span>
-<span><span class="co">#&gt;     colSums2, colTabulates, colVarDiffs, colVars, colWeightedMads,</span></span>
-<span><span class="co">#&gt;     colWeightedMeans, colWeightedMedians, colWeightedSds,</span></span>
-<span><span class="co">#&gt;     colWeightedVars, rowAlls, rowAnyNAs, rowAnys, rowAvgsPerColSet,</span></span>
-<span><span class="co">#&gt;     rowCollapse, rowCounts, rowCummaxs, rowCummins, rowCumprods,</span></span>
-<span><span class="co">#&gt;     rowCumsums, rowDiffs, rowIQRDiffs, rowIQRs, rowLogSumExps,</span></span>
-<span><span class="co">#&gt;     rowMadDiffs, rowMads, rowMaxs, rowMeans2, rowMedians, rowMins,</span></span>
-<span><span class="co">#&gt;     rowOrderStats, rowProds, rowQuantiles, rowRanges, rowRanks,</span></span>
-<span><span class="co">#&gt;     rowSdDiffs, rowSds, rowSums2, rowTabulates, rowVarDiffs, rowVars,</span></span>
-<span><span class="co">#&gt;     rowWeightedMads, rowWeightedMeans, rowWeightedMedians,</span></span>
-<span><span class="co">#&gt;     rowWeightedSds, rowWeightedVars</span></span>
-<span><span class="co">#&gt; Loading required package: GenomicRanges</span></span>
-<span><span class="co">#&gt; Loading required package: stats4</span></span>
-<span><span class="co">#&gt; Loading required package: BiocGenerics</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Attaching package: 'BiocGenerics'</span></span>
-<span><span class="co">#&gt; The following objects are masked from 'package:stats':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     IQR, mad, sd, var, xtabs</span></span>
-<span><span class="co">#&gt; The following objects are masked from 'package:base':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     anyDuplicated, aperm, append, as.data.frame, basename, cbind,</span></span>
-<span><span class="co">#&gt;     colnames, dirname, do.call, duplicated, eval, evalq, Filter, Find,</span></span>
-<span><span class="co">#&gt;     get, grep, grepl, intersect, is.unsorted, lapply, Map, mapply,</span></span>
-<span><span class="co">#&gt;     match, mget, order, paste, pmax, pmax.int, pmin, pmin.int,</span></span>
-<span><span class="co">#&gt;     Position, rank, rbind, Reduce, rownames, sapply, setdiff, table,</span></span>
-<span><span class="co">#&gt;     tapply, union, unique, unsplit, which.max, which.min</span></span>
-<span><span class="co">#&gt; Loading required package: S4Vectors</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Attaching package: 'S4Vectors'</span></span>
-<span><span class="co">#&gt; The following object is masked from 'package:utils':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     findMatches</span></span>
-<span><span class="co">#&gt; The following objects are masked from 'package:base':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     expand.grid, I, unname</span></span>
-<span><span class="co">#&gt; Loading required package: IRanges</span></span>
-<span><span class="co">#&gt; Loading required package: GenomeInfoDb</span></span>
-<span><span class="co">#&gt; Loading required package: Biobase</span></span>
-<span><span class="co">#&gt; Welcome to Bioconductor</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     Vignettes contain introductory material; view with</span></span>
-<span><span class="co">#&gt;     'browseVignettes()'. To cite Bioconductor, see</span></span>
-<span><span class="co">#&gt;     'citation("Biobase")', and for packages 'citation("pkgname")'.</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Attaching package: 'Biobase'</span></span>
-<span><span class="co">#&gt; The following object is masked from 'package:MatrixGenerics':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     rowMedians</span></span>
-<span><span class="co">#&gt; The following objects are masked from 'package:matrixStats':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     anyMissing, rowMedians</span></span>
-<span><span class="co">#&gt; Loading required package: TreeSummarizedExperiment</span></span>
-<span><span class="co">#&gt; Loading required package: SingleCellExperiment</span></span>
-<span><span class="co">#&gt; Loading required package: Biostrings</span></span>
-<span><span class="co">#&gt; Loading required package: XVector</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Attaching package: 'Biostrings'</span></span>
-<span><span class="co">#&gt; The following object is masked from 'package:grid':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     pattern</span></span>
-<span><span class="co">#&gt; The following object is masked from 'package:base':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     strsplit</span></span>
-<span><span class="co">#&gt; Loading required package: mia</span></span>
-<span><span class="co">#&gt; Loading required package: MultiAssayExperiment</span></span>
-<span><span class="co">#&gt; This is mia version 1.13.38</span></span>
-<span><span class="co">#&gt; - Online documentation and vignettes: https://microbiome.github.io/mia/</span></span>
-<span><span class="co">#&gt; - Online book 'Orchestrating Microbiome Analysis (OMA)': https://microbiome.github.io/OMA/docs/devel/</span></span>
-<span><span class="co">#&gt; Loading required package: miaViz</span></span>
-<span><span class="co">#&gt; Loading required package: ggplot2</span></span>
-<span><span class="co">#&gt; Loading required package: ggraph</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Attaching package: 'miaViz'</span></span>
-<span><span class="co">#&gt; The following object is masked from 'package:mia':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     plotNMDS</span></span>
-<span><span class="co">#&gt; Loading required package: scater</span></span>
-<span><span class="co">#&gt; Loading required package: scuttle</span></span>
-<span><span class="co">#&gt; Loading required package: shadowtext</span></span></code></pre>
 <p>If you encountered an error, install packages manually.</p>
 </div>
 <div class="section level3">
@@ -386,7 +266,7 @@ dataset that includes both colorectal cancer (CRC) patients and control
 subjects. Our goal is to investigate whether CRC is associated with
 alterations in the gut microbiota.</p>
 <p>Let’s fetch the data from the database.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Study from which we want to fetch data</span></span>
 <span><span class="va">study</span> <span class="op">&lt;-</span> <span class="st">"GuptaA_2019"</span></span>
 <span><span class="co"># Experiments that we want to fetch</span></span>
@@ -453,7 +333,7 @@ summarize data at specific taxonomy ranks. Additionally, preprocessing
 involves transforming the data to address the unique characteristics of
 microbiome profiling data, for instance. Details on agglomeration and
 transformation are covered in <span class="citation">[@sec-agglomeration]</span> and <span class="citation">[@sec-assay-transform]</span>, respectively.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Agglomerate data</span></span>
 <span><span class="va">tse_family</span> <span class="op">&lt;-</span> <span class="fu">agglomerateByRank</span><span class="op">(</span><span class="va">tse</span>, rank <span class="op">=</span> <span class="st">"family"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning: The following values are already present in `metadata` and will be</span></span>
@@ -469,12 +349,19 @@ transformation are covered in <span class="citation">[@sec-agglomeration]</span>
 </div>
 </div>
 <div class="section level2">
-<h2 id="analysis-of-community-diversity-and-composition-pande">Analysis of community diversity and composition (Pande)<a class="anchor" aria-label="anchor" href="#analysis-of-community-diversity-and-composition-pande"></a>
+<h2 id="analysis-of-community-diversity-and-composition">Analysis of community diversity and composition<a class="anchor" aria-label="anchor" href="#analysis-of-community-diversity-and-composition"></a>
 </h2>
-<p>Idea for the story:</p>
-<p>” After preprocessing the data, we can continue to analysis. It is
-common to analyze the alpha diversity of samples. …</p>
-<p>To analyze similarity between samples, we can perform PCoA. … ”</p>
+<!--
+Idea for the story:
+
+"
+After preprocessing the data, we can continue to analysis. It is common to analyze the alpha diversity
+of samples. ...
+
+To analyze similarity between samples, we can perform PCoA. ...
+"
+
+-->
 </div>
 <div class="section level2">
 <h2 id="microbiome-data-integration-tuomas">Microbiome data integration (Tuomas)<a class="anchor" aria-label="anchor" href="#microbiome-data-integration-tuomas"></a>
@@ -502,13 +389,13 @@ connections between samples can be error-prone and cumbersome. To
 simplify this, we can use the <code>altExp</code> slot to handle the
 bookkeeping. Let’s start by checking which experiments are
 available:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">data_list</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "pathway"  "taxonomy"</span></span></code></pre></div>
 <p>As we see, we have metabolic pathway predictions in addition to
 taxonomic profiling. We can add the entire list of experiments to the
 <code>altExp</code> slot.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">altExps</span><span class="op">(</span><span class="va">tse</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">data_list</span></span>
 <span><span class="va">tse</span></span>
 <span><span class="co">#&gt; class: TreeSummarizedExperiment </span></span>
@@ -531,7 +418,7 @@ taxonomic profiling. We can add the entire list of experiments to the
 <p>With the <code>altExp</code> slot now populated, you can access the
 data using the <code>altExp()</code> function and specify which
 experiment you want to retrieve.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">altExp</span><span class="op">(</span><span class="va">tse</span>, <span class="st">"pathway"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; class: SummarizedExperiment </span></span>
 <span><span class="co">#&gt; dim: 12535 60 </span></span>
@@ -550,7 +437,7 @@ is that it handles sample linkages for us. For example, if we select a
 subset of data, the object automatically subsets all associated
 experiments accordingly.</p>
 <p>For example, let’s select only the samples from senior patients.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tse_sub</span> <span class="op">&lt;-</span> <span class="va">tse</span><span class="op">[</span> , <span class="va">tse</span><span class="op">$</span><span class="va">age_category</span> <span class="op">==</span> <span class="st">"senior"</span><span class="op">]</span></span>
 <span><span class="va">tse_sub</span></span>
 <span><span class="co">#&gt; class: TreeSummarizedExperiment </span></span>
@@ -579,7 +466,7 @@ all sample names matching across experiments.</p>
 <p>In addition to adding the entire list, we can also add individual
 experiments. Let’s add the agglomerated data separately to keep the
 whole dataset organized.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">altExp</span><span class="op">(</span><span class="va">tse</span>, <span class="st">"family"</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">tse_family</span></span>
 <span><span class="va">tse</span></span>
 <span><span class="co">#&gt; class: TreeSummarizedExperiment </span></span>
@@ -607,7 +494,7 @@ associated with specific metabolic activity pathway.</p>
 relationships. First, we’ll preprocess the functional annotation data by
 agglomerating the pathways based on each pathway’s function, and then
 further by prevalence.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Agglomerate based on pathways function</span></span>
 <span><span class="fu">altExp</span><span class="op">(</span><span class="va">tse</span>, <span class="st">"pathway_func"</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu">agglomerateByVariable</span><span class="op">(</span></span>
 <span>    <span class="fu">altExp</span><span class="op">(</span><span class="va">tse</span>, <span class="st">"pathway"</span><span class="op">)</span>,</span>
@@ -624,7 +511,7 @@ further by prevalence.</p>
 <p>The data now includes the most prevalent pathways, each representing
 a single metabolic activity. Next, we apply a transformation as the
 final preprocessing step for our functional data.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">altExp</span><span class="op">(</span><span class="va">tse</span>, <span class="st">"pathway_prev"</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu">transformAssay</span><span class="op">(</span></span>
 <span>    <span class="fu">altExp</span><span class="op">(</span><span class="va">tse</span>, <span class="st">"pathway_prev"</span><span class="op">)</span>,</span>
 <span>    assay.type <span class="op">=</span> <span class="st">"pathway_abundance"</span>,</span>
@@ -648,7 +535,7 @@ final preprocessing step for our functional data.</p>
 <p>We’re now ready to perform the cross-association analysis. We will
 examine the associations between microbial families and the most
 abundant pathways. To visualize the results, we’ll use a heatmap.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Perform cross-associaton</span></span>
 <span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">getCrossAssociation</span><span class="op">(</span></span>
 <span>    <span class="va">tse</span>,</span>
@@ -701,22 +588,34 @@ sections:</p>
 </ul>
 </div>
 <div class="section level2">
-<h2 id="microbial-network-analysis-stefanie">Microbial network analysis (Stefanie)<a class="anchor" aria-label="anchor" href="#microbial-network-analysis-stefanie"></a>
+<h2 id="microbial-network-analysis">Microbial network analysis<a class="anchor" aria-label="anchor" href="#microbial-network-analysis"></a>
 </h2>
-<p>Idea for the story:</p>
-<p>” We performed cross-association analysis in previous session.
-Analyzing microbial networks, however, usually requires more
-sophisticated apporoaches.</p>
-<p>”</p>
+<!--
+Idea for the story:
+
+"
+We performed cross-association analysis in previous session. Analyzing microbial
+networks, however, usually requires more sophisticated apporoaches. 
+
+"
+-->
 </div>
 <div class="section level2">
-<h2 id="interactive-microbiome-data-exploration-with-iseetree-giulio">Interactive microbiome data exploration with iSEEtree (Giulio)<a class="anchor" aria-label="anchor" href="#interactive-microbiome-data-exploration-with-iseetree-giulio"></a>
+<h2 id="interactive-microbiome-data-exploration-with-iseetree">Interactive microbiome data exploration with iSEEtree<a class="anchor" aria-label="anchor" href="#interactive-microbiome-data-exploration-with-iseetree"></a>
 </h2>
-<p>Idea for the story:</p>
-<p>” For interactive analysis, iSEEtree is available. It allows to
-perform common analyses in graphical interface.</p>
-<p>”</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<!--
+Idea for the story:
+
+"
+For interactive analysis, iSEEtree is available. It allows to perform common analyses in graphical interface.
+
+"
+-->
+</div>
+<div class="section level2">
+<h2 id="session-info">Session info<a class="anchor" aria-label="anchor" href="#session-info"></a>
+</h2>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; R version 4.4.1 (2024-06-14)</span></span>
 <span><span class="co">#&gt; Platform: x86_64-pc-linux-gnu</span></span>
