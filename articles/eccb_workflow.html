@@ -522,32 +522,8 @@ and plot the PCoA.</p>
 whether the microbial community in two groups is different. You can
 achieve it using the code below.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Add ellipses with ggplot manual</span></span>
-<span></span>
-<span><span class="co"># Extract PCoA coordinates</span></span>
-<span><span class="va">pcoa_coords</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="fu">reducedDim</span><span class="op">(</span><span class="va">tse</span>, <span class="st">"MDS_bray"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">pcoa_coords</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PC1"</span>, <span class="st">"PC2"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Add metadata</span></span>
-<span><span class="va">pcoa_coords</span><span class="op">$</span><span class="va">disease</span> <span class="op">&lt;-</span> <span class="fu">colData</span><span class="op">(</span><span class="va">tse</span><span class="op">)</span><span class="op">[[</span><span class="st">"disease"</span><span class="op">]</span><span class="op">]</span></span>
-<span></span>
-<span><span class="co"># Filter out NA values in the variable column</span></span>
-<span><span class="va">pcoa_coords</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/na.fail.html" class="external-link">na.omit</a></span><span class="op">(</span><span class="va">pcoa_coords</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Create the plot with ellipses</span></span>
-<span><span class="va">p_elipse</span> <span class="op">&lt;-</span> <span class="fu">ggplot</span><span class="op">(</span><span class="va">pcoa_coords</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">PC1</span>, y <span class="op">=</span> <span class="va">PC2</span>, color <span class="op">=</span> <span class="va">disease</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu">geom_point</span><span class="op">(</span>alpha<span class="op">=</span><span class="fl">0.8</span>, size<span class="op">=</span><span class="fl">0.5</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu">theme_classic</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>    <span class="fu">stat_ellipse</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>color <span class="op">=</span> <span class="va">disease</span><span class="op">)</span>, level <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span> <span class="op">+</span>  <span class="co"># Ellipses based on disease</span></span>
-<span>    <span class="fu">labs</span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"PC1 ("</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fl">100</span> <span class="op">*</span> <span class="va">rel_eig</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="fl">1</span><span class="op">)</span>, <span class="st">"%)"</span>, sep <span class="op">=</span> <span class="st">""</span><span class="op">)</span>,</span>
-<span>         y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"PC2 ("</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fl">100</span> <span class="op">*</span> <span class="va">rel_eig</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>, <span class="fl">1</span><span class="op">)</span>, <span class="st">"%)"</span>, sep <span class="op">=</span> <span class="st">""</span><span class="op">)</span>,</span>
-<span>         title <span class="op">=</span> <span class="st">"PCA Plot with Ellipses"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu">theme</span><span class="op">(</span>legend.title <span class="op">=</span> <span class="fu">element_blank</span><span class="op">(</span><span class="op">)</span>,</span>
-<span>          legend.text <span class="op">=</span> <span class="fu">element_text</span><span class="op">(</span>size <span class="op">=</span> <span class="fl">8</span><span class="op">)</span>,</span>
-<span>          legend.position <span class="op">=</span> <span class="st">'bottom'</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Print the plot</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">p_elipse</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">p_elipse</span> <span class="op">&lt;-</span> <span class="va">p1</span> <span class="op">+</span> <span class="fu">stat_ellipse</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>color <span class="op">=</span> <span class="va">colour_by</span><span class="op">)</span>, level <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span></span>
+<span><span class="va">p_elipse</span></span></code></pre></div>
 <p><img src="eccb_workflow_files/figure-html/PCoA%20elipse-1.png" width="700"></p>
 <p>Additionally, we may want to also perform PERMANOVA analysis to
 further estimate whether the microbial community is statistically
