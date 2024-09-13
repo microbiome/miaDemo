@@ -257,7 +257,7 @@ tse_family <- transformAssay(tse_family, method = "clr", pseudocount = 1)
 Now that the data has been pre-processed, we could start to analyze the overview of the microbiome profile. 
 For the dataset above, we can continue to perform analysis, for example to answer these questions:
 
-1.  How does the microbial community differ between the CRC (n=30) vs healthy group (n=30)?
+1. How does the microbial community differ between the CRC (n=30) vs healthy group (n=30)?
 
 2. How does the beta diversity compare between the CRC (n=30) vs healthy group (n=30)?
 
@@ -302,13 +302,14 @@ want to perform more than two groups comparison.
 The information about diseases state is available from the colData of tse object, in the "diseases" column.
 
 ```{r alpha diversity viz}
-#calculate p-value
-index <- c("observed", "shannon")
+
 # Changes old levels with new levels
 tse$disease <- factor(tse$disease)
-# For significance testing, all different combinations are determined
-comb <- split(t(combn(levels(df$disease ), 2)), 
-           seq(nrow(t(combn(levels(df$disease ), 2)))))
+# Access the levels of the factor
+disease_levels <- levels(tse$disease)
+
+# Compute all pairwise combinations of these levels
+comb <- combn(disease_levels, 2, simplify = FALSE)
 
 # Observed richness plot
 observed_plot <- scater::plotColData(tse, 
