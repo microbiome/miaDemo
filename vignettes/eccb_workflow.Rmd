@@ -158,6 +158,24 @@ if( length(pkgs_not_loaded) > 0 ){
         "Error in loading the following packages into the session: '",
         paste0(pkgs_not_loaded, collapse = "', '"), "'")
 }
+
+# Install GitHub packages
+if(!require(SpiecEasi)){
+    # SpiecEasi must be installed from "latentcor" branch
+    devtools::install_github("zdk123/SpiecEasi", force = TRUE, ref = "latentcor")
+}
+
+if(!require(SPRING)){
+    devtools::install_github("GraceYoon/SPRING")
+}
+
+if(!require(NetCoMi)){
+    # NetCoMi must be installed from "TSE" branch
+    devtools::install_github(
+        "stefpeschel/NetCoMi", force = TRUE, ref = "TSE",
+        dependencies = c("Depends", "Imports", "LinkingTo"),
+        repos = c("https://cloud.r-project.org/", BiocManager::repositories()))
+}
 ```
 
 If you encountered an error, install packages manually.
@@ -471,6 +489,208 @@ For more information on data integration, see the following sections:
  - [Multi-assay classification](https://microbiome.github.io/OMA/docs/devel/pages/integrated_learner.html)
 
 ## Microbial network analysis
+
+After having analyzed associations between microbial families and pathways in the last section, we are now interested in the microbial associations itself, which helps us to understand the complex interplay of microbial communities. 
+
+In a typical microbiome network, nodes are ASVs or taxa on a certain rank (here family). The nodes are connected by edges, which represent microbial associations. Higher edge thickness corresponds to higher edge weight. Edges with a positive underlying association are green, those with a negative association are red.
+
+```{r microbiome-network, echo=FALSE, out.width='90%', fig.cap="An exemplary microbiome network."}
+knitr::include_graphics("figures/Exemplary_microbiome_network.png")
+```
+
+### From read counts to networks
+
+An essential step in microbial network learning is to obtain an adjacency matrix representing the network from a given read count matrix:
+
+```{r from_counts_to_networks, echo=FALSE, out.width='90%', fig.cap=''}
+#| label: fig-from_counts_to_networks
+knitr::include_graphics("figures/From_counts_to_networks.png")
+```
+
+Association estimation methods need to take the typical characteristics of microbiome data into account. Here is a brief overview of the typical data characteristics and common approaches to solve them:
+
+**Compositionality**
+
+* Data transformation (e.g., clr)
+* See the [OMA chapter](https://microbiome.github.io/OMA/docs/devel/pages/transformation.html) on data transformations
+
+**Zero-inflation**
+
+* Adding small pseudo counts (to the zeros only!)
+* More sophisticated zero imputation methods, e.g., the R package [zCompositions](https://cran.r-project.org/web/packages/zCompositions/zCompositions.pdf)
+
+**High dimensionality**
+
+Sparse association estimation. Depending on the desired type of association, there's a wide range of existing methods and R packages:
+
+* Correlation:
+  + SparCC ([`sparcc()`](https://rdrr.io/github/zdk123/SpiecEasi/man/sparcc.html) from `SpiecEasi` package)
+  + CCLasso ([R code on GitHub](https://github.com/huayingfang/CCLasso))
+  + CCREPE ([`ccrepe`](https://bioconductor.org/packages/release/bioc/html/ccrepe.html) package)
+* Conditional dependence / partial correlation:
+  + SpiecEasi ([`SpiecEasi`](https://github.com/zdk123/SpiecEasi) package)
+  + SPRING ([`SPRING`](https://github.com/GraceYoon/SPRING) package)
+  + gCoda ([R code on GitHub](https://github.com/huayingfang/gCoda))
+* Proportionality
+  + propr ([`propr`](https://cran.r-project.org/web/packages/propr/index.html) package)
+
+These methods are also available through the R package [`NetCoMi`](https://github.com/stefpeschel/NetCoMi), which we will use to construct and analyze a microbial association network. The complete workflow implemented in `NetCoMi` is shown in the [OMA chapter](https://microbiome.github.io/OMA/docs/devel/pages/network_learning.html#sec-network-learning-workflow) on network learning.
+
+### Network learning with NetCoMi
+
+```{r load_netcomi, message=FALSE, warning=FALSE}
+library(NetCoMi)
+```
+
+The function for network construction `netConstruct()` offers the possibility to filter samples and taxa according to certain criteria. Here, we keep only taxa occurring in at least 10% of the samples.
+
+We use the `SpiecEasi` (Sparse Inverse Covariance for Ecological StatisticalInference) method to estimate microbial associations. The package offers two graphical model inference procedures: 1) Meinhausen and Bühlmann's neighborhood selection (the MB method) and 2) inverse covariance selection (the glasso
+method). We will use glasso here. 
+
+`SpiecEasi` uses the StARS ("Stability Approach to Regularization Selection")
+method to obtain a sparse association matrix. We set the StARS threshold to 0.1
+to get a denser graph (default is 0.05).
+
+Since zero replacement, normalization, and sparsification (model selection) is done by `SpiecEasi`, we set the corresponding `netConstruct` arguments to "none". 
+
+```{r network_construction, eval=FALSE}
+net <- netConstruct(
+    tse_family,
+    taxRank = "family",
+    filtTax = "numbSamp",
+    filtTaxPar = list(numbSamp = 0.1),
+    measure = "spieceasi",
+    measurePar = list(method = "glasso", 
+                      # nlambda and rep.num should be higher (30 to 50)
+                      nlambda=20, 
+                      pulsar.params=list(rep.num=10,
+                                         thresh = 0.1), # defines sparsity
+                      norm.params = list(method = "mclr", 
+                                         types = "count")),
+    zeroMethod = "none",
+    normMethod = "none",
+    sparsMethod = "none",
+    dissFunc = "signed",
+    seed = 16092024)
+```
+
+```{r store_network, echo=FALSE, eval=FALSE}
+saveRDS(net, file = "data/spieceasi_network.rds")
+```
+
+```{r load_network, echo=FALSE}
+net <- readRDS("data/spieceasi_network.rds")
+```
+
+`netConstruct()` returns an object of the class `microNet`, which contains all matrices generated during network construction.
+
+The object also contains an edge list, giving each edge’s estimated association, dissimilarity, and adjacency. Let’s take a quick look at the edges with the highest and lowest edge weights:
+
+```{r network_edgelist}
+edgelist <- net$edgelist1[order(net$edgelist1$adja, 
+                                decreasing = TRUE), ]
+head(edgelist)
+tail(edgelist)
+```
+
+The `microNet` object is now passed to `netAnalyze()` to perform network analysis.
+
+The function computes several common network characteristics such as centrality
+measures, hubs, cluster assignment, and global network measures.
+
+The user has several options to choose from, such as a clustering method, how
+to define hubs, and whether or not to normalize centrality values. See the
+help page `?netAnalyze` for a description of the arguments.
+
+```{r network_analysis}
+netprops <- netAnalyze(net,
+                       clustMethod = "cluster_fast_greedy",
+                       hubPar = "eigenvector",
+                       normDeg = FALSE,
+                       gcmHeat = FALSE)
+```
+
+We use `NetCoMi's` plot function to visualize the network.
+
+In the first plot, node colors represent the detected clusters and node
+sizes are scaled by eigenvector centrality. Hub nodes are highlighted by
+default. Singletons are not included in the plot.
+
+Note that nodes are sometimes placed too close together so that the labels
+overlap. You may need to play around with the `repulsion` argument until you
+find a value where the labels are legible, but also the clusters are still
+well recognizable.
+
+```{r network_plot_clusters, fig.width=13, fig.height=10, out.width='100%'}
+plot(netprops,
+     repulsion = 1,
+     rmSingles = TRUE,
+     shortenLabels = "none",
+     labelScale = FALSE,
+     nodeSize = "eigenvector",
+     nodeSizeSpread = 3,
+     nodeColor = "cluster",
+     hubBorderCol = "gray40",
+     cexNodes = 1.8,
+     edgeTranspHigh = 20,
+     title1 = "Network properties highlighted",
+     showTitle = TRUE,
+     cexTitle = 2,
+     mar = c(1, 3, 4, 8))
+
+legend(0.7, 1.1, cex = 1.7, title = "estimated correlation:",
+       legend = c("+","-"), lty = 1, lwd = 3, col = c("#009900","red"),
+       bty = "n", horiz = TRUE)
+```
+
+We now color nodes according to their phylum. The node sizes are proportional to a taxon's sum of mclr-transformed abundances.
+
+```{r network_plot_phyla, fig.width=15, fig.height=10, out.width='100%'}
+# Generate vector with phylum names for node coloring
+phyla <- rowData(tse)$phylum
+phyla[is.na(phyla)] <- "NA"
+phyla <- as.factor(phyla)
+names(phyla) <- rowData(tse)$family
+
+# Create color vector
+colvec <- RColorBrewer::brewer.pal(length(levels(phyla)), "Set3")
+
+plot(netprops,
+     repulsion = 1,
+     rmSingles = TRUE,
+     shortenLabels = "none",
+     labelScale = FALSE,
+     nodeSize = "mclr",
+     nodeColor = "feature",
+     featVecCol = phyla,
+     colorVec =  colvec,
+     nodeTransp = 20,
+     highlightHubs = FALSE,
+     cexNodes = 1.8,
+     edgeTranspHigh = 20,
+     title1 = "Data features highlighted",
+     showTitle = TRUE,
+     cexTitle = 2,
+     mar = c(1, 10, 4, 6))
+
+# Add legends
+legend(0.7, 1.1, cex = 1.7, title = "estimated correlation:",
+       legend = c("+","-"), lty = 1, lwd = 3, col = c("#009900","red"),
+       bty = "n", horiz = TRUE)
+
+# Colors used in the legend should be equally transparent as in the plot
+col_transp <- colToTransp(colvec, 20)
+
+legend(-1.8, 1.1, cex = 1.7, pt.cex = 2.5, title = "Phylum:",
+       legend=levels(phyla), col = col_transp, bty = "n", pch = 16)
+```
+
+In addition to the visual analysis, we can also have a look at the computed network properties. 
+
+```{r network_summary}
+summary(netprops, numbNodes = 5)
+```
+
 
 ## Interactive microbiome data exploration with iSEEtree
 
