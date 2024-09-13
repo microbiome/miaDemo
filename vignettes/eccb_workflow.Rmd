@@ -131,9 +131,7 @@ packages <- c(
     "scater",
     "shadowtext",
     "ggsignif",
-    "patchwork",
-    "dplyr",
-    "tidyr"
+    "patchwork"
     )
 
 # Get packages that are already installed
