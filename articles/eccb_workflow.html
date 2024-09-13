@@ -279,6 +279,24 @@ installed.</p>
 <span>    <span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span></span>
 <span>        <span class="st">"Error in loading the following packages into the session: '"</span>,</span>
 <span>        <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">pkgs_not_loaded</span>, collapse <span class="op">=</span> <span class="st">"', '"</span><span class="op">)</span>, <span class="st">"'"</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co"># Install GitHub packages</span></span>
+<span><span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va">SpiecEasi</span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span>
+<span>    <span class="co"># SpiecEasi must be installed from "latentcor" branch</span></span>
+<span>    <span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"zdk123/SpiecEasi"</span>, force <span class="op">=</span> <span class="cn">TRUE</span>, ref <span class="op">=</span> <span class="st">"latentcor"</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va">SPRING</span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span>
+<span>    <span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"GraceYoon/SPRING"</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va">NetCoMi</span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span>
+<span>    <span class="co"># NetCoMi must be installed from "TSE" branch</span></span>
+<span>    <span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span></span>
+<span>        <span class="st">"stefpeschel/NetCoMi"</span>, force <span class="op">=</span> <span class="cn">TRUE</span>, ref <span class="op">=</span> <span class="st">"TSE"</span>,</span>
+<span>        dependencies <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Depends"</span>, <span class="st">"Imports"</span>, <span class="st">"LinkingTo"</span><span class="op">)</span>,</span>
+<span>        repos <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"https://cloud.r-project.org/"</span>, <span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://bioconductor.github.io/BiocManager/reference/repositories.html" class="external-link">repositories</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 <p>If you encountered an error, install packages manually.</p>
 </div>
@@ -709,6 +727,324 @@ classification</a></li>
 <div class="section level2">
 <h2 id="microbial-network-analysis">Microbial network analysis<a class="anchor" aria-label="anchor" href="#microbial-network-analysis"></a>
 </h2>
+<p>After having analyzed associations between microbial families and
+pathways in the last section, we are now interested in the microbial
+associations itself, which helps us to understand the complex interplay
+of microbial communities.</p>
+<p>In a typical microbiome network, nodes are ASVs or taxa on a certain
+rank (here family). The nodes are connected by edges, which represent
+microbial associations. Higher edge thickness corresponds to higher edge
+weight. Edges with a positive underlying association are green, those
+with a negative association are red.</p>
+<div class="figure">
+<img src="figures/Exemplary_microbiome_network.png" alt="An exemplary microbiome network." width="90%"><p class="caption">
+An exemplary microbiome network.
+</p>
+</div>
+<div class="section level3">
+<h3 id="from-read-counts-to-networks">From read counts to networks<a class="anchor" aria-label="anchor" href="#from-read-counts-to-networks"></a>
+</h3>
+<p>An essential step in microbial network learning is to obtain an
+adjacency matrix representing the network from a given read count
+matrix:</p>
+<p><img src="figures/From_counts_to_networks.png" width="90%"></p>
+<p>Association estimation methods need to take the typical
+characteristics of microbiome data into account. Here is a brief
+overview of the typical data characteristics and common approaches to
+solve them:</p>
+<p><strong>Compositionality</strong></p>
+<ul>
+<li>Data transformation (e.g., clr)</li>
+<li>See the <a href="https://microbiome.github.io/OMA/docs/devel/pages/transformation.html" class="external-link">OMA
+chapter</a> on data transformations</li>
+</ul>
+<p><strong>Zero-inflation</strong></p>
+<ul>
+<li>Adding small pseudo counts (to the zeros only!)</li>
+<li>More sophisticated zero imputation methods, e.g., the R package <a href="https://cran.r-project.org/web/packages/zCompositions/zCompositions.pdf" class="external-link">zCompositions</a>
+</li>
+</ul>
+<p><strong>High dimensionality</strong></p>
+<p>Sparse association estimation. Depending on the desired type of
+association, there’s a wide range of existing methods and R
+packages:</p>
+<ul>
+<li>Correlation:
+<ul>
+<li>SparCC (<a href="https://rdrr.io/github/zdk123/SpiecEasi/man/sparcc.html" class="external-link"><code>sparcc()</code></a>
+from <code>SpiecEasi</code> package)</li>
+<li>CCLasso (<a href="https://github.com/huayingfang/CCLasso" class="external-link">R code on
+GitHub</a>)</li>
+<li>CCREPE (<a href="https://bioconductor.org/packages/release/bioc/html/ccrepe.html" class="external-link"><code>ccrepe</code></a>
+package)</li>
+</ul>
+</li>
+<li>Conditional dependence / partial correlation:
+<ul>
+<li>SpiecEasi (<a href="https://github.com/zdk123/SpiecEasi" class="external-link"><code>SpiecEasi</code></a>
+package)</li>
+<li>SPRING (<a href="https://github.com/GraceYoon/SPRING" class="external-link"><code>SPRING</code></a>
+package)</li>
+<li>gCoda (<a href="https://github.com/huayingfang/gCoda" class="external-link">R code on
+GitHub</a>)</li>
+</ul>
+</li>
+<li>Proportionality
+<ul>
+<li>propr (<a href="https://cran.r-project.org/web/packages/propr/index.html" class="external-link"><code>propr</code></a>
+package)</li>
+</ul>
+</li>
+</ul>
+<p>These methods are also available through the R package <a href="https://github.com/stefpeschel/NetCoMi" class="external-link"><code>NetCoMi</code></a>,
+which we will use to construct and analyze a microbial association
+network. The complete workflow implemented in <code>NetCoMi</code> is
+shown in the <a href="https://microbiome.github.io/OMA/docs/devel/pages/network_learning.html#sec-network-learning-workflow" class="external-link">OMA
+chapter</a> on network learning.</p>
+</div>
+<div class="section level3">
+<h3 id="network-learning-with-netcomi">Network learning with NetCoMi<a class="anchor" aria-label="anchor" href="#network-learning-with-netcomi"></a>
+</h3>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">NetCoMi</span><span class="op">)</span></span></code></pre></div>
+<p>The function for network construction <code><a href="https://rdrr.io/pkg/NetCoMi/man/netConstruct.html" class="external-link">netConstruct()</a></code>
+offers the possibility to filter samples and taxa according to certain
+criteria. Here, we keep only taxa occurring in at least 10% of the
+samples.</p>
+<p>We use the <code>SpiecEasi</code> (Sparse Inverse Covariance for
+Ecological StatisticalInference) method to estimate microbial
+associations. The package offers two graphical model inference
+procedures: 1) Meinhausen and Bühlmann’s neighborhood selection (the MB
+method) and 2) inverse covariance selection (the glasso method). We will
+use glasso here.</p>
+<p><code>SpiecEasi</code> uses the StARS (“Stability Approach to
+Regularization Selection”) method to obtain a sparse association matrix.
+We set the StARS threshold to 0.1 to get a denser graph (default is
+0.05).</p>
+<p>Since zero replacement, normalization, and sparsification (model
+selection) is done by <code>SpiecEasi</code>, we set the corresponding
+<code>netConstruct</code> arguments to “none”.</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">net</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/NetCoMi/man/netConstruct.html" class="external-link">netConstruct</a></span><span class="op">(</span></span>
+<span>    <span class="va">tse_family</span>,</span>
+<span>    taxRank <span class="op">=</span> <span class="st">"family"</span>,</span>
+<span>    filtTax <span class="op">=</span> <span class="st">"numbSamp"</span>,</span>
+<span>    filtTaxPar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>numbSamp <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span>,</span>
+<span>    measure <span class="op">=</span> <span class="st">"spieceasi"</span>,</span>
+<span>    measurePar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"glasso"</span>, </span>
+<span>                      <span class="co"># nlambda and rep.num should be higher (30 to 50)</span></span>
+<span>                      nlambda<span class="op">=</span><span class="fl">20</span>, </span>
+<span>                      pulsar.params<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>rep.num<span class="op">=</span><span class="fl">10</span>,</span>
+<span>                                         thresh <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span>, <span class="co"># defines sparsity</span></span>
+<span>                      norm.params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"mclr"</span>, </span>
+<span>                                         types <span class="op">=</span> <span class="st">"count"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    zeroMethod <span class="op">=</span> <span class="st">"none"</span>,</span>
+<span>    normMethod <span class="op">=</span> <span class="st">"none"</span>,</span>
+<span>    sparsMethod <span class="op">=</span> <span class="st">"none"</span>,</span>
+<span>    dissFunc <span class="op">=</span> <span class="st">"signed"</span>,</span>
+<span>    seed <span class="op">=</span> <span class="fl">16092024</span><span class="op">)</span></span></code></pre></div>
+<p><code><a href="https://rdrr.io/pkg/NetCoMi/man/netConstruct.html" class="external-link">netConstruct()</a></code> returns an object of the class
+<code>microNet</code>, which contains all matrices generated during
+network construction.</p>
+<p>The object also contains an edge list, giving each edge’s estimated
+association, dissimilarity, and adjacency. Let’s take a quick look at
+the edges with the highest and lowest edge weights:</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">edgelist</span> <span class="op">&lt;-</span> <span class="va">net</span><span class="op">$</span><span class="va">edgelist1</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="va">net</span><span class="op">$</span><span class="va">edgelist1</span><span class="op">$</span><span class="va">adja</span>, </span>
+<span>                                decreasing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, <span class="op">]</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">edgelist</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                  v1               v2      asso      diss      adja</span></span>
+<span><span class="co">#&gt; 45 Odoribacteraceae    Rikenellaceae 0.3771518 0.5580538 0.4419462</span></span>
+<span><span class="co">#&gt; 10  Akkermansiaceae Odoribacteraceae 0.3090037 0.5877909 0.4122091</span></span>
+<span><span class="co">#&gt; 53    Rikenellaceae   Tannerellaceae 0.2994215 0.5918524 0.4081476</span></span>
+<span><span class="co">#&gt; 46 Odoribacteraceae   Tannerellaceae 0.2967157 0.5929942 0.4070058</span></span>
+<span><span class="co">#&gt; 17   Bacteroidaceae   Tannerellaceae 0.2913105 0.5952686 0.4047314</span></span>
+<span><span class="co">#&gt; 16   Bacteroidaceae    Rikenellaceae 0.2838756 0.5983830 0.4016170</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="va">edgelist</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                  v1                  v2       asso      diss      adja</span></span>
+<span><span class="co">#&gt; 54 Selenomonadaceae      Tannerellaceae -0.1088053 0.7445822 0.2554178</span></span>
+<span><span class="co">#&gt; 23   Clostridiaceae    Lactobacillaceae -0.1088343 0.7445920 0.2554080</span></span>
+<span><span class="co">#&gt; 40   Eubacteriaceae    Lactobacillaceae -0.1116851 0.7455485 0.2544515</span></span>
+<span><span class="co">#&gt; 27   Clostridiaceae    Selenomonadaceae -0.1404570 0.7551348 0.2448652</span></span>
+<span><span class="co">#&gt; 12  Akkermansiaceae    Selenomonadaceae -0.1423893 0.7557742 0.2442258</span></span>
+<span><span class="co">#&gt; 41 Lactobacillaceae Methanobacteriaceae -0.2651769 0.7953543 0.2046457</span></span></code></pre></div>
+<p>The <code>microNet</code> object is now passed to
+<code><a href="https://rdrr.io/pkg/NetCoMi/man/netAnalyze.html" class="external-link">netAnalyze()</a></code> to perform network analysis.</p>
+<p>The function computes several common network characteristics such as
+centrality measures, hubs, cluster assignment, and global network
+measures.</p>
+<p>The user has several options to choose from, such as a clustering
+method, how to define hubs, and whether or not to normalize centrality
+values. See the help page <code><a href="https://rdrr.io/pkg/NetCoMi/man/netAnalyze.html" class="external-link">?netAnalyze</a></code> for a description of
+the arguments.</p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">netprops</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/NetCoMi/man/netAnalyze.html" class="external-link">netAnalyze</a></span><span class="op">(</span><span class="va">net</span>,</span>
+<span>                       clustMethod <span class="op">=</span> <span class="st">"cluster_fast_greedy"</span>,</span>
+<span>                       hubPar <span class="op">=</span> <span class="st">"eigenvector"</span>,</span>
+<span>                       normDeg <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>                       gcmHeat <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<p>We use <code>NetCoMi's</code> plot function to visualize the
+network.</p>
+<p>In the first plot, node colors represent the detected clusters and
+node sizes are scaled by eigenvector centrality. Hub nodes are
+highlighted by default. Singletons are not included in the plot.</p>
+<p>Note that nodes are sometimes placed too close together so that the
+labels overlap. You may need to play around with the
+<code>repulsion</code> argument until you find a value where the labels
+are legible, but also the clusters are still well recognizable.</p>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">netprops</span>,</span>
+<span>     repulsion <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>     rmSingles <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>     shortenLabels <span class="op">=</span> <span class="st">"none"</span>,</span>
+<span>     labelScale <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>     nodeSize <span class="op">=</span> <span class="st">"eigenvector"</span>,</span>
+<span>     nodeSizeSpread <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>     nodeColor <span class="op">=</span> <span class="st">"cluster"</span>,</span>
+<span>     hubBorderCol <span class="op">=</span> <span class="st">"gray40"</span>,</span>
+<span>     cexNodes <span class="op">=</span> <span class="fl">1.8</span>,</span>
+<span>     edgeTranspHigh <span class="op">=</span> <span class="fl">20</span>,</span>
+<span>     title1 <span class="op">=</span> <span class="st">"Network properties highlighted"</span>,</span>
+<span>     showTitle <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>     cexTitle <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>     mar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">8</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="fl">0.7</span>, <span class="fl">1.1</span>, cex <span class="op">=</span> <span class="fl">1.7</span>, title <span class="op">=</span> <span class="st">"estimated correlation:"</span>,</span>
+<span>       legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"+"</span>,<span class="st">"-"</span><span class="op">)</span>, lty <span class="op">=</span> <span class="fl">1</span>, lwd <span class="op">=</span> <span class="fl">3</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#009900"</span>,<span class="st">"red"</span><span class="op">)</span>,</span>
+<span>       bty <span class="op">=</span> <span class="st">"n"</span>, horiz <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<p><img src="eccb_workflow_files/figure-html/network_plot_clusters-1.png" width="100%"></p>
+<p>We now color nodes according to their phylum. The node sizes are
+proportional to a taxon’s sum of mclr-transformed abundances.</p>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Generate vector with phylum names for node coloring</span></span>
+<span><span class="va">phyla</span> <span class="op">&lt;-</span> <span class="fu">rowData</span><span class="op">(</span><span class="va">tse</span><span class="op">)</span><span class="op">$</span><span class="va">phylum</span></span>
+<span><span class="va">phyla</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">phyla</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"NA"</span></span>
+<span><span class="va">phyla</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="va">phyla</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">phyla</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu">rowData</span><span class="op">(</span><span class="va">tse</span><span class="op">)</span><span class="op">$</span><span class="va">family</span></span>
+<span></span>
+<span><span class="co"># Create color vector</span></span>
+<span><span class="va">colvec</span> <span class="op">&lt;-</span> <span class="fu">RColorBrewer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html" class="external-link">brewer.pal</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/levels.html" class="external-link">levels</a></span><span class="op">(</span><span class="va">phyla</span><span class="op">)</span><span class="op">)</span>, <span class="st">"Set3"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">netprops</span>,</span>
+<span>     repulsion <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>     rmSingles <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>     shortenLabels <span class="op">=</span> <span class="st">"none"</span>,</span>
+<span>     labelScale <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>     nodeSize <span class="op">=</span> <span class="st">"mclr"</span>,</span>
+<span>     nodeColor <span class="op">=</span> <span class="st">"feature"</span>,</span>
+<span>     featVecCol <span class="op">=</span> <span class="va">phyla</span>,</span>
+<span>     colorVec <span class="op">=</span>  <span class="va">colvec</span>,</span>
+<span>     nodeTransp <span class="op">=</span> <span class="fl">20</span>,</span>
+<span>     highlightHubs <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>     cexNodes <span class="op">=</span> <span class="fl">1.8</span>,</span>
+<span>     edgeTranspHigh <span class="op">=</span> <span class="fl">20</span>,</span>
+<span>     title1 <span class="op">=</span> <span class="st">"Data features highlighted"</span>,</span>
+<span>     showTitle <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>     cexTitle <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>     mar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">10</span>, <span class="fl">4</span>, <span class="fl">6</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Add legends</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="fl">0.7</span>, <span class="fl">1.1</span>, cex <span class="op">=</span> <span class="fl">1.7</span>, title <span class="op">=</span> <span class="st">"estimated correlation:"</span>,</span>
+<span>       legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"+"</span>,<span class="st">"-"</span><span class="op">)</span>, lty <span class="op">=</span> <span class="fl">1</span>, lwd <span class="op">=</span> <span class="fl">3</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#009900"</span>,<span class="st">"red"</span><span class="op">)</span>,</span>
+<span>       bty <span class="op">=</span> <span class="st">"n"</span>, horiz <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Colors used in the legend should be equally transparent as in the plot</span></span>
+<span><span class="va">col_transp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/NetCoMi/man/colToTransp.html" class="external-link">colToTransp</a></span><span class="op">(</span><span class="va">colvec</span>, <span class="fl">20</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1.8</span>, <span class="fl">1.1</span>, cex <span class="op">=</span> <span class="fl">1.7</span>, pt.cex <span class="op">=</span> <span class="fl">2.5</span>, title <span class="op">=</span> <span class="st">"Phylum:"</span>,</span>
+<span>       legend<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/levels.html" class="external-link">levels</a></span><span class="op">(</span><span class="va">phyla</span><span class="op">)</span>, col <span class="op">=</span> <span class="va">col_transp</span>, bty <span class="op">=</span> <span class="st">"n"</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span></code></pre></div>
+<p><img src="eccb_workflow_files/figure-html/network_plot_phyla-1.png" width="100%"></p>
+<p>In addition to the visual analysis, we can also have a look at the
+computed network properties.</p>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">netprops</span>, numbNodes <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Component sizes</span></span>
+<span><span class="co">#&gt; ```````````````          </span></span>
+<span><span class="co">#&gt; size: 28 1</span></span>
+<span><span class="co">#&gt;    #:  1 8</span></span>
+<span><span class="co">#&gt; ______________________________</span></span>
+<span><span class="co">#&gt; Global network properties</span></span>
+<span><span class="co">#&gt; `````````````````````````</span></span>
+<span><span class="co">#&gt; Largest connected component (LCC):</span></span>
+<span><span class="co">#&gt;                                  </span></span>
+<span><span class="co">#&gt; Relative LCC size         0.77778</span></span>
+<span><span class="co">#&gt; Clustering coefficient    0.27864</span></span>
+<span><span class="co">#&gt; Modularity                0.36060</span></span>
+<span><span class="co">#&gt; Positive edge percentage 77.77778</span></span>
+<span><span class="co">#&gt; Edge density              0.14286</span></span>
+<span><span class="co">#&gt; Natural connectivity      0.05141</span></span>
+<span><span class="co">#&gt; Vertex connectivity       1.00000</span></span>
+<span><span class="co">#&gt; Edge connectivity         1.00000</span></span>
+<span><span class="co">#&gt; Average dissimilarity*    0.95366</span></span>
+<span><span class="co">#&gt; Average path length**     1.97776</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Whole network:</span></span>
+<span><span class="co">#&gt;                                  </span></span>
+<span><span class="co">#&gt; Number of components      9.00000</span></span>
+<span><span class="co">#&gt; Clustering coefficient    0.27864</span></span>
+<span><span class="co">#&gt; Modularity                0.36060</span></span>
+<span><span class="co">#&gt; Positive edge percentage 77.77778</span></span>
+<span><span class="co">#&gt; Edge density              0.08571</span></span>
+<span><span class="co">#&gt; Natural connectivity      0.03746</span></span>
+<span><span class="co">#&gt; -----</span></span>
+<span><span class="co">#&gt; *: Dissimilarity = 1 - edge weight</span></span>
+<span><span class="co">#&gt; **: Path length = Units with average dissimilarity</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ______________________________</span></span>
+<span><span class="co">#&gt; Clusters</span></span>
+<span><span class="co">#&gt; - In the whole network</span></span>
+<span><span class="co">#&gt; - Algorithm: cluster_fast_greedy</span></span>
+<span><span class="co">#&gt; ```````````````````````````````` </span></span>
+<span><span class="co">#&gt;                </span></span>
+<span><span class="co">#&gt; name: 0 1 2 3 4</span></span>
+<span><span class="co">#&gt;    #: 8 9 7 8 4</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ______________________________</span></span>
+<span><span class="co">#&gt; Hubs</span></span>
+<span><span class="co">#&gt; - In alphabetical/numerical order</span></span>
+<span><span class="co">#&gt; - Based on empirical quantiles of centralities</span></span>
+<span><span class="co">#&gt; ```````````````````````````````````````````````                 </span></span>
+<span><span class="co">#&gt;  Akkermansiaceae </span></span>
+<span><span class="co">#&gt;  Odoribacteraceae</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ______________________________</span></span>
+<span><span class="co">#&gt; Centrality measures</span></span>
+<span><span class="co">#&gt; - In decreasing order</span></span>
+<span><span class="co">#&gt; - Centrality of disconnected components is zero</span></span>
+<span><span class="co">#&gt; ````````````````````````````````````````````````</span></span>
+<span><span class="co">#&gt; Degree (unnormalized):</span></span>
+<span><span class="co">#&gt;                   </span></span>
+<span><span class="co">#&gt; Akkermansiaceae  9</span></span>
+<span><span class="co">#&gt; Odoribacteraceae 9</span></span>
+<span><span class="co">#&gt; Clostridiaceae   8</span></span>
+<span><span class="co">#&gt; Lactobacillaceae 8</span></span>
+<span><span class="co">#&gt; Rikenellaceae    8</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Betweenness centrality (normalized):</span></span>
+<span><span class="co">#&gt;                         </span></span>
+<span><span class="co">#&gt; Lactobacillaceae 0.27066</span></span>
+<span><span class="co">#&gt; Tannerellaceae   0.18234</span></span>
+<span><span class="co">#&gt; Odoribacteraceae 0.15954</span></span>
+<span><span class="co">#&gt; Akkermansiaceae  0.14245</span></span>
+<span><span class="co">#&gt; Eubacteriaceae   0.13960</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Closeness centrality (normalized):</span></span>
+<span><span class="co">#&gt;                         </span></span>
+<span><span class="co">#&gt; Akkermansiaceae  0.89177</span></span>
+<span><span class="co">#&gt; Odoribacteraceae 0.88758</span></span>
+<span><span class="co">#&gt; Rikenellaceae    0.84766</span></span>
+<span><span class="co">#&gt; Clostridiaceae   0.83774</span></span>
+<span><span class="co">#&gt; Lactobacillaceae 0.82564</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Eigenvector centrality (normalized):</span></span>
+<span><span class="co">#&gt;                         </span></span>
+<span><span class="co">#&gt; Odoribacteraceae 1.00000</span></span>
+<span><span class="co">#&gt; Akkermansiaceae  0.91584</span></span>
+<span><span class="co">#&gt; Rikenellaceae    0.78864</span></span>
+<span><span class="co">#&gt; Tannerellaceae   0.76453</span></span>
+<span><span class="co">#&gt; Clostridiaceae   0.72856</span></span></code></pre>
+</div>
 </div>
 <div class="section level2">
 <h2 id="interactive-microbiome-data-exploration-with-iseetree">Interactive microbiome data exploration with iSEEtree<a class="anchor" aria-label="anchor" href="#interactive-microbiome-data-exploration-with-iseetree"></a>
@@ -720,7 +1056,7 @@ capability by reproducing some of the plots that were previously created
 in this workshop, this time without the need of coding.</p>
 <p>Launching the app is easy. All you need to do is run the command
 <code>iSEE</code> on the TreeSE object that you want to explore.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/microbiome/iSEEtree" class="external-link">iSEEtree</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Launch app</span></span>
@@ -732,7 +1068,7 @@ in this workshop, this time without the need of coding.</p>
 <code>colData.</code> Therefore, we need to specify a custom panel
 layout with the <code>initial</code> argument to generate the alpha
 diversity plot.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Launch app with custom layout</span></span>
 <span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/iSEEtree/man/iSEE.html" class="external-link">iSEE</a></span><span class="op">(</span><span class="va">tse_family</span>, initial <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/iSEE/man/ColumnDataTable-class.html" class="external-link">ColumnDataTable</a></span><span class="op">(</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/pkg/iSEE/man/ColumnDataPlot-class.html" class="external-link">ColumnDataPlot</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
@@ -751,7 +1087,7 @@ vignettes</a>.</p>
 <div class="section level2">
 <h2 id="session-info">Session info<a class="anchor" aria-label="anchor" href="#session-info"></a>
 </h2>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; R version 4.4.1 (2024-06-14)</span></span>
 <span><span class="co">#&gt; Platform: x86_64-pc-linux-gnu</span></span>
@@ -778,111 +1114,134 @@ vignettes</a>.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; other attached packages:</span></span>
 <span><span class="co">#&gt;  [1] patchwork_1.2.0                 ggsignif_0.6.4                 </span></span>
-<span><span class="co">#&gt;  [3] shadowtext_0.1.4                scater_1.33.4                  </span></span>
-<span><span class="co">#&gt;  [5] scuttle_1.15.4                  miaViz_1.13.10                 </span></span>
-<span><span class="co">#&gt;  [7] ggraph_2.2.1                    ggplot2_3.5.1                  </span></span>
-<span><span class="co">#&gt;  [9] mia_1.13.38                     MultiAssayExperiment_1.31.5    </span></span>
-<span><span class="co">#&gt; [11] iSEEtree_0.99.6                 iSEE_2.17.4                    </span></span>
-<span><span class="co">#&gt; [13] curatedMetagenomicData_3.13.0   TreeSummarizedExperiment_2.13.0</span></span>
-<span><span class="co">#&gt; [15] Biostrings_2.73.1               XVector_0.45.0                 </span></span>
-<span><span class="co">#&gt; [17] SingleCellExperiment_1.27.2     SummarizedExperiment_1.35.1    </span></span>
-<span><span class="co">#&gt; [19] Biobase_2.65.1                  GenomicRanges_1.57.1           </span></span>
-<span><span class="co">#&gt; [21] GenomeInfoDb_1.41.1             IRanges_2.39.2                 </span></span>
-<span><span class="co">#&gt; [23] S4Vectors_0.43.2                BiocGenerics_0.51.1            </span></span>
-<span><span class="co">#&gt; [25] MatrixGenerics_1.17.0           matrixStats_1.4.1              </span></span>
-<span><span class="co">#&gt; [27] ComplexHeatmap_2.21.0           BiocManager_1.30.25            </span></span>
+<span><span class="co">#&gt;  [3] NetCoMi_1.1.0                   SPRING_1.0.4                   </span></span>
+<span><span class="co">#&gt;  [5] SpiecEasi_1.1.3                 shadowtext_0.1.4               </span></span>
+<span><span class="co">#&gt;  [7] scater_1.33.4                   scuttle_1.15.4                 </span></span>
+<span><span class="co">#&gt;  [9] miaViz_1.13.10                  ggraph_2.2.1                   </span></span>
+<span><span class="co">#&gt; [11] ggplot2_3.5.1                   mia_1.13.38                    </span></span>
+<span><span class="co">#&gt; [13] MultiAssayExperiment_1.31.5     iSEEtree_0.99.6                </span></span>
+<span><span class="co">#&gt; [15] iSEE_2.17.4                     curatedMetagenomicData_3.13.0  </span></span>
+<span><span class="co">#&gt; [17] TreeSummarizedExperiment_2.13.0 Biostrings_2.73.1              </span></span>
+<span><span class="co">#&gt; [19] XVector_0.45.0                  SingleCellExperiment_1.27.2    </span></span>
+<span><span class="co">#&gt; [21] SummarizedExperiment_1.35.1     Biobase_2.65.1                 </span></span>
+<span><span class="co">#&gt; [23] GenomicRanges_1.57.1            GenomeInfoDb_1.41.1            </span></span>
+<span><span class="co">#&gt; [25] IRanges_2.39.2                  S4Vectors_0.43.2               </span></span>
+<span><span class="co">#&gt; [27] BiocGenerics_0.51.1             MatrixGenerics_1.17.0          </span></span>
+<span><span class="co">#&gt; [29] matrixStats_1.4.1               ComplexHeatmap_2.21.0          </span></span>
+<span><span class="co">#&gt; [31] BiocManager_1.30.25            </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
-<span><span class="co">#&gt;   [1] fs_1.6.4                    DirichletMultinomial_1.47.0</span></span>
-<span><span class="co">#&gt;   [3] httr_1.4.7                  RColorBrewer_1.1-3         </span></span>
-<span><span class="co">#&gt;   [5] doParallel_1.0.17           tools_4.4.1                </span></span>
-<span><span class="co">#&gt;   [7] backports_1.5.0             utf8_1.2.4                 </span></span>
-<span><span class="co">#&gt;   [9] R6_2.5.1                    DT_0.33                    </span></span>
-<span><span class="co">#&gt;  [11] vegan_2.6-8                 lazyeval_0.2.2             </span></span>
-<span><span class="co">#&gt;  [13] mgcv_1.9-1                  GetoptLong_1.0.5           </span></span>
-<span><span class="co">#&gt;  [15] permute_0.9-7               withr_3.0.1                </span></span>
-<span><span class="co">#&gt;  [17] gridExtra_2.3               cli_3.6.3                  </span></span>
-<span><span class="co">#&gt;  [19] textshaping_0.4.0           Cairo_1.6-2                </span></span>
-<span><span class="co">#&gt;  [21] shinyjs_2.1.0               sandwich_3.1-0             </span></span>
-<span><span class="co">#&gt;  [23] labeling_0.4.3              slam_0.1-53                </span></span>
-<span><span class="co">#&gt;  [25] sass_0.4.9                  mvtnorm_1.3-1              </span></span>
-<span><span class="co">#&gt;  [27] pkgdown_2.1.0               systemfonts_1.1.0          </span></span>
-<span><span class="co">#&gt;  [29] yulab.utils_0.1.7           foreign_0.8-87             </span></span>
-<span><span class="co">#&gt;  [31] decontam_1.25.0             rstudioapi_0.16.0          </span></span>
-<span><span class="co">#&gt;  [33] RSQLite_2.3.7               gridGraphics_0.5-1         </span></span>
-<span><span class="co">#&gt;  [35] generics_0.1.3              shape_1.4.6.1              </span></span>
-<span><span class="co">#&gt;  [37] dplyr_1.1.4                 rbiom_1.0.3                </span></span>
-<span><span class="co">#&gt;  [39] Matrix_1.7-0                ggbeeswarm_0.7.2           </span></span>
-<span><span class="co">#&gt;  [41] fansi_1.0.6                 DECIPHER_3.1.4             </span></span>
-<span><span class="co">#&gt;  [43] abind_1.4-5                 lifecycle_1.0.4            </span></span>
-<span><span class="co">#&gt;  [45] yaml_2.3.10                 SparseArray_1.5.34         </span></span>
-<span><span class="co">#&gt;  [47] BiocFileCache_2.13.0        blob_1.2.4                 </span></span>
-<span><span class="co">#&gt;  [49] promises_1.3.0              ExperimentHub_2.13.1       </span></span>
-<span><span class="co">#&gt;  [51] crayon_1.5.3                shinydashboard_0.7.2       </span></span>
-<span><span class="co">#&gt;  [53] miniUI_0.1.1.1              lattice_0.22-6             </span></span>
-<span><span class="co">#&gt;  [55] beachmat_2.21.6             KEGGREST_1.45.1            </span></span>
-<span><span class="co">#&gt;  [57] pillar_1.9.0                knitr_1.48                 </span></span>
-<span><span class="co">#&gt;  [59] rjson_0.2.22                boot_1.3-31                </span></span>
-<span><span class="co">#&gt;  [61] lpSolve_5.6.20              codetools_0.2-20           </span></span>
-<span><span class="co">#&gt;  [63] glue_1.7.0                  ggfun_0.1.6                </span></span>
-<span><span class="co">#&gt;  [65] data.table_1.16.0           vctrs_0.6.5                </span></span>
-<span><span class="co">#&gt;  [67] png_0.1-8                   treeio_1.29.1              </span></span>
-<span><span class="co">#&gt;  [69] gtable_0.3.5                cachem_1.1.0               </span></span>
-<span><span class="co">#&gt;  [71] xfun_0.47                   S4Arrays_1.5.7             </span></span>
-<span><span class="co">#&gt;  [73] mime_0.12                   tidygraph_1.3.1            </span></span>
-<span><span class="co">#&gt;  [75] iterators_1.0.14            bluster_1.15.1             </span></span>
-<span><span class="co">#&gt;  [77] nlme_3.1-166                ggtree_3.13.1              </span></span>
-<span><span class="co">#&gt;  [79] bit64_4.0.5                 filelock_1.0.3             </span></span>
-<span><span class="co">#&gt;  [81] SnowballC_0.7.1             bslib_0.8.0                </span></span>
-<span><span class="co">#&gt;  [83] irlba_2.3.5.1               vipor_0.4.7                </span></span>
-<span><span class="co">#&gt;  [85] rpart_4.1.23                colorspace_2.1-1           </span></span>
-<span><span class="co">#&gt;  [87] DBI_1.2.3                   Hmisc_5.1-3                </span></span>
-<span><span class="co">#&gt;  [89] nnet_7.3-19                 tidyselect_1.2.1           </span></span>
-<span><span class="co">#&gt;  [91] bit_4.0.5                   compiler_4.4.1             </span></span>
-<span><span class="co">#&gt;  [93] curl_5.2.2                  htmlTable_2.4.3            </span></span>
-<span><span class="co">#&gt;  [95] BiocNeighbors_1.99.0        desc_1.4.3                 </span></span>
-<span><span class="co">#&gt;  [97] DelayedArray_0.31.11        colourpicker_1.3.0         </span></span>
-<span><span class="co">#&gt;  [99] checkmate_2.3.2             scales_1.3.0               </span></span>
-<span><span class="co">#&gt; [101] rappdirs_0.3.3              stringr_1.5.1              </span></span>
-<span><span class="co">#&gt; [103] digest_0.6.37               minqa_1.2.8                </span></span>
-<span><span class="co">#&gt; [105] rmarkdown_2.28              htmltools_0.5.8.1          </span></span>
-<span><span class="co">#&gt; [107] pkgconfig_2.0.3             base64enc_0.1-3            </span></span>
-<span><span class="co">#&gt; [109] lme4_1.1-35.5               sparseMatrixStats_1.17.2   </span></span>
-<span><span class="co">#&gt; [111] highr_0.11                  dbplyr_2.5.0               </span></span>
-<span><span class="co">#&gt; [113] listviewer_4.0.0            fastmap_1.2.0              </span></span>
-<span><span class="co">#&gt; [115] rlang_1.1.4                 GlobalOptions_0.1.2        </span></span>
-<span><span class="co">#&gt; [117] htmlwidgets_1.6.4           UCSC.utils_1.1.0           </span></span>
-<span><span class="co">#&gt; [119] shiny_1.9.1                 DelayedMatrixStats_1.27.3  </span></span>
-<span><span class="co">#&gt; [121] farver_2.1.2                jquerylib_0.1.4            </span></span>
-<span><span class="co">#&gt; [123] zoo_1.8-12                  jsonlite_1.8.8             </span></span>
-<span><span class="co">#&gt; [125] BiocParallel_1.39.0         tokenizers_0.3.0           </span></span>
-<span><span class="co">#&gt; [127] BiocSingular_1.21.3         magrittr_2.0.3             </span></span>
-<span><span class="co">#&gt; [129] Formula_1.2-5               GenomeInfoDbData_1.2.12    </span></span>
-<span><span class="co">#&gt; [131] ggplotify_0.1.2             munsell_0.5.1              </span></span>
-<span><span class="co">#&gt; [133] Rcpp_1.0.13                 ape_5.8                    </span></span>
-<span><span class="co">#&gt; [135] ggnewscale_0.5.0            viridis_0.6.5              </span></span>
-<span><span class="co">#&gt; [137] stringi_1.8.4               rintrojs_0.3.4             </span></span>
-<span><span class="co">#&gt; [139] zlibbioc_1.51.1             MASS_7.3-61                </span></span>
-<span><span class="co">#&gt; [141] AnnotationHub_3.13.3        plyr_1.8.9                 </span></span>
-<span><span class="co">#&gt; [143] mediation_4.5.0             parallel_4.4.1             </span></span>
-<span><span class="co">#&gt; [145] ggrepel_0.9.6               graphlayouts_1.1.1         </span></span>
-<span><span class="co">#&gt; [147] splines_4.4.1               circlize_0.4.16            </span></span>
-<span><span class="co">#&gt; [149] igraph_2.0.3                reshape2_1.4.4             </span></span>
-<span><span class="co">#&gt; [151] ScaledMatrix_1.13.0         BiocVersion_3.20.0         </span></span>
-<span><span class="co">#&gt; [153] evaluate_0.24.0             tidytext_0.4.2             </span></span>
-<span><span class="co">#&gt; [155] RcppParallel_5.1.9          nloptr_2.1.1               </span></span>
-<span><span class="co">#&gt; [157] foreach_1.5.2               tweenr_2.0.3               </span></span>
-<span><span class="co">#&gt; [159] httpuv_1.6.15               tidyr_1.3.1                </span></span>
-<span><span class="co">#&gt; [161] purrr_1.0.2                 polyclip_1.10-7            </span></span>
-<span><span class="co">#&gt; [163] clue_0.3-65                 ggforce_0.4.2              </span></span>
-<span><span class="co">#&gt; [165] rsvd_1.0.5                  xtable_1.8-4               </span></span>
-<span><span class="co">#&gt; [167] tidytree_0.4.6              janeaustenr_1.0.0          </span></span>
-<span><span class="co">#&gt; [169] later_1.3.2                 viridisLite_0.4.2          </span></span>
-<span><span class="co">#&gt; [171] ragg_1.3.3                  tibble_3.2.1               </span></span>
-<span><span class="co">#&gt; [173] aplot_0.2.3                 memoise_2.0.1              </span></span>
-<span><span class="co">#&gt; [175] beeswarm_0.4.0              AnnotationDbi_1.67.0       </span></span>
-<span><span class="co">#&gt; [177] cluster_2.1.6               shinyWidgets_0.8.6         </span></span>
-<span><span class="co">#&gt; [179] shinyAce_0.4.2</span></span></code></pre></div>
+<span><span class="co">#&gt;   [1] nnet_7.3-19                 DT_0.33                    </span></span>
+<span><span class="co">#&gt;   [3] vctrs_0.6.5                 digest_0.6.37              </span></span>
+<span><span class="co">#&gt;   [5] png_0.1-8                   corpcor_1.6.10             </span></span>
+<span><span class="co">#&gt;   [7] shape_1.4.6.1               pcaPP_2.0-5                </span></span>
+<span><span class="co">#&gt;   [9] rbiom_1.0.3                 ggrepel_0.9.6              </span></span>
+<span><span class="co">#&gt;  [11] corrplot_0.94               permute_0.9-7              </span></span>
+<span><span class="co">#&gt;  [13] mediation_4.5.0             MASS_7.3-61                </span></span>
+<span><span class="co">#&gt;  [15] pkgdown_2.1.0               reshape2_1.4.4             </span></span>
+<span><span class="co">#&gt;  [17] httpuv_1.6.15               foreach_1.5.2              </span></span>
+<span><span class="co">#&gt;  [19] withr_3.0.1                 psych_2.4.6.26             </span></span>
+<span><span class="co">#&gt;  [21] xfun_0.47                   ggfun_0.1.6                </span></span>
+<span><span class="co">#&gt;  [23] survival_3.7-0              memoise_2.0.1              </span></span>
+<span><span class="co">#&gt;  [25] ggbeeswarm_0.7.2            systemfonts_1.1.0          </span></span>
+<span><span class="co">#&gt;  [27] gtools_3.9.5                ragg_1.3.3                 </span></span>
+<span><span class="co">#&gt;  [29] tidytree_0.4.6              zoo_1.8-12                 </span></span>
+<span><span class="co">#&gt;  [31] GlobalOptions_0.1.2         pbapply_1.7-2              </span></span>
+<span><span class="co">#&gt;  [33] Formula_1.2-5               KEGGREST_1.45.1            </span></span>
+<span><span class="co">#&gt;  [35] promises_1.3.0              httr_1.4.7                 </span></span>
+<span><span class="co">#&gt;  [37] rhdf5filters_1.17.0         rhdf5_2.49.0               </span></span>
+<span><span class="co">#&gt;  [39] rstudioapi_0.16.0           shinyAce_0.4.2             </span></span>
+<span><span class="co">#&gt;  [41] UCSC.utils_1.1.0            miniUI_0.1.1.1             </span></span>
+<span><span class="co">#&gt;  [43] generics_0.1.3              base64enc_0.1-3            </span></span>
+<span><span class="co">#&gt;  [45] curl_5.2.2                  zlibbioc_1.51.1            </span></span>
+<span><span class="co">#&gt;  [47] ScaledMatrix_1.13.0         polyclip_1.10-7            </span></span>
+<span><span class="co">#&gt;  [49] doSNOW_1.0.20               quadprog_1.5-8             </span></span>
+<span><span class="co">#&gt;  [51] GenomeInfoDbData_1.2.12     ExperimentHub_2.13.1       </span></span>
+<span><span class="co">#&gt;  [53] SparseArray_1.5.34          xtable_1.8-4               </span></span>
+<span><span class="co">#&gt;  [55] stringr_1.5.1               desc_1.4.3                 </span></span>
+<span><span class="co">#&gt;  [57] ade4_1.7-22                 doParallel_1.0.17          </span></span>
+<span><span class="co">#&gt;  [59] evaluate_0.24.0             S4Arrays_1.5.7             </span></span>
+<span><span class="co">#&gt;  [61] BiocFileCache_2.13.0        preprocessCore_1.67.0      </span></span>
+<span><span class="co">#&gt;  [63] glmnet_4.1-8                pulsar_0.3.11              </span></span>
+<span><span class="co">#&gt;  [65] irlba_2.3.5.1               colorspace_2.1-1           </span></span>
+<span><span class="co">#&gt;  [67] filelock_1.0.3              shinyWidgets_0.8.6         </span></span>
+<span><span class="co">#&gt;  [69] magrittr_2.0.3              later_1.3.2                </span></span>
+<span><span class="co">#&gt;  [71] viridis_0.6.5               ggtree_3.13.1              </span></span>
+<span><span class="co">#&gt;  [73] lattice_0.22-6              DECIPHER_3.1.4             </span></span>
+<span><span class="co">#&gt;  [75] Hmisc_5.1-3                 pillar_1.9.0               </span></span>
+<span><span class="co">#&gt;  [77] nlme_3.1-166                huge_1.3.5                 </span></span>
+<span><span class="co">#&gt;  [79] iterators_1.0.14            decontam_1.25.0            </span></span>
+<span><span class="co">#&gt;  [81] compiler_4.4.1              beachmat_2.21.6            </span></span>
+<span><span class="co">#&gt;  [83] stringi_1.8.4               biomformat_1.33.0          </span></span>
+<span><span class="co">#&gt;  [85] tokenizers_0.3.0            minqa_1.2.8                </span></span>
+<span><span class="co">#&gt;  [87] plyr_1.8.9                  crayon_1.5.3               </span></span>
+<span><span class="co">#&gt;  [89] abind_1.4-5                 gridGraphics_0.5-1         </span></span>
+<span><span class="co">#&gt;  [91] graphlayouts_1.1.1          bit_4.0.5                  </span></span>
+<span><span class="co">#&gt;  [93] rootSolve_1.8.2.4           mixedCCA_1.6.2             </span></span>
+<span><span class="co">#&gt;  [95] sandwich_3.1-0              dplyr_1.1.4                </span></span>
+<span><span class="co">#&gt;  [97] fastcluster_1.2.6           codetools_0.2-20           </span></span>
+<span><span class="co">#&gt;  [99] textshaping_0.4.0           BiocSingular_1.21.3        </span></span>
+<span><span class="co">#&gt; [101] bslib_0.8.0                 slam_0.1-53                </span></span>
+<span><span class="co">#&gt; [103] phyloseq_1.49.0             GetoptLong_1.0.5           </span></span>
+<span><span class="co">#&gt; [105] tidytext_0.4.2              multtest_2.61.0            </span></span>
+<span><span class="co">#&gt; [107] mime_0.12                   splines_4.4.1              </span></span>
+<span><span class="co">#&gt; [109] circlize_0.4.16             Rcpp_1.0.13                </span></span>
+<span><span class="co">#&gt; [111] dbplyr_2.5.0                sparseMatrixStats_1.17.2   </span></span>
+<span><span class="co">#&gt; [113] qgraph_1.9.8                knitr_1.48                 </span></span>
+<span><span class="co">#&gt; [115] blob_1.2.4                  utf8_1.2.4                 </span></span>
+<span><span class="co">#&gt; [117] clue_0.3-65                 BiocVersion_3.20.0         </span></span>
+<span><span class="co">#&gt; [119] lme4_1.1-35.5               pbivnorm_0.6.0             </span></span>
+<span><span class="co">#&gt; [121] fs_1.6.4                    checkmate_2.3.2            </span></span>
+<span><span class="co">#&gt; [123] DelayedMatrixStats_1.27.3   Rdpack_2.6.1               </span></span>
+<span><span class="co">#&gt; [125] ggplotify_0.1.2             tibble_3.2.1               </span></span>
+<span><span class="co">#&gt; [127] lavaan_0.6-18               Matrix_1.7-0               </span></span>
+<span><span class="co">#&gt; [129] statmod_1.5.0               lpSolve_5.6.20             </span></span>
+<span><span class="co">#&gt; [131] tweenr_2.0.3                pkgconfig_2.0.3            </span></span>
+<span><span class="co">#&gt; [133] tools_4.4.1                 cachem_1.1.0               </span></span>
+<span><span class="co">#&gt; [135] rbibutils_2.2.16            RSQLite_2.3.7              </span></span>
+<span><span class="co">#&gt; [137] viridisLite_0.4.2           DBI_1.2.3                  </span></span>
+<span><span class="co">#&gt; [139] impute_1.79.0               fastmap_1.2.0              </span></span>
+<span><span class="co">#&gt; [141] rmarkdown_2.28              scales_1.3.0               </span></span>
+<span><span class="co">#&gt; [143] shinydashboard_0.7.2        AnnotationHub_3.13.3       </span></span>
+<span><span class="co">#&gt; [145] sass_0.4.9                  rpart_4.1.23               </span></span>
+<span><span class="co">#&gt; [147] snow_0.4-4                  farver_2.1.2               </span></span>
+<span><span class="co">#&gt; [149] tidygraph_1.3.1             mgcv_1.9-1                 </span></span>
+<span><span class="co">#&gt; [151] yaml_2.3.10                 VGAM_1.1-11                </span></span>
+<span><span class="co">#&gt; [153] foreign_0.8-87              cli_3.6.3                  </span></span>
+<span><span class="co">#&gt; [155] purrr_1.0.2                 lifecycle_1.0.4            </span></span>
+<span><span class="co">#&gt; [157] mvtnorm_1.3-1               bluster_1.15.1             </span></span>
+<span><span class="co">#&gt; [159] backports_1.5.0             rintrojs_0.3.4             </span></span>
+<span><span class="co">#&gt; [161] BiocParallel_1.39.0         gtable_0.3.5               </span></span>
+<span><span class="co">#&gt; [163] rjson_0.2.22                limma_3.61.9               </span></span>
+<span><span class="co">#&gt; [165] parallel_4.4.1              ape_5.8                    </span></span>
+<span><span class="co">#&gt; [167] SnowballC_0.7.1             jsonlite_1.8.8             </span></span>
+<span><span class="co">#&gt; [169] colourpicker_1.3.0          bit64_4.0.5                </span></span>
+<span><span class="co">#&gt; [171] glasso_1.11                 yulab.utils_0.1.7          </span></span>
+<span><span class="co">#&gt; [173] vegan_2.6-8                 BiocNeighbors_1.99.0       </span></span>
+<span><span class="co">#&gt; [175] RcppParallel_5.1.9          janeaustenr_1.0.0          </span></span>
+<span><span class="co">#&gt; [177] highr_0.11                  jquerylib_0.1.4            </span></span>
+<span><span class="co">#&gt; [179] shinyjs_2.1.0               orca_1.1-2                 </span></span>
+<span><span class="co">#&gt; [181] lazyeval_0.2.2              shiny_1.9.1                </span></span>
+<span><span class="co">#&gt; [183] dynamicTreeCut_1.63-1       htmltools_0.5.8.1          </span></span>
+<span><span class="co">#&gt; [185] GO.db_3.19.1                rappdirs_0.3.3             </span></span>
+<span><span class="co">#&gt; [187] glue_1.7.0                  treeio_1.29.1              </span></span>
+<span><span class="co">#&gt; [189] mnormt_2.1.1                jpeg_0.1-10                </span></span>
+<span><span class="co">#&gt; [191] gridExtra_2.3               boot_1.3-31                </span></span>
+<span><span class="co">#&gt; [193] igraph_2.0.3                R6_2.5.1                   </span></span>
+<span><span class="co">#&gt; [195] tidyr_1.3.1                 fdrtool_1.2.18             </span></span>
+<span><span class="co">#&gt; [197] labeling_0.4.3              listviewer_4.0.0           </span></span>
+<span><span class="co">#&gt; [199] cluster_2.1.6               Rhdf5lib_1.27.0            </span></span>
+<span><span class="co">#&gt; [201] aplot_0.2.3                 nloptr_2.1.1               </span></span>
+<span><span class="co">#&gt; [203] DirichletMultinomial_1.47.0 DelayedArray_0.31.11       </span></span>
+<span><span class="co">#&gt; [205] tidyselect_1.2.1            vipor_0.4.7                </span></span>
+<span><span class="co">#&gt; [207] WGCNA_1.72-5                htmlTable_2.4.3            </span></span>
+<span><span class="co">#&gt; [209] ggforce_0.4.2               AnnotationDbi_1.67.0       </span></span>
+<span><span class="co">#&gt; [211] filematrix_1.3              rsvd_1.0.5                 </span></span>
+<span><span class="co">#&gt; [213] munsell_0.5.1               data.table_1.16.0          </span></span>
+<span><span class="co">#&gt; [215] htmlwidgets_1.6.4           RColorBrewer_1.1-3         </span></span>
+<span><span class="co">#&gt; [217] rlang_1.1.4                 Cairo_1.6-2                </span></span>
+<span><span class="co">#&gt; [219] ggnewscale_0.5.0            fansi_1.0.6                </span></span>
+<span><span class="co">#&gt; [221] beeswarm_0.4.0</span></span></code></pre></div>
 </div>
   </div>
 
