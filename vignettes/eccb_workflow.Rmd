@@ -118,7 +118,7 @@ we will explore how to utilize the tools through a graphical interface.
 First, we load the required packages into the session. The following script
 ensures that any packages not already installed are automatically installed.
 
-```{r setup, include=FALSE}
+```{r setup, message=FALSE}
 # List of packages that we need
 packages <- c(
     "ComplexHeatmap",
@@ -243,7 +243,7 @@ for this:
  - Using the `altExp` slot within the `TreeSE` object, which is a straightforward method.
  - Employing `MultiAssayExperiment`, a more general and flexible approach, though it comes with a more complex data structure compared to `TreeSE`.
 
-For detailed information on both approaches, refer to [OMA](https://microbiome.github.io/OMA/docs/devel/pages/containers.html. In this
+For detailed information on both approaches, refer to [OMA](https://microbiome.github.io/OMA/docs/devel/pages/containers.html). In this
 tutorial, we will focus on the simpler method using the `altExp` slot.
 
 The data fetched at the beginning of this workflow is a `list` containing
