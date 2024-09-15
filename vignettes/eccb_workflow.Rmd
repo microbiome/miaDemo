@@ -21,7 +21,7 @@ Authors:
     Stefanie Peschel,
     Leo Lahti.
 <br/>
-Last modified: 12 September, 2024.
+Last modified: 15 September, 2024.
 
 <img src="figures/mia_logo.png" width="150"/>
 
@@ -120,25 +120,49 @@ ensures that any packages not already installed are automatically installed.
 
 ```{r setup, message=FALSE}
 # List of packages that we need
-library(dplyr)
-library(tidyr)
 packages <- c(
     "ComplexHeatmap",
     "curatedMetagenomicData",
+    "dplyr",
     "iSEEtree",
     "mia",
     "miaViz",
+    "NetCoMi",
     "scater",
     "shadowtext",
     "ggsignif",
-    "patchwork"
+    "patchwork",
+    "scater",
+    "SpiecEasi",
+    "tidyr"
     )
 
 # Get packages that are already installed
 packages_already_installed <- packages[ packages %in% installed.packages() ]
-
 # Get packages that need to be installed
 packages_need_to_install <- setdiff( packages, packages_already_installed )
+
+# Install GitHub packages
+if( "SpiecEasi" %in% packages_need_to_install ){
+    # SpiecEasi must be installed from "latentcor" branch
+    devtools::install_github("zdk123/SpiecEasi", force = TRUE, ref = "latentcor")
+    # Remove from installation list
+    packages_need_to_install <- packages_need_to_install[ !packages_need_to_install %in% "SpiecEasi" ]
+}
+if( "SPRING" %in% packages_need_to_install ){
+    devtools::install_github("GraceYoon/SPRING")
+    # Remove from installation list
+    packages_need_to_install <- packages_need_to_install[ !packages_need_to_install %in% "SPRING" ]
+}
+if( "NetCoMi" %in% packages_need_to_install ){
+    # NetCoMi must be installed from "TSE" branch
+    devtools::install_github(
+        "stefpeschel/NetCoMi", force = TRUE, ref = "TSE",
+        dependencies = c("Depends", "Imports", "LinkingTo"),
+        repos = c("https://cloud.r-project.org/", BiocManager::repositories()))
+    # Remove from installation list
+    packages_need_to_install <- packages_need_to_install[ !packages_need_to_install %in% "NetCoMi" ]
+}
 
 # Loads BiocManager into the session. Install it if it is not already installed.
 if( !require("BiocManager") ){
@@ -161,24 +185,6 @@ if( length(pkgs_not_loaded) > 0 ){
     stop(
         "Error in loading the following packages into the session: '",
         paste0(pkgs_not_loaded, collapse = "', '"), "'")
-}
-
-# Install GitHub packages
-if(!require(SpiecEasi)){
-    # SpiecEasi must be installed from "latentcor" branch
-    devtools::install_github("zdk123/SpiecEasi", force = TRUE, ref = "latentcor")
-}
-
-if(!require(SPRING)){
-    devtools::install_github("GraceYoon/SPRING")
-}
-
-if(!require(NetCoMi)){
-    # NetCoMi must be installed from "TSE" branch
-    devtools::install_github(
-        "stefpeschel/NetCoMi", force = TRUE, ref = "TSE",
-        dependencies = c("Depends", "Imports", "LinkingTo"),
-        repos = c("https://cloud.r-project.org/", BiocManager::repositories()))
 }
 ```
 
@@ -228,7 +234,8 @@ tse
 ```
 
 The output is a `TreeSummarizedExperiment` (`TreeSE`) object. For details on
-how to handle and access the data, refer to [data containers chapter in OMA](https://microbiome.github.io/OMA/docs/devel/pages/containers.html).
+how to handle and access the data, refer to
+[data containers chapter in OMA](https://microbiome.github.io/OMA/docs/devel/pages/containers.html).
 
 ### Preprocess
 
@@ -269,21 +276,17 @@ Community diversity is a central concept in microbiome research,
 and in the human microbiome study it has been shown that 
 the microbial diversity associated with the host health status.
 Several diversity indices are available in the ecological literature. 
-You can explore further [in the OMA book ](https://microbiome.github.io/OMA/docs/devel/pages/alpha_diversity.html) about what analysis in-term of community diversity can be analyzed using mia package.
+You can explore further [in the OMA book](https://microbiome.github.io/OMA/docs/devel/pages/alpha_diversity.html) about what analysis in-term of community diversity can be analyzed using mia package.
 
 For simplicity, let's calculate the microbial richness and alpha diversity 
 using the Shannon index (other calculation using different index also available, and you can explore further)
 
 ```{r alpha diversity}
-tse <- addAlpha(tse, 
-                             assay.type = "counts", 
-                             index = c("observed","shannon"), 
-                             name=c("observed","shannon"))
+tse <- addAlpha(tse, index = c("observed", "shannon"))
 
-#to see the observed and shannon calculation
+# to see the observed and shannon calculation
 head(tse$observed)
 head(tse$shannon)
-
 ```
 
 To see the differences between healthy and CRC group, 
@@ -299,10 +302,9 @@ function from the ggpubr package,
 and  add visually appealing p-values to the plots or if you
 want to perform more than two groups comparison.
 
-The information about diseases state is available from the colData of tse object, in the "diseases" column.
+The information about diseases state is available from the `colData` of `tse` object, in the "diseases" column.
 
 ```{r alpha diversity viz}
-
 # Changes old levels with new levels
 tse$disease <- factor(tse$disease)
 # Access the levels of the factor
@@ -312,22 +314,24 @@ disease_levels <- levels(tse$disease)
 comb <- combn(disease_levels, 2, simplify = FALSE)
 
 # Observed richness plot
-observed_plot <- scater::plotColData(tse, 
-                           y = "observed", 
-                           x = "disease",
-                           colour_by = "disease") + 
-  geom_signif(comparisons = comb, 
-              map_signif_level = FALSE) +
+observed_plot <- plotColData(
+    tse, 
+    y = "observed", 
+    x = "disease",
+    colour_by = "disease"
+    ) + 
+  geom_signif(comparisons = comb, map_signif_level = FALSE) +
   theme_bw() + 
   theme(text = element_text(size = 8))
 
 # Shannon diversity plot
-shannon_plot <- scater::plotColData(tse, 
-                           y = "shannon", 
-                           x = "disease",
-                           colour_by = "disease") +
-  geom_signif(comparisons = comb, 
-              map_signif_level = FALSE) +
+shannon_plot <- plotColData(
+    tse, 
+    y = "shannon", 
+    x = "disease",
+    colour_by = "disease"
+    ) +
+  geom_signif(comparisons = comb, map_signif_level = FALSE) +
   theme_bw() + 
   theme(text = element_text(size = 8))
 
@@ -337,7 +341,6 @@ combined_plot <- observed_plot + shannon_plot + plot_layout(guides = "collect")
 # Display the combined plot
 print(combined_plot)
 ```
-
 
 **Let's pause and think**
 
@@ -354,7 +357,7 @@ For this tutorial, let's try to calculate
 the bray-curtis distance and plot the PCoA. 
 
 ```{r PCoA}
-
+# Peerform PCoA
 tse <- runMDS(
     tse,
     FUN = vegan::vegdist,
@@ -375,15 +378,13 @@ p1 <- p + labs(
     y = paste("PCoA 2 (", round(100 * rel_eig[[2]], 1), "%", ")", sep = "")
     )
 p1
-
-
 ```
 
-Sometimes, we also want to create elipse to guide our visualization whether the microbial community in two groups is different. You can achieve it using the code below.
+Sometimes, we also want to create ellipse to guide our visualization whether the microbial community in two groups is different. You can achieve it using the code below.
 
 ```{r PCoA elipse}
-p_elipse <- p1 + stat_ellipse(aes(color = colour_by), level = 0.95)
-p_elipse
+p_ellipse <- p1 + stat_ellipse(aes(color = colour_by), level = 0.95)
+p_ellipse
 ```
 
 Additionally, we may want to also perform PERMANOVA analysis 
@@ -407,6 +408,8 @@ You can explore various example in OMA book
 for [DAA here](https://microbiome.github.io/OMA/docs/devel/pages/differential_abundance.html)
 
 ##  Microbiome data integration
+
+### Data handling
 
 As demonstrated, CRC patients appear to have altered microbiota. However, this
 observation only indicates an association and does not imply causality or reveal
@@ -511,6 +514,8 @@ altExp(tse, "pathway_prev") <- transformAssay(
 altExp(tse, "pathway_prev")
 ```
 
+### Cross-association analysis
+
 We’re now ready to perform the cross-association analysis. We will examine the
 associations between microbial families and the most abundant pathways. To
 visualize the results, we’ll use a heatmap.
@@ -539,11 +544,14 @@ add_signif <- function(j, i, x, y, width, height, fill) {
 
 # Create a heatmap
 p <- Heatmap(
+    # Correlation values
     res$cor,
     # Print values to cells
     cell_fun = add_signif,
+    # Adjust legend
     heatmap_legend_param = list(
-     title = "correlation", legend_height = unit(5, "cm")),
+        title = "correlation", legend_height = unit(5, "cm")),
+    # Adjust column names
     column_names_rot = 45,
     column_names_max_height = unit(20, "cm")
 )
@@ -613,10 +621,6 @@ These methods are also available through the R package [`NetCoMi`](https://githu
 The complete workflow implemented in `NetCoMi` is shown in the [OMA chapter](https://microbiome.github.io/OMA/docs/devel/pages/network_learning.html#sec-network-learning-workflow) on network learning.
 
 ### Network learning
-
-```{r load_netcomi, message=FALSE, warning=FALSE}
-library(NetCoMi)
-```
 
 The function for network construction `netConstruct()` offers the possibility to **filter** samples and taxa according to certain criteria. Here, we keep only **taxa occurring in at least 10% of the samples**.
 
@@ -793,7 +797,8 @@ legend(0.5, -0.8, cex = 1.5, bty = "n",
                   "Node size: Sum of mclr abundances"))
 ```
 
-In addition to the visual analysis, we can also have a look at the computed **network properties**. 
+In addition to the visual analysis, we can also have a look at the computed **network properties**.
+
 ```{r network_summary}
 summary(netprops, numbNodes = 5)
 ```
