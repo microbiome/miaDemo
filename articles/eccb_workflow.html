@@ -795,14 +795,15 @@ classification</a></li>
 <h2 id="microbial-network-analysis">Microbial network analysis<a class="anchor" aria-label="anchor" href="#microbial-network-analysis"></a>
 </h2>
 <p>After having analyzed associations between microbial families and
-pathways in the last section, we are now interested in the microbial
-associations itself, which helps us to understand the complex interplay
-of microbial communities.</p>
-<p>In a typical microbiome network, nodes are ASVs or taxa on a certain
-rank (here family). The nodes are connected by edges, which represent
-microbial associations. Higher edge thickness corresponds to higher edge
-weight. Edges with a positive underlying association are blue, those
-with a negative association are red.</p>
+pathways in the last section, we are now interested in the
+<strong>microbial associations</strong> itself, which helps us to
+understand the complex interplay of microbial communities.</p>
+<p>In a typical microbiome network, <strong>nodes are ASVs or
+taxa</strong> on a certain rank (here family). The nodes are connected
+by <strong>edges, which represent microbial associations</strong>.
+Higher edge thickness corresponds to higher edge weight. Edges with a
+positive underlying association are blue, those with a negative
+association are red.</p>
 <div class="figure">
 <img src="figures/Exemplary_microbiome_network.png" alt="An exemplary microbiome network." width="90%"><p class="caption">
 An exemplary microbiome network.
@@ -837,36 +838,44 @@ the underdetermined mathematical system). Depending on the desired type
 of association, there’s a wide range of existing methods and R
 packages:</p>
 <ul>
-<li>Correlation:
+<li>
+<strong>Correlation:</strong>
 <ul>
-<li>SparCC (<a href="https://rdrr.io/github/zdk123/SpiecEasi/man/sparcc.html" class="external-link"><code>sparcc()</code></a>
-from <code>SpiecEasi</code> package)</li>
-<li>CCLasso (<a href="https://github.com/huayingfang/CCLasso" class="external-link">R code on
-GitHub</a>)</li>
-<li>CCREPE (<a href="https://bioconductor.org/packages/release/bioc/html/ccrepe.html" class="external-link"><code>ccrepe</code></a>
-package)</li>
+<li>
+<a href="https://rdrr.io/github/zdk123/SpiecEasi/man/sparcc.html" class="external-link">SparCC</a>
+(“Sparse Correlations for Compositional data”)</li>
+<li>
+<a href="https://github.com/huayingfang/CCLasso" class="external-link">CCLasso</a>
+(“Correlation Inference for Compositional Data Through Lasso”)</li>
+<li>
+<a href="https://bioconductor.org/packages/release/bioc/html/ccrepe.html" class="external-link">CCREPE</a>
+(“Compositionality Corrected by REnormalization and PErmutation”)</li>
 </ul>
 </li>
-<li>Conditional dependence / partial correlation:
+<li>
+<strong>Conditional dependence / partial correlation:</strong>
 <ul>
-<li>SpiecEasi (<a href="https://github.com/zdk123/SpiecEasi" class="external-link"><code>SpiecEasi</code></a>
-package)</li>
-<li>SPRING (<a href="https://github.com/GraceYoon/SPRING" class="external-link"><code>SPRING</code></a>
-package)</li>
-<li>gCoda (<a href="https://github.com/huayingfang/gCoda" class="external-link">R code on
-GitHub</a>)</li>
+<li>
+<a href="https://github.com/zdk123/SpiecEasi" class="external-link">SPIEC-EASI</a>
+(“SParse InversE Covariance Estimation for Ecological ASsociation
+Inference”)</li>
+<li>
+<a href="https://github.com/GraceYoon/SPRING" class="external-link">SPRING</a>
+(“Semi-Parametric Rank-based approach for INference in Graphical
+model”)</li>
+<li><a href="https://github.com/huayingfang/gCoda" class="external-link">gCoda</a></li>
 </ul>
 </li>
-<li>Proportionality
+<li>
+<strong>Proportionality</strong>
 <ul>
-<li>propr (<a href="https://cran.r-project.org/web/packages/propr/index.html" class="external-link"><code>propr</code></a>
-package)</li>
+<li><a href="https://cran.r-project.org/web/packages/propr/index.html" class="external-link">propr</a></li>
 </ul>
 </li>
 </ul>
-<p>These methods are also available through the R package <a href="https://github.com/stefpeschel/NetCoMi" class="external-link"><code>NetCoMi</code></a>,
-which we will use to construct and analyze an association network for
-the gut microbiome.</p>
+<p>These methods are also available through the R package <a href="https://github.com/stefpeschel/NetCoMi" class="external-link">NetCoMi`</a>, which we
+will use to construct and analyze an association network for the gut
+microbiome.</p>
 <p>The complete workflow implemented in <code>NetCoMi</code> is shown in
 the <a href="https://microbiome.github.io/OMA/docs/devel/pages/network_learning.html#sec-network-learning-workflow" class="external-link">OMA
 chapter</a> on network learning.</p>
@@ -878,12 +887,11 @@ chapter</a> on network learning.</p>
 offers the possibility to <strong>filter</strong> samples and taxa
 according to certain criteria. Here, we keep only <strong>taxa occurring
 in at least 10% of the samples</strong>.</p>
-<p>We use the <code>SpiecEasi</code> (Sparse Inverse Covariance for
-Ecological StatisticalInference) method to <strong>estimate microbial
-associations</strong>. The package offers two graphical model inference
-procedures: 1) Meinhausen and Bühlmann’s neighborhood selection (the MB
-method) and 2) inverse covariance selection (the glasso method). We will
-use <strong>glasso</strong> here.</p>
+<p>We use the <strong>SPIEC-EASI</strong> method to <strong>estimate
+microbial associations</strong>. The package offers two graphical model
+inference procedures: 1) Meinhausen and Bühlmann’s neighborhood
+selection (the MB method) and 2) inverse covariance selection (the
+glasso method). We will use <strong>glasso</strong> here.</p>
 <p><code>SpiecEasi</code> uses the <strong>StARS</strong> (“Stability
 Approach to Regularization Selection”) method to obtain a <strong>sparse
 association matrix</strong>. We set the StARS threshold to 0.1 to get a
