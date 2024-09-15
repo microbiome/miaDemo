@@ -221,6 +221,11 @@ tse <- data_list[["taxonomy"]]
 assayNames(tse) <- "counts"
 data_list[["taxonomy"]] <- tse
 
+# Rename also pathway abundance. They are in relative scale
+tse <- data_list[["pathway"]]
+assayNames(tse) <- "relabundance"
+data_list[["pathway"]] <- tse
+
 # For pathway data, extract pathway information from rownames and add them to
 # rowData
 tse <- data_list[["pathway"]]
@@ -496,9 +501,9 @@ altExp(tse, "pathway_func") <- agglomerateByVariable(
 # Agglomerate based on prevalence
 altExp(tse, "pathway_prev") <- agglomerateByPrevalence(
     altExp(tse, "pathway_func"),
-    assay.type = "pathway_abundance",
-    prevalence = 0.2,
-    detection = 0.001
+    assay.type = "relabundance",
+    detection = 0.001,
+    prevalence = 0.2
     )
 ```
 
@@ -509,9 +514,8 @@ step for our functional data.
 ```{r transform_func}
 altExp(tse, "pathway_prev") <- transformAssay(
     altExp(tse, "pathway_prev"),
-    assay.type = "pathway_abundance",
-    method = "clr",
-    pseudocount = 1
+    assay.type = "relabundance",
+    method = "clr"
     )
 altExp(tse, "pathway_prev")
 ```
