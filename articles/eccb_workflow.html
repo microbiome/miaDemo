@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">miaDemo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.6</span>
       </span>
     </div>
 
@@ -89,7 +89,7 @@ Bioconductor (ECCB)</h1>
     
     
 <p>Authors: Tuomas Borman, Pande Erawijantari, Giulio Benedetti,
-Stefanie Peschel, Leo Lahti. <br> Last modified: 12 September,
+Stefanie Peschel, Leo Lahti. <br> Last modified: 15 September,
 2024.</p>
 <p><img src="figures/mia_logo.png" width="150"></p>
 <div class="section level2">
@@ -242,25 +242,49 @@ script ensures that any packages not already installed are automatically
 installed.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># List of packages that we need</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org" class="external-link">tidyr</a></span><span class="op">)</span></span>
 <span><span class="va">packages</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>    <span class="st">"ComplexHeatmap"</span>,</span>
 <span>    <span class="st">"curatedMetagenomicData"</span>,</span>
+<span>    <span class="st">"dplyr"</span>,</span>
 <span>    <span class="st">"iSEEtree"</span>,</span>
 <span>    <span class="st">"mia"</span>,</span>
 <span>    <span class="st">"miaViz"</span>,</span>
+<span>    <span class="st">"NetCoMi"</span>,</span>
 <span>    <span class="st">"scater"</span>,</span>
 <span>    <span class="st">"shadowtext"</span>,</span>
 <span>    <span class="st">"ggsignif"</span>,</span>
-<span>    <span class="st">"patchwork"</span></span>
+<span>    <span class="st">"patchwork"</span>,</span>
+<span>    <span class="st">"scater"</span>,</span>
+<span>    <span class="st">"SpiecEasi"</span>,</span>
+<span>    <span class="st">"tidyr"</span></span>
 <span>    <span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Get packages that are already installed</span></span>
 <span><span class="va">packages_already_installed</span> <span class="op">&lt;-</span> <span class="va">packages</span><span class="op">[</span> <span class="va">packages</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/installed.packages.html" class="external-link">installed.packages</a></span><span class="op">(</span><span class="op">)</span> <span class="op">]</span></span>
-<span></span>
 <span><span class="co"># Get packages that need to be installed</span></span>
-<span><span class="va">packages_need_to_install</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/setops.html" class="external-link">setdiff</a></span><span class="op">(</span> <span class="va">packages</span>, <span class="va">packages_already_installed</span> <span class="op">)</span></span>
+<span><span class="va">packages_need_to_install</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sets.html" class="external-link">setdiff</a></span><span class="op">(</span> <span class="va">packages</span>, <span class="va">packages_already_installed</span> <span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Install GitHub packages</span></span>
+<span><span class="kw">if</span><span class="op">(</span> <span class="st">"SpiecEasi"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">packages_need_to_install</span> <span class="op">)</span><span class="op">{</span></span>
+<span>    <span class="co"># SpiecEasi must be installed from "latentcor" branch</span></span>
+<span>    <span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"zdk123/SpiecEasi"</span>, force <span class="op">=</span> <span class="cn">TRUE</span>, ref <span class="op">=</span> <span class="st">"latentcor"</span><span class="op">)</span></span>
+<span>    <span class="co"># Remove from installation list</span></span>
+<span>    <span class="va">packages_need_to_install</span> <span class="op">&lt;-</span> <span class="va">packages_need_to_install</span><span class="op">[</span> <span class="op">!</span><span class="va">packages_need_to_install</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="st">"SpiecEasi"</span> <span class="op">]</span></span>
+<span><span class="op">}</span></span>
+<span><span class="kw">if</span><span class="op">(</span> <span class="st">"SPRING"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">packages_need_to_install</span> <span class="op">)</span><span class="op">{</span></span>
+<span>    <span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"GraceYoon/SPRING"</span><span class="op">)</span></span>
+<span>    <span class="co"># Remove from installation list</span></span>
+<span>    <span class="va">packages_need_to_install</span> <span class="op">&lt;-</span> <span class="va">packages_need_to_install</span><span class="op">[</span> <span class="op">!</span><span class="va">packages_need_to_install</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="st">"SPRING"</span> <span class="op">]</span></span>
+<span><span class="op">}</span></span>
+<span><span class="kw">if</span><span class="op">(</span> <span class="st">"NetCoMi"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">packages_need_to_install</span> <span class="op">)</span><span class="op">{</span></span>
+<span>    <span class="co"># NetCoMi must be installed from "TSE" branch</span></span>
+<span>    <span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span></span>
+<span>        <span class="st">"stefpeschel/NetCoMi"</span>, force <span class="op">=</span> <span class="cn">TRUE</span>, ref <span class="op">=</span> <span class="st">"TSE"</span>,</span>
+<span>        dependencies <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Depends"</span>, <span class="st">"Imports"</span>, <span class="st">"LinkingTo"</span><span class="op">)</span>,</span>
+<span>        repos <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"https://cloud.r-project.org/"</span>, <span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://bioconductor.github.io/BiocManager/reference/repositories.html" class="external-link">repositories</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="co"># Remove from installation list</span></span>
+<span>    <span class="va">packages_need_to_install</span> <span class="op">&lt;-</span> <span class="va">packages_need_to_install</span><span class="op">[</span> <span class="op">!</span><span class="va">packages_need_to_install</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="st">"NetCoMi"</span> <span class="op">]</span></span>
+<span><span class="op">}</span></span>
 <span></span>
 <span><span class="co"># Loads BiocManager into the session. Install it if it is not already installed.</span></span>
 <span><span class="kw">if</span><span class="op">(</span> <span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://bioconductor.github.io/BiocManager/" class="external-link">"BiocManager"</a></span><span class="op">)</span> <span class="op">)</span><span class="op">{</span></span>
@@ -283,24 +307,6 @@ installed.</p>
 <span>    <span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span></span>
 <span>        <span class="st">"Error in loading the following packages into the session: '"</span>,</span>
 <span>        <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">pkgs_not_loaded</span>, collapse <span class="op">=</span> <span class="st">"', '"</span><span class="op">)</span>, <span class="st">"'"</span><span class="op">)</span></span>
-<span><span class="op">}</span></span>
-<span></span>
-<span><span class="co"># Install GitHub packages</span></span>
-<span><span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va">SpiecEasi</span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span>
-<span>    <span class="co"># SpiecEasi must be installed from "latentcor" branch</span></span>
-<span>    <span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"zdk123/SpiecEasi"</span>, force <span class="op">=</span> <span class="cn">TRUE</span>, ref <span class="op">=</span> <span class="st">"latentcor"</span><span class="op">)</span></span>
-<span><span class="op">}</span></span>
-<span></span>
-<span><span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va">SPRING</span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span>
-<span>    <span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"GraceYoon/SPRING"</span><span class="op">)</span></span>
-<span><span class="op">}</span></span>
-<span></span>
-<span><span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va">NetCoMi</span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span>
-<span>    <span class="co"># NetCoMi must be installed from "TSE" branch</span></span>
-<span>    <span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span></span>
-<span>        <span class="st">"stefpeschel/NetCoMi"</span>, force <span class="op">=</span> <span class="cn">TRUE</span>, ref <span class="op">=</span> <span class="st">"TSE"</span>,</span>
-<span>        dependencies <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Depends"</span>, <span class="st">"Imports"</span>, <span class="st">"LinkingTo"</span><span class="op">)</span>,</span>
-<span>        repos <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"https://cloud.r-project.org/"</span>, <span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://bioconductor.github.io/BiocManager/reference/repositories.html" class="external-link">repositories</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 <p>If you encountered an error, install packages manually.</p>
 </div>
@@ -424,12 +430,9 @@ be analyzed using mia package.</p>
 diversity using the Shannon index (other calculation using different
 index also available, and you can explore further)</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">tse</span> <span class="op">&lt;-</span> <span class="fu">addAlpha</span><span class="op">(</span><span class="va">tse</span>, </span>
-<span>                             assay.type <span class="op">=</span> <span class="st">"counts"</span>, </span>
-<span>                             index <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"observed"</span>,<span class="st">"shannon"</span><span class="op">)</span>, </span>
-<span>                             name<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"observed"</span>,<span class="st">"shannon"</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">tse</span> <span class="op">&lt;-</span> <span class="fu">addAlpha</span><span class="op">(</span><span class="va">tse</span>, index <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"observed"</span>, <span class="st">"shannon"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co">#to see the observed and shannon calculation</span></span>
+<span><span class="co"># to see the observed and shannon calculation</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tse</span><span class="op">$</span><span class="va">observed</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1]  55  29 148  68  63  51</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tse</span><span class="op">$</span><span class="va">shannon</span><span class="op">)</span></span>
@@ -444,11 +447,11 @@ here</a> on how you can calculate p-value with adjustment using
 <code>stat_compare_means</code> function from the ggpubr package, and
 add visually appealing p-values to the plots or if you want to perform
 more than two groups comparison.</p>
-<p>The information about diseases state is available from the colData of
-tse object, in the “diseases” column.</p>
+<p>The information about diseases state is available from the
+<code>colData</code> of <code>tse</code> object, in the “diseases”
+column.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="co"># Changes old levels with new levels</span></span>
+<code class="sourceCode R"><span><span class="co"># Changes old levels with new levels</span></span>
 <span><span class="va">tse</span><span class="op">$</span><span class="va">disease</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">tse</span><span class="op">$</span><span class="va">disease</span><span class="op">)</span></span>
 <span><span class="co"># Access the levels of the factor</span></span>
 <span><span class="va">disease_levels</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/levels.html" class="external-link">levels</a></span><span class="op">(</span><span class="va">tse</span><span class="op">$</span><span class="va">disease</span><span class="op">)</span></span>
@@ -457,22 +460,24 @@ tse object, in the “diseases” column.</p>
 <span><span class="va">comb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/combn.html" class="external-link">combn</a></span><span class="op">(</span><span class="va">disease_levels</span>, <span class="fl">2</span>, simplify <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Observed richness plot</span></span>
-<span><span class="va">observed_plot</span> <span class="op">&lt;-</span> <span class="fu">scater</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/scater/man/plotColData.html" class="external-link">plotColData</a></span><span class="op">(</span><span class="va">tse</span>, </span>
-<span>                           y <span class="op">=</span> <span class="st">"observed"</span>, </span>
-<span>                           x <span class="op">=</span> <span class="st">"disease"</span>,</span>
-<span>                           colour_by <span class="op">=</span> <span class="st">"disease"</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu">geom_signif</span><span class="op">(</span>comparisons <span class="op">=</span> <span class="va">comb</span>, </span>
-<span>              map_signif_level <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span></span>
+<span><span class="va">observed_plot</span> <span class="op">&lt;-</span> <span class="fu">plotColData</span><span class="op">(</span></span>
+<span>    <span class="va">tse</span>, </span>
+<span>    y <span class="op">=</span> <span class="st">"observed"</span>, </span>
+<span>    x <span class="op">=</span> <span class="st">"disease"</span>,</span>
+<span>    colour_by <span class="op">=</span> <span class="st">"disease"</span></span>
+<span>    <span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu">geom_signif</span><span class="op">(</span>comparisons <span class="op">=</span> <span class="va">comb</span>, map_signif_level <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">theme_bw</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu">theme</span><span class="op">(</span>text <span class="op">=</span> <span class="fu">element_text</span><span class="op">(</span>size <span class="op">=</span> <span class="fl">8</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Shannon diversity plot</span></span>
-<span><span class="va">shannon_plot</span> <span class="op">&lt;-</span> <span class="fu">scater</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/scater/man/plotColData.html" class="external-link">plotColData</a></span><span class="op">(</span><span class="va">tse</span>, </span>
-<span>                           y <span class="op">=</span> <span class="st">"shannon"</span>, </span>
-<span>                           x <span class="op">=</span> <span class="st">"disease"</span>,</span>
-<span>                           colour_by <span class="op">=</span> <span class="st">"disease"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">geom_signif</span><span class="op">(</span>comparisons <span class="op">=</span> <span class="va">comb</span>, </span>
-<span>              map_signif_level <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span></span>
+<span><span class="va">shannon_plot</span> <span class="op">&lt;-</span> <span class="fu">plotColData</span><span class="op">(</span></span>
+<span>    <span class="va">tse</span>, </span>
+<span>    y <span class="op">=</span> <span class="st">"shannon"</span>, </span>
+<span>    x <span class="op">=</span> <span class="st">"disease"</span>,</span>
+<span>    colour_by <span class="op">=</span> <span class="st">"disease"</span></span>
+<span>    <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_signif</span><span class="op">(</span>comparisons <span class="op">=</span> <span class="va">comb</span>, map_signif_level <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">theme_bw</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu">theme</span><span class="op">(</span>text <span class="op">=</span> <span class="fu">element_text</span><span class="op">(</span>size <span class="op">=</span> <span class="fl">8</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
@@ -499,7 +504,7 @@ microbial ecology context.</p>
 <p>For this tutorial, let’s try to calculate the bray-curtis distance
 and plot the PCoA.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
+<code class="sourceCode R"><span><span class="co"># Peerform PCoA</span></span>
 <span><span class="va">tse</span> <span class="op">&lt;-</span> <span class="fu">runMDS</span><span class="op">(</span></span>
 <span>    <span class="va">tse</span>,</span>
 <span>    FUN <span class="op">=</span> <span class="fu">vegan</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/vegan/man/vegdist.html" class="external-link">vegdist</a></span>,</span>
@@ -521,12 +526,12 @@ and plot the PCoA.</p>
 <span>    <span class="op">)</span></span>
 <span><span class="va">p1</span></span></code></pre></div>
 <p><img src="eccb_workflow_files/figure-html/PCoA-1.png" width="700"></p>
-<p>Sometimes, we also want to create elipse to guide our visualization
+<p>Sometimes, we also want to create ellipse to guide our visualization
 whether the microbial community in two groups is different. You can
 achieve it using the code below.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">p_elipse</span> <span class="op">&lt;-</span> <span class="va">p1</span> <span class="op">+</span> <span class="fu">stat_ellipse</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>color <span class="op">=</span> <span class="va">colour_by</span><span class="op">)</span>, level <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span></span>
-<span><span class="va">p_elipse</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">p_ellipse</span> <span class="op">&lt;-</span> <span class="va">p1</span> <span class="op">+</span> <span class="fu">stat_ellipse</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>color <span class="op">=</span> <span class="va">colour_by</span><span class="op">)</span>, level <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span></span>
+<span><span class="va">p_ellipse</span></span></code></pre></div>
 <p><img src="eccb_workflow_files/figure-html/PCoA%20elipse-1.png" width="700"></p>
 <p>Additionally, we may want to also perform PERMANOVA analysis to
 further estimate whether the microbial community is statistically
@@ -552,6 +557,9 @@ here</a></p>
 <div class="section level2">
 <h2 id="microbiome-data-integration">Microbiome data integration<a class="anchor" aria-label="anchor" href="#microbiome-data-integration"></a>
 </h2>
+<div class="section level3">
+<h3 id="data-handling">Data handling<a class="anchor" aria-label="anchor" href="#data-handling"></a>
+</h3>
 <p>As demonstrated, CRC patients appear to have altered microbiota.
 However, this observation only indicates an association and does not
 imply causality or reveal underlying mechanisms. To explore complex
@@ -716,6 +724,10 @@ final preprocessing step for our functional data.</p>
 <span><span class="co">#&gt; colnames(60): GupDM_A_11 GupDM_A_15 ... GupDM_JO GupDM_JP</span></span>
 <span><span class="co">#&gt; colData names(27): study_name subject_id ... disease_stage</span></span>
 <span><span class="co">#&gt;   disease_location</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="cross-association-analysis">Cross-association analysis<a class="anchor" aria-label="anchor" href="#cross-association-analysis"></a>
+</h3>
 <p>We’re now ready to perform the cross-association analysis. We will
 examine the associations between microbial families and the most
 abundant pathways. To visualize the results, we’ll use a heatmap.</p>
@@ -747,11 +759,14 @@ abundant pathways. To visualize the results, we’ll use a heatmap.</p>
 <span></span>
 <span><span class="co"># Create a heatmap</span></span>
 <span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu">Heatmap</span><span class="op">(</span></span>
+<span>    <span class="co"># Correlation values</span></span>
 <span>    <span class="va">res</span><span class="op">$</span><span class="va">cor</span>,</span>
 <span>    <span class="co"># Print values to cells</span></span>
 <span>    cell_fun <span class="op">=</span> <span class="va">add_signif</span>,</span>
+<span>    <span class="co"># Adjust legend</span></span>
 <span>    heatmap_legend_param <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>     title <span class="op">=</span> <span class="st">"correlation"</span>, legend_height <span class="op">=</span> <span class="fu">unit</span><span class="op">(</span><span class="fl">5</span>, <span class="st">"cm"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>        title <span class="op">=</span> <span class="st">"correlation"</span>, legend_height <span class="op">=</span> <span class="fu">unit</span><span class="op">(</span><span class="fl">5</span>, <span class="st">"cm"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    <span class="co"># Adjust column names</span></span>
 <span>    column_names_rot <span class="op">=</span> <span class="fl">45</span>,</span>
 <span>    column_names_max_height <span class="op">=</span> <span class="fu">unit</span><span class="op">(</span><span class="fl">20</span>, <span class="st">"cm"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
@@ -771,6 +786,7 @@ Multiassay Analysis</a></li>
 <li><a href="https://microbiome.github.io/OMA/docs/devel/pages/integrated_learner.html" class="external-link">Multi-assay
 classification</a></li>
 </ul>
+</div>
 </div>
 <div class="section level2">
 <h2 id="microbial-network-analysis">Microbial network analysis<a class="anchor" aria-label="anchor" href="#microbial-network-analysis"></a>
@@ -855,9 +871,7 @@ chapter</a> on network learning.</p>
 <div class="section level3">
 <h3 id="network-learning">Network learning<a class="anchor" aria-label="anchor" href="#network-learning"></a>
 </h3>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">NetCoMi</span><span class="op">)</span></span></code></pre></div>
-<p>The function for network construction <code><a href="https://rdrr.io/pkg/NetCoMi/man/netConstruct.html" class="external-link">netConstruct()</a></code>
+<p>The function for network construction <code>netConstruct()</code>
 offers the possibility to <strong>filter</strong> samples and taxa
 according to certain criteria. Here, we keep only <strong>taxa occurring
 in at least 10% of the samples</strong>.</p>
@@ -874,8 +888,8 @@ denser graph (the default is 0.05).</p>
 <p>Since zero replacement, normalization, and sparsification (model
 selection) is done by <code>SpiecEasi</code>, we set the corresponding
 <code>netConstruct</code> arguments to “none”.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">net</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/NetCoMi/man/netConstruct.html" class="external-link">netConstruct</a></span><span class="op">(</span></span>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">net</span> <span class="op">&lt;-</span> <span class="fu">netConstruct</span><span class="op">(</span></span>
 <span>    <span class="va">tse_family</span>,</span>
 <span>    taxRank <span class="op">=</span> <span class="st">"family"</span>,</span>
 <span>    filtTax <span class="op">=</span> <span class="st">"numbSamp"</span>,</span>
@@ -893,13 +907,13 @@ selection) is done by <code>SpiecEasi</code>, we set the corresponding
 <span>    sparsMethod <span class="op">=</span> <span class="st">"none"</span>,</span>
 <span>    dissFunc <span class="op">=</span> <span class="st">"signed"</span>,</span>
 <span>    seed <span class="op">=</span> <span class="fl">16092024</span><span class="op">)</span></span></code></pre></div>
-<p><code><a href="https://rdrr.io/pkg/NetCoMi/man/netConstruct.html" class="external-link">netConstruct()</a></code> returns an object of the class
+<p><code>netConstruct()</code> returns an object of the class
 <code>microNet</code>, which contains all matrices generated during
 network construction.</p>
 <p>The object also contains an <strong>edge list</strong>, giving each
 edge’s estimated association, dissimilarity, and adjacency. Let’s take a
 quick look at the edges with the highest and lowest edge weights:</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">edgelist</span> <span class="op">&lt;-</span> <span class="va">net</span><span class="op">$</span><span class="va">edgelist1</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="va">net</span><span class="op">$</span><span class="va">edgelist1</span><span class="op">$</span><span class="va">adja</span>, </span>
 <span>                                decreasing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, <span class="op">]</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">edgelist</span><span class="op">)</span></span>
@@ -923,17 +937,17 @@ quick look at the edges with the highest and lowest edge weights:</p>
 <h3 id="network-analysis">Network analysis<a class="anchor" aria-label="anchor" href="#network-analysis"></a>
 </h3>
 <p>The <code>microNet</code> object is now passed to
-<code><a href="https://rdrr.io/pkg/NetCoMi/man/netAnalyze.html" class="external-link">netAnalyze()</a></code> to perform <strong>network
+<code>netAnalyze()</code> to perform <strong>network
 analysis</strong>.</p>
 <p>The function computes several common network characteristics such as
 centrality measures, hubs, cluster assignment, and global network
 measures.</p>
 <p>The user has several options to choose from, such as a clustering
 method, how to define hubs, and whether or not to normalize centrality
-values. See the help page <code><a href="https://rdrr.io/pkg/NetCoMi/man/netAnalyze.html" class="external-link">?netAnalyze</a></code> for a description of
+values. See the help page <code>?netAnalyze</code> for a description of
 the arguments.</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">netprops</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/NetCoMi/man/netAnalyze.html" class="external-link">netAnalyze</a></span><span class="op">(</span><span class="va">net</span>,</span>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">netprops</span> <span class="op">&lt;-</span> <span class="fu">netAnalyze</span><span class="op">(</span><span class="va">net</span>,</span>
 <span>                       clustMethod <span class="op">=</span> <span class="st">"cluster_fast_greedy"</span>,</span>
 <span>                       hubPar <span class="op">=</span> <span class="st">"eigenvector"</span>,</span>
 <span>                       normDeg <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -949,7 +963,7 @@ included in the plot.</p>
 labels overlap. You may need to play around with the
 <code>repulsion</code> argument until you find a value where the labels
 are legible, but also the clusters are still well recognizable.</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Palette with distinguishable colors</span></span>
 <span><span class="va">nodecols</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#E69F00"</span>, <span class="st">"#56B4E9"</span>, <span class="st">"#009E73"</span>,  <span class="st">"#CC79A7"</span>, <span class="st">"#F0E442"</span>, </span>
 <span>              <span class="st">"#0072B2"</span>, <span class="st">"#D55E00"</span><span class="op">)</span></span>
@@ -987,7 +1001,7 @@ are legible, but also the clusters are still well recognizable.</p>
 <strong>phylum</strong>. The <strong>node sizes</strong> are
 proportional to a taxon’s sum of <strong>mclr-transformed
 abundances</strong>.</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Generate vector with phylum names for node coloring</span></span>
 <span><span class="va">phyla</span> <span class="op">&lt;-</span> <span class="fu">rowData</span><span class="op">(</span><span class="va">tse_family</span><span class="op">)</span><span class="op">$</span><span class="va">phylum</span></span>
 <span></span>
@@ -999,7 +1013,7 @@ abundances</strong>.</p>
 <span><span class="va">phyla</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="va">phyla</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Make level "Other" the last one</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/levels.html" class="external-link">levels</a></span><span class="op">(</span><span class="va">phyla</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://generics.r-lib.org/reference/setops.html" class="external-link">setdiff</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/levels.html" class="external-link">levels</a></span><span class="op">(</span><span class="va">phyla</span><span class="op">)</span>, <span class="st">"Other"</span><span class="op">)</span>, <span class="st">"Other"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/levels.html" class="external-link">levels</a></span><span class="op">(</span><span class="va">phyla</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sets.html" class="external-link">setdiff</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/levels.html" class="external-link">levels</a></span><span class="op">(</span><span class="va">phyla</span><span class="op">)</span>, <span class="st">"Other"</span><span class="op">)</span>, <span class="st">"Other"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Assign family names</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">phyla</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu">rowData</span><span class="op">(</span><span class="va">tse_family</span><span class="op">)</span><span class="op">$</span><span class="va">family</span></span>
@@ -1033,7 +1047,7 @@ abundances</strong>.</p>
 <span>       bty <span class="op">=</span> <span class="st">"n"</span>, horiz <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Colors used in the legend should be equally transparent as in the plot</span></span>
-<span><span class="va">col_transp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/NetCoMi/man/colToTransp.html" class="external-link">colToTransp</a></span><span class="op">(</span><span class="va">colors_phylum</span>, <span class="fl">20</span><span class="op">)</span></span>
+<span><span class="va">col_transp</span> <span class="op">&lt;-</span> <span class="fu">colToTransp</span><span class="op">(</span><span class="va">colors_phylum</span>, <span class="fl">20</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1.8</span>, <span class="fl">1.1</span>, cex <span class="op">=</span> <span class="fl">1.7</span>, pt.cex <span class="op">=</span> <span class="fl">2.5</span>, title <span class="op">=</span> <span class="st">"Phylum:"</span>,</span>
 <span>       legend<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/levels.html" class="external-link">levels</a></span><span class="op">(</span><span class="va">phyla</span><span class="op">)</span>, col <span class="op">=</span> <span class="va">col_transp</span>, bty <span class="op">=</span> <span class="st">"n"</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span>
@@ -1045,7 +1059,7 @@ abundances</strong>.</p>
 <p><img src="eccb_workflow_files/figure-html/network_plot_phyla-1.png" width="100%"></p>
 <p>In addition to the visual analysis, we can also have a look at the
 computed <strong>network properties</strong>.</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">netprops</span>, numbNodes <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Component sizes</span></span>
@@ -1161,7 +1175,7 @@ capability by reproducing some of the plots that were previously created
 in this workshop, this time without the need of coding.</p>
 <p>Launching the app is easy. All you need to do is run the command
 <code>iSEE</code> on the TreeSE object that you want to explore.</p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/microbiome/iSEEtree" class="external-link">iSEEtree</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Launch app</span></span>
@@ -1173,7 +1187,7 @@ in this workshop, this time without the need of coding.</p>
 <code>colData.</code> Therefore, we need to specify a custom panel
 layout with the <code>initial</code> argument to generate the alpha
 diversity plot.</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Launch app with custom layout</span></span>
 <span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/iSEEtree/man/iSEE.html" class="external-link">iSEE</a></span><span class="op">(</span><span class="va">tse_family</span>, initial <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/iSEE/man/ColumnDataTable-class.html" class="external-link">ColumnDataTable</a></span><span class="op">(</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/pkg/iSEE/man/ColumnDataPlot-class.html" class="external-link">ColumnDataPlot</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
@@ -1192,7 +1206,7 @@ vignettes</a>.</p>
 <div class="section level2">
 <h2 id="session-info">Session info<a class="anchor" aria-label="anchor" href="#session-info"></a>
 </h2>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; R version 4.4.1 (2024-06-14)</span></span>
 <span><span class="co">#&gt; Platform: x86_64-pc-linux-gnu</span></span>
@@ -1218,23 +1232,22 @@ vignettes</a>.</p>
 <span><span class="co">#&gt; [8] methods   base     </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; other attached packages:</span></span>
-<span><span class="co">#&gt;  [1] NetCoMi_1.1.0                   SPRING_1.0.4                   </span></span>
-<span><span class="co">#&gt;  [3] SpiecEasi_1.1.3                 patchwork_1.2.0                </span></span>
-<span><span class="co">#&gt;  [5] ggsignif_0.6.4                  shadowtext_0.1.4               </span></span>
-<span><span class="co">#&gt;  [7] scater_1.33.4                   scuttle_1.15.4                 </span></span>
+<span><span class="co">#&gt;  [1] tidyr_1.3.1                     patchwork_1.2.0                </span></span>
+<span><span class="co">#&gt;  [3] ggsignif_0.6.4                  shadowtext_0.1.4               </span></span>
+<span><span class="co">#&gt;  [5] scater_1.33.4                   scuttle_1.15.4                 </span></span>
+<span><span class="co">#&gt;  [7] NetCoMi_1.1.0                   SpiecEasi_1.1.3                </span></span>
 <span><span class="co">#&gt;  [9] miaViz_1.13.10                  ggraph_2.2.1                   </span></span>
 <span><span class="co">#&gt; [11] ggplot2_3.5.1                   mia_1.13.38                    </span></span>
 <span><span class="co">#&gt; [13] MultiAssayExperiment_1.31.5     iSEEtree_0.99.6                </span></span>
-<span><span class="co">#&gt; [15] iSEE_2.17.4                     curatedMetagenomicData_3.13.0  </span></span>
-<span><span class="co">#&gt; [17] TreeSummarizedExperiment_2.13.0 Biostrings_2.73.1              </span></span>
-<span><span class="co">#&gt; [19] XVector_0.45.0                  SingleCellExperiment_1.27.2    </span></span>
-<span><span class="co">#&gt; [21] SummarizedExperiment_1.35.1     Biobase_2.65.1                 </span></span>
-<span><span class="co">#&gt; [23] GenomicRanges_1.57.1            GenomeInfoDb_1.41.1            </span></span>
-<span><span class="co">#&gt; [25] IRanges_2.39.2                  S4Vectors_0.43.2               </span></span>
-<span><span class="co">#&gt; [27] BiocGenerics_0.51.1             MatrixGenerics_1.17.0          </span></span>
-<span><span class="co">#&gt; [29] matrixStats_1.4.1               ComplexHeatmap_2.21.0          </span></span>
-<span><span class="co">#&gt; [31] BiocManager_1.30.25             tidyr_1.3.1                    </span></span>
-<span><span class="co">#&gt; [33] dplyr_1.1.4                    </span></span>
+<span><span class="co">#&gt; [15] iSEE_2.17.4                     dplyr_1.1.4                    </span></span>
+<span><span class="co">#&gt; [17] curatedMetagenomicData_3.13.0   TreeSummarizedExperiment_2.13.0</span></span>
+<span><span class="co">#&gt; [19] Biostrings_2.73.1               XVector_0.45.0                 </span></span>
+<span><span class="co">#&gt; [21] SingleCellExperiment_1.27.2     SummarizedExperiment_1.35.1    </span></span>
+<span><span class="co">#&gt; [23] Biobase_2.65.1                  GenomicRanges_1.57.1           </span></span>
+<span><span class="co">#&gt; [25] GenomeInfoDb_1.41.1             IRanges_2.39.2                 </span></span>
+<span><span class="co">#&gt; [27] S4Vectors_0.43.2                BiocGenerics_0.51.1            </span></span>
+<span><span class="co">#&gt; [29] MatrixGenerics_1.17.0           matrixStats_1.4.1              </span></span>
+<span><span class="co">#&gt; [31] ComplexHeatmap_2.21.0           BiocManager_1.30.25            </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
 <span><span class="co">#&gt;   [1] nnet_7.3-19                 DT_0.33                    </span></span>
@@ -1243,110 +1256,111 @@ vignettes</a>.</p>
 <span><span class="co">#&gt;   [7] shape_1.4.6.1               pcaPP_2.0-5                </span></span>
 <span><span class="co">#&gt;   [9] rbiom_1.0.3                 ggrepel_0.9.6              </span></span>
 <span><span class="co">#&gt;  [11] corrplot_0.94               permute_0.9-7              </span></span>
-<span><span class="co">#&gt;  [13] mediation_4.5.0             MASS_7.3-61                </span></span>
-<span><span class="co">#&gt;  [15] pkgdown_2.1.0               reshape2_1.4.4             </span></span>
-<span><span class="co">#&gt;  [17] httpuv_1.6.15               foreach_1.5.2              </span></span>
-<span><span class="co">#&gt;  [19] withr_3.0.1                 psych_2.4.6.26             </span></span>
-<span><span class="co">#&gt;  [21] xfun_0.47                   ggfun_0.1.6                </span></span>
-<span><span class="co">#&gt;  [23] survival_3.7-0              memoise_2.0.1              </span></span>
-<span><span class="co">#&gt;  [25] ggbeeswarm_0.7.2            systemfonts_1.1.0          </span></span>
-<span><span class="co">#&gt;  [27] gtools_3.9.5                ragg_1.3.3                 </span></span>
-<span><span class="co">#&gt;  [29] tidytree_0.4.6              zoo_1.8-12                 </span></span>
-<span><span class="co">#&gt;  [31] GlobalOptions_0.1.2         pbapply_1.7-2              </span></span>
-<span><span class="co">#&gt;  [33] Formula_1.2-5               KEGGREST_1.45.1            </span></span>
-<span><span class="co">#&gt;  [35] promises_1.3.0              httr_1.4.7                 </span></span>
-<span><span class="co">#&gt;  [37] rhdf5filters_1.17.0         rhdf5_2.49.0               </span></span>
-<span><span class="co">#&gt;  [39] rstudioapi_0.16.0           shinyAce_0.4.2             </span></span>
-<span><span class="co">#&gt;  [41] UCSC.utils_1.1.0            miniUI_0.1.1.1             </span></span>
-<span><span class="co">#&gt;  [43] generics_0.1.3              base64enc_0.1-3            </span></span>
-<span><span class="co">#&gt;  [45] curl_5.2.2                  zlibbioc_1.51.1            </span></span>
-<span><span class="co">#&gt;  [47] ScaledMatrix_1.13.0         polyclip_1.10-7            </span></span>
-<span><span class="co">#&gt;  [49] doSNOW_1.0.20               quadprog_1.5-8             </span></span>
-<span><span class="co">#&gt;  [51] GenomeInfoDbData_1.2.12     ExperimentHub_2.13.1       </span></span>
-<span><span class="co">#&gt;  [53] SparseArray_1.5.34          xtable_1.8-4               </span></span>
-<span><span class="co">#&gt;  [55] stringr_1.5.1               desc_1.4.3                 </span></span>
-<span><span class="co">#&gt;  [57] ade4_1.7-22                 doParallel_1.0.17          </span></span>
-<span><span class="co">#&gt;  [59] evaluate_0.24.0             S4Arrays_1.5.7             </span></span>
-<span><span class="co">#&gt;  [61] BiocFileCache_2.13.0        preprocessCore_1.67.0      </span></span>
-<span><span class="co">#&gt;  [63] glmnet_4.1-8                pulsar_0.3.11              </span></span>
-<span><span class="co">#&gt;  [65] irlba_2.3.5.1               colorspace_2.1-1           </span></span>
-<span><span class="co">#&gt;  [67] filelock_1.0.3              shinyWidgets_0.8.6         </span></span>
-<span><span class="co">#&gt;  [69] magrittr_2.0.3              later_1.3.2                </span></span>
-<span><span class="co">#&gt;  [71] viridis_0.6.5               ggtree_3.13.1              </span></span>
-<span><span class="co">#&gt;  [73] lattice_0.22-6              DECIPHER_3.1.4             </span></span>
-<span><span class="co">#&gt;  [75] cowplot_1.1.3               Hmisc_5.1-3                </span></span>
-<span><span class="co">#&gt;  [77] pillar_1.9.0                nlme_3.1-166               </span></span>
-<span><span class="co">#&gt;  [79] huge_1.3.5                  iterators_1.0.14           </span></span>
-<span><span class="co">#&gt;  [81] decontam_1.25.0             compiler_4.4.1             </span></span>
-<span><span class="co">#&gt;  [83] beachmat_2.21.6             stringi_1.8.4              </span></span>
-<span><span class="co">#&gt;  [85] biomformat_1.33.0           tokenizers_0.3.0           </span></span>
-<span><span class="co">#&gt;  [87] minqa_1.2.8                 plyr_1.8.9                 </span></span>
-<span><span class="co">#&gt;  [89] crayon_1.5.3                abind_1.4-8                </span></span>
-<span><span class="co">#&gt;  [91] gridGraphics_0.5-1          graphlayouts_1.1.1         </span></span>
-<span><span class="co">#&gt;  [93] bit_4.0.5                   rootSolve_1.8.2.4          </span></span>
-<span><span class="co">#&gt;  [95] mixedCCA_1.6.2              sandwich_3.1-0             </span></span>
-<span><span class="co">#&gt;  [97] fastcluster_1.2.6           codetools_0.2-20           </span></span>
-<span><span class="co">#&gt;  [99] textshaping_0.4.0           BiocSingular_1.21.3        </span></span>
-<span><span class="co">#&gt; [101] bslib_0.8.0                 slam_0.1-53                </span></span>
-<span><span class="co">#&gt; [103] phyloseq_1.49.0             GetoptLong_1.0.5           </span></span>
-<span><span class="co">#&gt; [105] tidytext_0.4.2              multtest_2.61.0            </span></span>
-<span><span class="co">#&gt; [107] mime_0.12                   splines_4.4.1              </span></span>
-<span><span class="co">#&gt; [109] circlize_0.4.16             Rcpp_1.0.13                </span></span>
-<span><span class="co">#&gt; [111] dbplyr_2.5.0                sparseMatrixStats_1.17.2   </span></span>
-<span><span class="co">#&gt; [113] qgraph_1.9.8                knitr_1.48                 </span></span>
-<span><span class="co">#&gt; [115] blob_1.2.4                  utf8_1.2.4                 </span></span>
-<span><span class="co">#&gt; [117] clue_0.3-65                 BiocVersion_3.20.0         </span></span>
-<span><span class="co">#&gt; [119] lme4_1.1-35.5               pbivnorm_0.6.0             </span></span>
-<span><span class="co">#&gt; [121] fs_1.6.4                    checkmate_2.3.2            </span></span>
-<span><span class="co">#&gt; [123] DelayedMatrixStats_1.27.3   Rdpack_2.6.1               </span></span>
-<span><span class="co">#&gt; [125] ggplotify_0.1.2             lavaan_0.6-18              </span></span>
-<span><span class="co">#&gt; [127] tibble_3.2.1                Matrix_1.7-0               </span></span>
-<span><span class="co">#&gt; [129] statmod_1.5.0               lpSolve_5.6.21             </span></span>
-<span><span class="co">#&gt; [131] tweenr_2.0.3                pkgconfig_2.0.3            </span></span>
-<span><span class="co">#&gt; [133] tools_4.4.1                 cachem_1.1.0               </span></span>
-<span><span class="co">#&gt; [135] rbibutils_2.2.16            RSQLite_2.3.7              </span></span>
-<span><span class="co">#&gt; [137] viridisLite_0.4.2           DBI_1.2.3                  </span></span>
-<span><span class="co">#&gt; [139] impute_1.79.0               fastmap_1.2.0              </span></span>
-<span><span class="co">#&gt; [141] rmarkdown_2.28              scales_1.3.0               </span></span>
-<span><span class="co">#&gt; [143] shinydashboard_0.7.2        AnnotationHub_3.13.3       </span></span>
-<span><span class="co">#&gt; [145] sass_0.4.9                  rpart_4.1.23               </span></span>
-<span><span class="co">#&gt; [147] snow_0.4-4                  farver_2.1.2               </span></span>
-<span><span class="co">#&gt; [149] tidygraph_1.3.1             mgcv_1.9-1                 </span></span>
-<span><span class="co">#&gt; [151] yaml_2.3.10                 VGAM_1.1-11                </span></span>
-<span><span class="co">#&gt; [153] foreign_0.8-87              cli_3.6.3                  </span></span>
-<span><span class="co">#&gt; [155] purrr_1.0.2                 lifecycle_1.0.4            </span></span>
-<span><span class="co">#&gt; [157] mvtnorm_1.3-1               bluster_1.15.1             </span></span>
-<span><span class="co">#&gt; [159] backports_1.5.0             rintrojs_0.3.4             </span></span>
-<span><span class="co">#&gt; [161] BiocParallel_1.39.0         gtable_0.3.5               </span></span>
-<span><span class="co">#&gt; [163] rjson_0.2.22                limma_3.61.9               </span></span>
-<span><span class="co">#&gt; [165] parallel_4.4.1              ape_5.8                    </span></span>
-<span><span class="co">#&gt; [167] SnowballC_0.7.1             jsonlite_1.8.8             </span></span>
-<span><span class="co">#&gt; [169] colourpicker_1.3.0          bit64_4.0.5                </span></span>
-<span><span class="co">#&gt; [171] glasso_1.11                 yulab.utils_0.1.7          </span></span>
-<span><span class="co">#&gt; [173] vegan_2.6-8                 BiocNeighbors_1.99.0       </span></span>
-<span><span class="co">#&gt; [175] RcppParallel_5.1.9          janeaustenr_1.0.0          </span></span>
-<span><span class="co">#&gt; [177] highr_0.11                  jquerylib_0.1.4            </span></span>
-<span><span class="co">#&gt; [179] shinyjs_2.1.0               orca_1.1-2                 </span></span>
-<span><span class="co">#&gt; [181] lazyeval_0.2.2              shiny_1.9.1                </span></span>
-<span><span class="co">#&gt; [183] dynamicTreeCut_1.63-1       htmltools_0.5.8.1          </span></span>
-<span><span class="co">#&gt; [185] GO.db_3.19.1                rappdirs_0.3.3             </span></span>
-<span><span class="co">#&gt; [187] glue_1.7.0                  treeio_1.29.1              </span></span>
-<span><span class="co">#&gt; [189] mnormt_2.1.1                jpeg_0.1-10                </span></span>
-<span><span class="co">#&gt; [191] gridExtra_2.3               boot_1.3-31                </span></span>
-<span><span class="co">#&gt; [193] igraph_2.0.3                R6_2.5.1                   </span></span>
-<span><span class="co">#&gt; [195] fdrtool_1.2.18              labeling_0.4.3             </span></span>
-<span><span class="co">#&gt; [197] listviewer_4.0.0            cluster_2.1.6              </span></span>
-<span><span class="co">#&gt; [199] Rhdf5lib_1.27.0             aplot_0.2.3                </span></span>
-<span><span class="co">#&gt; [201] nloptr_2.1.1                DirichletMultinomial_1.47.0</span></span>
-<span><span class="co">#&gt; [203] DelayedArray_0.31.11        tidyselect_1.2.1           </span></span>
-<span><span class="co">#&gt; [205] vipor_0.4.7                 WGCNA_1.72-5               </span></span>
-<span><span class="co">#&gt; [207] htmlTable_2.4.3             ggforce_0.4.2              </span></span>
-<span><span class="co">#&gt; [209] AnnotationDbi_1.67.0        filematrix_1.3             </span></span>
-<span><span class="co">#&gt; [211] rsvd_1.0.5                  munsell_0.5.1              </span></span>
-<span><span class="co">#&gt; [213] data.table_1.16.0           htmlwidgets_1.6.4          </span></span>
-<span><span class="co">#&gt; [215] RColorBrewer_1.1-3          rlang_1.1.4                </span></span>
-<span><span class="co">#&gt; [217] Cairo_1.6-2                 ggnewscale_0.5.0           </span></span>
-<span><span class="co">#&gt; [219] fansi_1.0.6                 beeswarm_0.4.0</span></span></code></pre></div>
+<span><span class="co">#&gt;  [13] mediation_4.5.0             SPRING_1.0.4               </span></span>
+<span><span class="co">#&gt;  [15] MASS_7.3-61                 pkgdown_2.1.0              </span></span>
+<span><span class="co">#&gt;  [17] reshape2_1.4.4              httpuv_1.6.15              </span></span>
+<span><span class="co">#&gt;  [19] foreach_1.5.2               withr_3.0.1                </span></span>
+<span><span class="co">#&gt;  [21] psych_2.4.6.26              xfun_0.47                  </span></span>
+<span><span class="co">#&gt;  [23] ggfun_0.1.6                 survival_3.7-0             </span></span>
+<span><span class="co">#&gt;  [25] memoise_2.0.1               ggbeeswarm_0.7.2           </span></span>
+<span><span class="co">#&gt;  [27] systemfonts_1.1.0           gtools_3.9.5               </span></span>
+<span><span class="co">#&gt;  [29] ragg_1.3.3                  tidytree_0.4.6             </span></span>
+<span><span class="co">#&gt;  [31] zoo_1.8-12                  GlobalOptions_0.1.2        </span></span>
+<span><span class="co">#&gt;  [33] pbapply_1.7-2               Formula_1.2-5              </span></span>
+<span><span class="co">#&gt;  [35] KEGGREST_1.45.1             promises_1.3.0             </span></span>
+<span><span class="co">#&gt;  [37] httr_1.4.7                  rhdf5filters_1.17.0        </span></span>
+<span><span class="co">#&gt;  [39] rhdf5_2.49.0                rstudioapi_0.16.0          </span></span>
+<span><span class="co">#&gt;  [41] shinyAce_0.4.2              UCSC.utils_1.1.0           </span></span>
+<span><span class="co">#&gt;  [43] miniUI_0.1.1.1              generics_0.1.3             </span></span>
+<span><span class="co">#&gt;  [45] base64enc_0.1-3             curl_5.2.2                 </span></span>
+<span><span class="co">#&gt;  [47] zlibbioc_1.51.1             ScaledMatrix_1.13.0        </span></span>
+<span><span class="co">#&gt;  [49] polyclip_1.10-7             doSNOW_1.0.20              </span></span>
+<span><span class="co">#&gt;  [51] GenomeInfoDbData_1.2.12     quadprog_1.5-8             </span></span>
+<span><span class="co">#&gt;  [53] ExperimentHub_2.13.1        SparseArray_1.5.34         </span></span>
+<span><span class="co">#&gt;  [55] xtable_1.8-4                stringr_1.5.1              </span></span>
+<span><span class="co">#&gt;  [57] desc_1.4.3                  ade4_1.7-22                </span></span>
+<span><span class="co">#&gt;  [59] doParallel_1.0.17           evaluate_0.24.0            </span></span>
+<span><span class="co">#&gt;  [61] S4Arrays_1.5.7              BiocFileCache_2.13.0       </span></span>
+<span><span class="co">#&gt;  [63] preprocessCore_1.67.0       glmnet_4.1-8               </span></span>
+<span><span class="co">#&gt;  [65] pulsar_0.3.11               irlba_2.3.5.1              </span></span>
+<span><span class="co">#&gt;  [67] colorspace_2.1-1            filelock_1.0.3             </span></span>
+<span><span class="co">#&gt;  [69] shinyWidgets_0.8.6          magrittr_2.0.3             </span></span>
+<span><span class="co">#&gt;  [71] later_1.3.2                 viridis_0.6.5              </span></span>
+<span><span class="co">#&gt;  [73] ggtree_3.13.1               lattice_0.22-6             </span></span>
+<span><span class="co">#&gt;  [75] DECIPHER_3.1.4              cowplot_1.1.3              </span></span>
+<span><span class="co">#&gt;  [77] Hmisc_5.1-3                 pillar_1.9.0               </span></span>
+<span><span class="co">#&gt;  [79] nlme_3.1-166                huge_1.3.5                 </span></span>
+<span><span class="co">#&gt;  [81] iterators_1.0.14            decontam_1.25.0            </span></span>
+<span><span class="co">#&gt;  [83] compiler_4.4.1              beachmat_2.21.6            </span></span>
+<span><span class="co">#&gt;  [85] stringi_1.8.4               biomformat_1.33.0          </span></span>
+<span><span class="co">#&gt;  [87] tokenizers_0.3.0            minqa_1.2.8                </span></span>
+<span><span class="co">#&gt;  [89] plyr_1.8.9                  crayon_1.5.3               </span></span>
+<span><span class="co">#&gt;  [91] abind_1.4-8                 gridGraphics_0.5-1         </span></span>
+<span><span class="co">#&gt;  [93] graphlayouts_1.1.1          bit_4.0.5                  </span></span>
+<span><span class="co">#&gt;  [95] rootSolve_1.8.2.4           mixedCCA_1.6.2             </span></span>
+<span><span class="co">#&gt;  [97] sandwich_3.1-0              fastcluster_1.2.6          </span></span>
+<span><span class="co">#&gt;  [99] codetools_0.2-20            textshaping_0.4.0          </span></span>
+<span><span class="co">#&gt; [101] BiocSingular_1.21.3         bslib_0.8.0                </span></span>
+<span><span class="co">#&gt; [103] slam_0.1-53                 phyloseq_1.49.0            </span></span>
+<span><span class="co">#&gt; [105] GetoptLong_1.0.5            tidytext_0.4.2             </span></span>
+<span><span class="co">#&gt; [107] multtest_2.61.0             mime_0.12                  </span></span>
+<span><span class="co">#&gt; [109] splines_4.4.1               circlize_0.4.16            </span></span>
+<span><span class="co">#&gt; [111] Rcpp_1.0.13                 dbplyr_2.5.0               </span></span>
+<span><span class="co">#&gt; [113] sparseMatrixStats_1.17.2    qgraph_1.9.8               </span></span>
+<span><span class="co">#&gt; [115] knitr_1.48                  blob_1.2.4                 </span></span>
+<span><span class="co">#&gt; [117] utf8_1.2.4                  clue_0.3-65                </span></span>
+<span><span class="co">#&gt; [119] BiocVersion_3.20.0          lme4_1.1-35.5              </span></span>
+<span><span class="co">#&gt; [121] pbivnorm_0.6.0              fs_1.6.4                   </span></span>
+<span><span class="co">#&gt; [123] checkmate_2.3.2             DelayedMatrixStats_1.27.3  </span></span>
+<span><span class="co">#&gt; [125] Rdpack_2.6.1                ggplotify_0.1.2            </span></span>
+<span><span class="co">#&gt; [127] tibble_3.2.1                lavaan_0.6-18              </span></span>
+<span><span class="co">#&gt; [129] Matrix_1.7-0                statmod_1.5.0              </span></span>
+<span><span class="co">#&gt; [131] lpSolve_5.6.21              tweenr_2.0.3               </span></span>
+<span><span class="co">#&gt; [133] pkgconfig_2.0.3             tools_4.4.1                </span></span>
+<span><span class="co">#&gt; [135] cachem_1.1.0                rbibutils_2.2.16           </span></span>
+<span><span class="co">#&gt; [137] RSQLite_2.3.7               viridisLite_0.4.2          </span></span>
+<span><span class="co">#&gt; [139] DBI_1.2.3                   impute_1.79.0              </span></span>
+<span><span class="co">#&gt; [141] fastmap_1.2.0               rmarkdown_2.28             </span></span>
+<span><span class="co">#&gt; [143] scales_1.3.0                shinydashboard_0.7.2       </span></span>
+<span><span class="co">#&gt; [145] AnnotationHub_3.13.3        sass_0.4.9                 </span></span>
+<span><span class="co">#&gt; [147] rpart_4.1.23                snow_0.4-4                 </span></span>
+<span><span class="co">#&gt; [149] farver_2.1.2                tidygraph_1.3.1            </span></span>
+<span><span class="co">#&gt; [151] mgcv_1.9-1                  yaml_2.3.10                </span></span>
+<span><span class="co">#&gt; [153] VGAM_1.1-11                 foreign_0.8-87             </span></span>
+<span><span class="co">#&gt; [155] cli_3.6.3                   purrr_1.0.2                </span></span>
+<span><span class="co">#&gt; [157] lifecycle_1.0.4             mvtnorm_1.3-1              </span></span>
+<span><span class="co">#&gt; [159] bluster_1.15.1              backports_1.5.0            </span></span>
+<span><span class="co">#&gt; [161] rintrojs_0.3.4              BiocParallel_1.39.0        </span></span>
+<span><span class="co">#&gt; [163] gtable_0.3.5                rjson_0.2.22               </span></span>
+<span><span class="co">#&gt; [165] limma_3.61.9                parallel_4.4.1             </span></span>
+<span><span class="co">#&gt; [167] ape_5.8                     SnowballC_0.7.1            </span></span>
+<span><span class="co">#&gt; [169] jsonlite_1.8.8              colourpicker_1.3.0         </span></span>
+<span><span class="co">#&gt; [171] bit64_4.0.5                 glasso_1.11                </span></span>
+<span><span class="co">#&gt; [173] yulab.utils_0.1.7           vegan_2.6-8                </span></span>
+<span><span class="co">#&gt; [175] BiocNeighbors_1.99.0        RcppParallel_5.1.9         </span></span>
+<span><span class="co">#&gt; [177] janeaustenr_1.0.0           highr_0.11                 </span></span>
+<span><span class="co">#&gt; [179] jquerylib_0.1.4             shinyjs_2.1.0              </span></span>
+<span><span class="co">#&gt; [181] orca_1.1-2                  lazyeval_0.2.2             </span></span>
+<span><span class="co">#&gt; [183] shiny_1.9.1                 dynamicTreeCut_1.63-1      </span></span>
+<span><span class="co">#&gt; [185] htmltools_0.5.8.1           GO.db_3.19.1               </span></span>
+<span><span class="co">#&gt; [187] rappdirs_0.3.3              glue_1.7.0                 </span></span>
+<span><span class="co">#&gt; [189] treeio_1.29.1               mnormt_2.1.1               </span></span>
+<span><span class="co">#&gt; [191] jpeg_0.1-10                 gridExtra_2.3              </span></span>
+<span><span class="co">#&gt; [193] boot_1.3-31                 igraph_2.0.3               </span></span>
+<span><span class="co">#&gt; [195] R6_2.5.1                    fdrtool_1.2.18             </span></span>
+<span><span class="co">#&gt; [197] labeling_0.4.3              listviewer_4.0.0           </span></span>
+<span><span class="co">#&gt; [199] cluster_2.1.6               Rhdf5lib_1.27.0            </span></span>
+<span><span class="co">#&gt; [201] aplot_0.2.3                 nloptr_2.1.1               </span></span>
+<span><span class="co">#&gt; [203] DirichletMultinomial_1.47.0 DelayedArray_0.31.11       </span></span>
+<span><span class="co">#&gt; [205] tidyselect_1.2.1            vipor_0.4.7                </span></span>
+<span><span class="co">#&gt; [207] WGCNA_1.72-5                htmlTable_2.4.3            </span></span>
+<span><span class="co">#&gt; [209] ggforce_0.4.2               AnnotationDbi_1.67.0       </span></span>
+<span><span class="co">#&gt; [211] filematrix_1.3              rsvd_1.0.5                 </span></span>
+<span><span class="co">#&gt; [213] munsell_0.5.1               data.table_1.16.0          </span></span>
+<span><span class="co">#&gt; [215] htmlwidgets_1.6.4           RColorBrewer_1.1-3         </span></span>
+<span><span class="co">#&gt; [217] rlang_1.1.4                 Cairo_1.6-2                </span></span>
+<span><span class="co">#&gt; [219] ggnewscale_0.5.0            fansi_1.0.6                </span></span>
+<span><span class="co">#&gt; [221] beeswarm_0.4.0</span></span></code></pre></div>
 </div>
   </div>
 
