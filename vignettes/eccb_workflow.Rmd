@@ -474,6 +474,8 @@ altExp(tse, "family") <- tse_family
 tse
 ```
 
+### Cross-association analysis
+
 Now that the entire dataset is well-organized and in one place, let’s dive
 into analyzing the interconnections between experiments. Specifically, we’ll
 examine whether the abundance of certain bacteria is associated with specific
@@ -513,8 +515,6 @@ altExp(tse, "pathway_prev") <- transformAssay(
     )
 altExp(tse, "pathway_prev")
 ```
-
-### Cross-association analysis
 
 We’re now ready to perform the cross-association analysis. We will examine the
 associations between microbial families and the most abundant pathways. To
