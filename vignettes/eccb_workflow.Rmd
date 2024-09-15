@@ -362,7 +362,7 @@ For this tutorial, let's try to calculate
 the bray-curtis distance and plot the PCoA. 
 
 ```{r PCoA}
-# Peerform PCoA
+# Perform PCoA
 tse <- runMDS(
     tse,
     FUN = getDissimilarity,
