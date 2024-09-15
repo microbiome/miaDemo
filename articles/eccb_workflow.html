@@ -512,10 +512,11 @@ and plot the PCoA.</p>
 <code class="sourceCode R"><span><span class="co"># Peerform PCoA</span></span>
 <span><span class="va">tse</span> <span class="op">&lt;-</span> <span class="fu">runMDS</span><span class="op">(</span></span>
 <span>    <span class="va">tse</span>,</span>
-<span>    FUN <span class="op">=</span> <span class="fu">vegan</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/vegan/man/vegdist.html" class="external-link">vegdist</a></span>,</span>
+<span>    FUN <span class="op">=</span> <span class="va">getDissimilarity</span>,</span>
 <span>    method <span class="op">=</span> <span class="st">"bray"</span>,</span>
 <span>    assay.type <span class="op">=</span> <span class="st">"relabundance"</span>,</span>
-<span>    name <span class="op">=</span> <span class="st">"MDS_bray"</span><span class="op">)</span></span>
+<span>    name <span class="op">=</span> <span class="st">"MDS_bray"</span></span>
+<span>    <span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Create ggplot object</span></span>
 <span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu">plotReducedDim</span><span class="op">(</span><span class="va">tse</span>, <span class="st">"MDS_bray"</span>, colour_by <span class="op">=</span> <span class="st">"disease"</span><span class="op">)</span></span>
