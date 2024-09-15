@@ -365,10 +365,11 @@ the bray-curtis distance and plot the PCoA.
 # Peerform PCoA
 tse <- runMDS(
     tse,
-    FUN = vegan::vegdist,
+    FUN = getDissimilarity,
     method = "bray",
     assay.type = "relabundance",
-    name = "MDS_bray")
+    name = "MDS_bray"
+    )
 
 # Create ggplot object
 p <- plotReducedDim(tse, "MDS_bray", colour_by = "disease")
