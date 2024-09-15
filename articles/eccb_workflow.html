@@ -347,6 +347,11 @@ CRC is associated with alterations in the gut microbiota.</p>
 <span><span class="fu">assayNames</span><span class="op">(</span><span class="va">tse</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"counts"</span></span>
 <span><span class="va">data_list</span><span class="op">[[</span><span class="st">"taxonomy"</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">tse</span></span>
 <span></span>
+<span><span class="co"># Rename also pathway abundance. They are in relative scale</span></span>
+<span><span class="va">tse</span> <span class="op">&lt;-</span> <span class="va">data_list</span><span class="op">[[</span><span class="st">"pathway"</span><span class="op">]</span><span class="op">]</span></span>
+<span><span class="fu">assayNames</span><span class="op">(</span><span class="va">tse</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"relabundance"</span></span>
+<span><span class="va">data_list</span><span class="op">[[</span><span class="st">"pathway"</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">tse</span></span>
+<span></span>
 <span><span class="co"># For pathway data, extract pathway information from rownames and add them to</span></span>
 <span><span class="co"># rowData</span></span>
 <span><span class="va">tse</span> <span class="op">&lt;-</span> <span class="va">data_list</span><span class="op">[[</span><span class="st">"pathway"</span><span class="op">]</span><span class="op">]</span></span>
@@ -617,7 +622,7 @@ experiment you want to retrieve.</p>
 <span><span class="co">#&gt; class: SummarizedExperiment </span></span>
 <span><span class="co">#&gt; dim: 12535 60 </span></span>
 <span><span class="co">#&gt; metadata(0):</span></span>
-<span><span class="co">#&gt; assays(1): pathway_abundance</span></span>
+<span><span class="co">#&gt; assays(1): relabundance</span></span>
 <span><span class="co">#&gt; rownames(12535): UNMAPPED UNINTEGRATED ... PWY-7197: pyrimidine</span></span>
 <span><span class="co">#&gt;   deoxyribonucleotide</span></span>
 <span><span class="co">#&gt;   phosphorylation|g__Desulfovibrio.s__Desulfovibrio_piger PWY-6703:</span></span>
@@ -700,9 +705,9 @@ further by prevalence.</p>
 <span><span class="co"># Agglomerate based on prevalence</span></span>
 <span><span class="fu">altExp</span><span class="op">(</span><span class="va">tse</span>, <span class="st">"pathway_prev"</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu">agglomerateByPrevalence</span><span class="op">(</span></span>
 <span>    <span class="fu">altExp</span><span class="op">(</span><span class="va">tse</span>, <span class="st">"pathway_func"</span><span class="op">)</span>,</span>
-<span>    assay.type <span class="op">=</span> <span class="st">"pathway_abundance"</span>,</span>
-<span>    prevalence <span class="op">=</span> <span class="fl">0.2</span>,</span>
-<span>    detection <span class="op">=</span> <span class="fl">0.001</span></span>
+<span>    assay.type <span class="op">=</span> <span class="st">"relabundance"</span>,</span>
+<span>    detection <span class="op">=</span> <span class="fl">0.001</span>,</span>
+<span>    prevalence <span class="op">=</span> <span class="fl">0.2</span></span>
 <span>    <span class="op">)</span></span></code></pre></div>
 <p>The data now includes the most prevalent pathways, each representing
 a single metabolic activity. Next, we apply a transformation as the
@@ -710,17 +715,14 @@ final preprocessing step for our functional data.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">altExp</span><span class="op">(</span><span class="va">tse</span>, <span class="st">"pathway_prev"</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu">transformAssay</span><span class="op">(</span></span>
 <span>    <span class="fu">altExp</span><span class="op">(</span><span class="va">tse</span>, <span class="st">"pathway_prev"</span><span class="op">)</span>,</span>
-<span>    assay.type <span class="op">=</span> <span class="st">"pathway_abundance"</span>,</span>
-<span>    method <span class="op">=</span> <span class="st">"clr"</span>,</span>
-<span>    pseudocount <span class="op">=</span> <span class="fl">1</span></span>
+<span>    assay.type <span class="op">=</span> <span class="st">"relabundance"</span>,</span>
+<span>    method <span class="op">=</span> <span class="st">"clr"</span></span>
 <span>    <span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: The assay contains only positive values. Applying a pseudocount may be</span></span>
-<span><span class="co">#&gt; unnecessary.</span></span>
 <span><span class="fu">altExp</span><span class="op">(</span><span class="va">tse</span>, <span class="st">"pathway_prev"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; class: SummarizedExperiment </span></span>
 <span><span class="co">#&gt; dim: 24 60 </span></span>
 <span><span class="co">#&gt; metadata(0):</span></span>
-<span><span class="co">#&gt; assays(2): pathway_abundance clr</span></span>
+<span><span class="co">#&gt; assays(2): relabundance clr</span></span>
 <span><span class="co">#&gt; rownames(24): BRANCHED-CHAIN-AA-SYN-PWY: superpathway of branched amino</span></span>
 <span><span class="co">#&gt;   acid biosynthesis DTDPRHAMSYN-PWY: dTDP-L-rhamnose biosynthesis I ...</span></span>
 <span><span class="co">#&gt;   VALSYN-PWY: L-valine biosynthesis Other</span></span>
