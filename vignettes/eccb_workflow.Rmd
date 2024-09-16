@@ -111,6 +111,13 @@ wrangling steps, explore alpha and beta diversity metrics, and introduce the
 fundamentals of data integration and microbial network analysis. Additionally,
 we will explore how to utilize the tools through a graphical interface.
 
+The _miaverse_ framework is based on _TreeSummarizedExperiment_ data container,
+extension to common _SummarizedExperiment_ object.
+
+```{r treese_structure, fig.align = 'center', out.width = "80%", fig.cap = "_TreeSummarizedExperiment_ class", echo=FALSE}
+knitr::include_graphics(here::here("vignettes", "figures", "TreeSE.png"))
+```
+
 ## Bioconductor resources for microbiome data science
 
 ### Load packages
