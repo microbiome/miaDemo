@@ -1190,22 +1190,28 @@ chapter</a> on network comparison.</p>
 <div class="section level2">
 <h2 id="interactive-microbiome-data-exploration-with-iseetree">Interactive microbiome data exploration with iSEEtree<a class="anchor" aria-label="anchor" href="#interactive-microbiome-data-exploration-with-iseetree"></a>
 </h2>
+<p><a href="https://microbiome.github.io/iSEEtree/" class="external-link">iSEEtree</a> is a
+shiny app that provides a Graphical User Interface (GUI) to visualize
+and interactively explore <code>TreeSE</code> objects. We will
+demonstrate its capability by reproducing some of the plots that were
+previously created in this workshop, this time without the need of
+coding (small lie).</p>
+<p>As we did before for <code>tse</code>, we add alpha and beta
+diversity metrics also to the to the agglomerated experiment
+<code>tse_family</code>, so we will be able to visualize these metrics
+in the app.</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">tse_family</span> <span class="op">&lt;-</span> <span class="fu">addAlpha</span><span class="op">(</span><span class="va">tse_family</span>,</span>
+<code class="sourceCode R"><span><span class="co"># Add information on alpha diversity</span></span>
+<span><span class="va">tse_family</span> <span class="op">&lt;-</span> <span class="fu">addAlpha</span><span class="op">(</span><span class="va">tse_family</span>,</span>
 <span>                       index <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"coverage_diversity"</span>, <span class="st">"shannon_diversity"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
+<span><span class="co"># Add information on beta diversity</span></span>
 <span><span class="va">tse_family</span> <span class="op">&lt;-</span> <span class="fu">runMDS</span><span class="op">(</span><span class="va">tse_family</span>,</span>
 <span>                     FUN <span class="op">=</span> <span class="va">getDissimilarity</span>,</span>
 <span>                     method <span class="op">=</span> <span class="st">"bray"</span>,</span>
 <span>                     assay.type <span class="op">=</span> <span class="st">"relabundance"</span>,</span>
 <span>                     ncomp <span class="op">=</span> <span class="fl">10</span>,</span>
 <span>                     name <span class="op">=</span> <span class="st">"MDS_bray"</span><span class="op">)</span></span></code></pre></div>
-<p><a href="https://microbiome.github.io/iSEEtree/" class="external-link">iSEEtree</a> is a
-shiny app that provides a Graphical User Interface (GUI) to visualize
-and interactively explore <code>TreeSE</code> objects. We will
-demonstrate its capability by reproducing some of the plots that were
-previously created in this workshop, this time without the need of
-coding.</p>
 <p>Launching the app is easy. All you need to do is run the command
 <code>iSEE</code> on the <code>TreeSE</code> object that you want to
 explore.</p>
