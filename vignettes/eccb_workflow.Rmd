@@ -563,12 +563,6 @@ p <- Heatmap(
 p
 ```
 
-Enterobacteriaceae shows a positive correlation with certain pathways
-(indicated by x, which denotes statistical significance with an adjusted
-p-value < 0.05) that other microbial families are negatively correlated with.
-For example, L-isoleucine biosynthesis is a pathway that demonstrates this kind
-of association.
-
 For more information on data integration, see the following sections:
 
  - [Cross-association](https://microbiome.github.io/OMA/docs/devel/pages/cross_correlation.html)
