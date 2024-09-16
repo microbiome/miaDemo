@@ -1191,67 +1191,8 @@ chapter</a> on network comparison.</p>
 <h2 id="interactive-microbiome-data-exploration-with-iseetree">Interactive microbiome data exploration with iSEEtree<a class="anchor" aria-label="anchor" href="#interactive-microbiome-data-exploration-with-iseetree"></a>
 </h2>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">tse_family</span> <span class="op">&lt;-</span> <span class="fu">addAlpha</span><span class="op">(</span><span class="va">tse_family</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: Pruning resulted to empty tree.</span></span>
-<span><span class="co">#&gt; Warning: Pruning resulted to empty tree.</span></span>
-<span><span class="co">#&gt; Warning: Pruning resulted to empty tree.</span></span>
-<span><span class="co">#&gt; Warning: Pruning resulted to empty tree.</span></span>
-<span><span class="co">#&gt; Warning: Pruning resulted to empty tree.</span></span>
-<span><span class="co">#&gt; Warning: Pruning resulted to empty tree.</span></span>
-<span><span class="co">#&gt; Warning: Pruning resulted to empty tree.</span></span>
-<span><span class="co">#&gt; Warning: Pruning resulted to empty tree.</span></span>
-<span><span class="co">#&gt; Warning: Pruning resulted to empty tree.</span></span>
-<span><span class="co">#&gt; Warning: Pruning resulted to empty tree.</span></span>
-<span><span class="co">#&gt; Warning: Pruning resulted to empty tree.</span></span>
-<span><span class="co">#&gt; Warning: Pruning resulted to empty tree.</span></span>
-<span><span class="co">#&gt; Warning: Pruning resulted to empty tree.</span></span>
-<span><span class="co">#&gt; Warning: Pruning resulted to empty tree.</span></span>
-<span><span class="co">#&gt; Warning: Pruning resulted to empty tree.</span></span>
-<span><span class="co">#&gt; Warning: Pruning resulted to empty tree.</span></span>
-<span><span class="co">#&gt; Warning: Pruning resulted to empty tree.</span></span>
-<span><span class="co">#&gt; Warning: Pruning resulted to empty tree.</span></span>
-<span><span class="co">#&gt; Warning: Pruning resulted to empty tree.</span></span>
-<span><span class="co">#&gt; Warning: Pruning resulted to empty tree.</span></span>
-<span><span class="co">#&gt; Warning: Pruning resulted to empty tree.</span></span>
-<span><span class="co">#&gt; Warning: Pruning resulted to empty tree.</span></span>
-<span><span class="co">#&gt; Warning: Pruning resulted to empty tree.</span></span>
-<span><span class="co">#&gt; Warning: Pruning resulted to empty tree.</span></span>
-<span><span class="co">#&gt; Warning: Pruning resulted to empty tree.</span></span>
-<span><span class="co">#&gt; Warning: Pruning resulted to empty tree.</span></span>
-<span><span class="co">#&gt; Warning: Pruning resulted to empty tree.</span></span>
-<span><span class="co">#&gt; Warning: Pruning resulted to empty tree.</span></span>
-<span><span class="co">#&gt; Warning: Pruning resulted to empty tree.</span></span>
-<span><span class="co">#&gt; Warning: Pruning resulted to empty tree.</span></span>
-<span><span class="co">#&gt; Warning: Pruning resulted to empty tree.</span></span>
-<span><span class="co">#&gt; Warning: Pruning resulted to empty tree.</span></span>
-<span><span class="co">#&gt; Warning: Pruning resulted to empty tree.</span></span>
-<span><span class="co">#&gt; Warning: Pruning resulted to empty tree.</span></span>
-<span><span class="co">#&gt; Warning: Pruning resulted to empty tree.</span></span>
-<span><span class="co">#&gt; Warning: Pruning resulted to empty tree.</span></span>
-<span><span class="co">#&gt; Warning: Pruning resulted to empty tree.</span></span>
-<span><span class="co">#&gt; Warning: Pruning resulted to empty tree.</span></span>
-<span><span class="co">#&gt; Warning: Pruning resulted to empty tree.</span></span>
-<span><span class="co">#&gt; Warning: Pruning resulted to empty tree.</span></span>
-<span><span class="co">#&gt; Warning: Pruning resulted to empty tree.</span></span>
-<span><span class="co">#&gt; Warning: Pruning resulted to empty tree.</span></span>
-<span><span class="co">#&gt; Warning: Pruning resulted to empty tree.</span></span>
-<span><span class="co">#&gt; Warning: Pruning resulted to empty tree.</span></span>
-<span><span class="co">#&gt; Warning: Pruning resulted to empty tree.</span></span>
-<span><span class="co">#&gt; Warning: Pruning resulted to empty tree.</span></span>
-<span><span class="co">#&gt; Warning: Pruning resulted to empty tree.</span></span>
-<span><span class="co">#&gt; Warning: Pruning resulted to empty tree.</span></span>
-<span><span class="co">#&gt; Warning: Pruning resulted to empty tree.</span></span>
-<span><span class="co">#&gt; Warning: Pruning resulted to empty tree.</span></span>
-<span><span class="co">#&gt; Warning: Pruning resulted to empty tree.</span></span>
-<span><span class="co">#&gt; Warning: Pruning resulted to empty tree.</span></span>
-<span><span class="co">#&gt; Warning: Pruning resulted to empty tree.</span></span>
-<span><span class="co">#&gt; Warning: Pruning resulted to empty tree.</span></span>
-<span><span class="co">#&gt; Warning: Pruning resulted to empty tree.</span></span>
-<span><span class="co">#&gt; Warning: Pruning resulted to empty tree.</span></span>
-<span><span class="co">#&gt; Warning: Pruning resulted to empty tree.</span></span>
-<span><span class="co">#&gt; Warning: Pruning resulted to empty tree.</span></span>
-<span><span class="co">#&gt; Warning: Pruning resulted to empty tree.</span></span>
-<span><span class="co">#&gt; Warning: Pruning resulted to empty tree.</span></span>
+<code class="sourceCode R"><span><span class="va">tse_family</span> <span class="op">&lt;-</span> <span class="fu">addAlpha</span><span class="op">(</span><span class="va">tse_family</span>,</span>
+<span>                       index <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"coverage_diversity"</span>, <span class="st">"shannon_diversity"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">tse_family</span> <span class="op">&lt;-</span> <span class="fu">runMDS</span><span class="op">(</span><span class="va">tse_family</span>,</span>
 <span>                     FUN <span class="op">=</span> <span class="va">getDissimilarity</span>,</span>

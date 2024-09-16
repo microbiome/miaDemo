@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   eccb_workflow: eccb_workflow.html
   mia_demo: mia_demo.html
-last_built: 2024-09-16T10:37Z
+last_built: 2024-09-16T10:50Z
 urls:
   reference: https://microbiome.github.io/miaDemo/reference
   article: https://microbiome.github.io/miaDemo/articles
