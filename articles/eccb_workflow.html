@@ -230,6 +230,14 @@ essential data wrangling steps, explore alpha and beta diversity
 metrics, and introduce the fundamentals of data integration and
 microbial network analysis. Additionally, we will explore how to utilize
 the tools through a graphical interface.</p>
+<p>The <em>miaverse</em> framework is based on
+<em>TreeSummarizedExperiment</em> data container, extension to common
+<em>SummarizedExperiment</em> object.</p>
+<div class="figure" style="text-align: center">
+<img src="figures/TreeSE.png" alt="_TreeSummarizedExperiment_ class" width="80%"><p class="caption">
+<em>TreeSummarizedExperiment</em> class
+</p>
+</div>
 </div>
 <div class="section level2">
 <h2 id="bioconductor-resources-for-microbiome-data-science">Bioconductor resources for microbiome data science<a class="anchor" aria-label="anchor" href="#bioconductor-resources-for-microbiome-data-science"></a>
@@ -1328,59 +1336,60 @@ vignettes</a>.</p>
 <span><span class="co">#&gt; [111] Rcpp_1.0.13                 dbplyr_2.5.0               </span></span>
 <span><span class="co">#&gt; [113] sparseMatrixStats_1.17.2    qgraph_1.9.8               </span></span>
 <span><span class="co">#&gt; [115] knitr_1.48                  blob_1.2.4                 </span></span>
-<span><span class="co">#&gt; [117] utf8_1.2.4                  clue_0.3-65                </span></span>
-<span><span class="co">#&gt; [119] BiocVersion_3.20.0          lme4_1.1-35.5              </span></span>
-<span><span class="co">#&gt; [121] pbivnorm_0.6.0              fs_1.6.4                   </span></span>
-<span><span class="co">#&gt; [123] checkmate_2.3.2             DelayedMatrixStats_1.27.3  </span></span>
-<span><span class="co">#&gt; [125] Rdpack_2.6.1                ggplotify_0.1.2            </span></span>
-<span><span class="co">#&gt; [127] lavaan_0.6-18               tibble_3.2.1               </span></span>
-<span><span class="co">#&gt; [129] Matrix_1.7-0                statmod_1.5.0              </span></span>
-<span><span class="co">#&gt; [131] lpSolve_5.6.21              tweenr_2.0.3               </span></span>
-<span><span class="co">#&gt; [133] pkgconfig_2.0.3             tools_4.4.1                </span></span>
-<span><span class="co">#&gt; [135] cachem_1.1.0                rbibutils_2.2.16           </span></span>
-<span><span class="co">#&gt; [137] RSQLite_2.3.7               viridisLite_0.4.2          </span></span>
-<span><span class="co">#&gt; [139] DBI_1.2.3                   impute_1.79.0              </span></span>
-<span><span class="co">#&gt; [141] fastmap_1.2.0               rmarkdown_2.28             </span></span>
-<span><span class="co">#&gt; [143] scales_1.3.0                shinydashboard_0.7.2       </span></span>
-<span><span class="co">#&gt; [145] AnnotationHub_3.13.3        sass_0.4.9                 </span></span>
-<span><span class="co">#&gt; [147] rpart_4.1.23                snow_0.4-4                 </span></span>
-<span><span class="co">#&gt; [149] farver_2.1.2                tidygraph_1.3.1            </span></span>
-<span><span class="co">#&gt; [151] mgcv_1.9-1                  yaml_2.3.10                </span></span>
-<span><span class="co">#&gt; [153] VGAM_1.1-11                 foreign_0.8-87             </span></span>
-<span><span class="co">#&gt; [155] cli_3.6.3                   purrr_1.0.2                </span></span>
-<span><span class="co">#&gt; [157] lifecycle_1.0.4             mvtnorm_1.3-1              </span></span>
-<span><span class="co">#&gt; [159] bluster_1.15.1              backports_1.5.0            </span></span>
-<span><span class="co">#&gt; [161] rintrojs_0.3.4              BiocParallel_1.39.0        </span></span>
-<span><span class="co">#&gt; [163] gtable_0.3.5                rjson_0.2.22               </span></span>
-<span><span class="co">#&gt; [165] limma_3.61.9                parallel_4.4.1             </span></span>
-<span><span class="co">#&gt; [167] ape_5.8                     SnowballC_0.7.1            </span></span>
-<span><span class="co">#&gt; [169] jsonlite_1.8.8              colourpicker_1.3.0         </span></span>
-<span><span class="co">#&gt; [171] bit64_4.0.5                 glasso_1.11                </span></span>
-<span><span class="co">#&gt; [173] yulab.utils_0.1.7           vegan_2.6-8                </span></span>
-<span><span class="co">#&gt; [175] BiocNeighbors_1.99.0        RcppParallel_5.1.9         </span></span>
-<span><span class="co">#&gt; [177] janeaustenr_1.0.0           highr_0.11                 </span></span>
-<span><span class="co">#&gt; [179] jquerylib_0.1.4             shinyjs_2.1.0              </span></span>
-<span><span class="co">#&gt; [181] orca_1.1-2                  lazyeval_0.2.2             </span></span>
-<span><span class="co">#&gt; [183] shiny_1.9.1                 dynamicTreeCut_1.63-1      </span></span>
-<span><span class="co">#&gt; [185] htmltools_0.5.8.1           GO.db_3.19.1               </span></span>
-<span><span class="co">#&gt; [187] rappdirs_0.3.3              glue_1.7.0                 </span></span>
-<span><span class="co">#&gt; [189] treeio_1.29.1               mnormt_2.1.1               </span></span>
-<span><span class="co">#&gt; [191] jpeg_0.1-10                 gridExtra_2.3              </span></span>
-<span><span class="co">#&gt; [193] boot_1.3-31                 igraph_2.0.3               </span></span>
-<span><span class="co">#&gt; [195] R6_2.5.1                    fdrtool_1.2.18             </span></span>
-<span><span class="co">#&gt; [197] labeling_0.4.3              listviewer_4.0.0           </span></span>
-<span><span class="co">#&gt; [199] cluster_2.1.6               Rhdf5lib_1.27.0            </span></span>
-<span><span class="co">#&gt; [201] aplot_0.2.3                 nloptr_2.1.1               </span></span>
-<span><span class="co">#&gt; [203] DirichletMultinomial_1.47.0 DelayedArray_0.31.11       </span></span>
-<span><span class="co">#&gt; [205] tidyselect_1.2.1            vipor_0.4.7                </span></span>
-<span><span class="co">#&gt; [207] WGCNA_1.72-5                htmlTable_2.4.3            </span></span>
-<span><span class="co">#&gt; [209] ggforce_0.4.2               AnnotationDbi_1.67.0       </span></span>
-<span><span class="co">#&gt; [211] filematrix_1.3              rsvd_1.0.5                 </span></span>
-<span><span class="co">#&gt; [213] munsell_0.5.1               data.table_1.16.0          </span></span>
-<span><span class="co">#&gt; [215] htmlwidgets_1.6.4           RColorBrewer_1.1-3         </span></span>
-<span><span class="co">#&gt; [217] rlang_1.1.4                 Cairo_1.6-2                </span></span>
-<span><span class="co">#&gt; [219] ggnewscale_0.5.0            fansi_1.0.6                </span></span>
-<span><span class="co">#&gt; [221] beeswarm_0.4.0</span></span></code></pre></div>
+<span><span class="co">#&gt; [117] utf8_1.2.4                  here_1.0.1                 </span></span>
+<span><span class="co">#&gt; [119] clue_0.3-65                 BiocVersion_3.20.0         </span></span>
+<span><span class="co">#&gt; [121] lme4_1.1-35.5               pbivnorm_0.6.0             </span></span>
+<span><span class="co">#&gt; [123] fs_1.6.4                    checkmate_2.3.2            </span></span>
+<span><span class="co">#&gt; [125] DelayedMatrixStats_1.27.3   Rdpack_2.6.1               </span></span>
+<span><span class="co">#&gt; [127] ggplotify_0.1.2             lavaan_0.6-18              </span></span>
+<span><span class="co">#&gt; [129] tibble_3.2.1                Matrix_1.7-0               </span></span>
+<span><span class="co">#&gt; [131] statmod_1.5.0               lpSolve_5.6.21             </span></span>
+<span><span class="co">#&gt; [133] tweenr_2.0.3                pkgconfig_2.0.3            </span></span>
+<span><span class="co">#&gt; [135] tools_4.4.1                 cachem_1.1.0               </span></span>
+<span><span class="co">#&gt; [137] rbibutils_2.2.16            RSQLite_2.3.7              </span></span>
+<span><span class="co">#&gt; [139] viridisLite_0.4.2           DBI_1.2.3                  </span></span>
+<span><span class="co">#&gt; [141] impute_1.79.0               fastmap_1.2.0              </span></span>
+<span><span class="co">#&gt; [143] rmarkdown_2.28              scales_1.3.0               </span></span>
+<span><span class="co">#&gt; [145] shinydashboard_0.7.2        AnnotationHub_3.13.3       </span></span>
+<span><span class="co">#&gt; [147] sass_0.4.9                  rpart_4.1.23               </span></span>
+<span><span class="co">#&gt; [149] snow_0.4-4                  farver_2.1.2               </span></span>
+<span><span class="co">#&gt; [151] tidygraph_1.3.1             mgcv_1.9-1                 </span></span>
+<span><span class="co">#&gt; [153] yaml_2.3.10                 VGAM_1.1-11                </span></span>
+<span><span class="co">#&gt; [155] foreign_0.8-87              cli_3.6.3                  </span></span>
+<span><span class="co">#&gt; [157] purrr_1.0.2                 lifecycle_1.0.4            </span></span>
+<span><span class="co">#&gt; [159] mvtnorm_1.3-1               bluster_1.15.1             </span></span>
+<span><span class="co">#&gt; [161] backports_1.5.0             rintrojs_0.3.4             </span></span>
+<span><span class="co">#&gt; [163] BiocParallel_1.39.0         gtable_0.3.5               </span></span>
+<span><span class="co">#&gt; [165] rjson_0.2.22                limma_3.61.9               </span></span>
+<span><span class="co">#&gt; [167] parallel_4.4.1              ape_5.8                    </span></span>
+<span><span class="co">#&gt; [169] SnowballC_0.7.1             jsonlite_1.8.8             </span></span>
+<span><span class="co">#&gt; [171] colourpicker_1.3.0          bit64_4.0.5                </span></span>
+<span><span class="co">#&gt; [173] glasso_1.11                 yulab.utils_0.1.7          </span></span>
+<span><span class="co">#&gt; [175] vegan_2.6-8                 BiocNeighbors_1.99.0       </span></span>
+<span><span class="co">#&gt; [177] RcppParallel_5.1.9          janeaustenr_1.0.0          </span></span>
+<span><span class="co">#&gt; [179] jquerylib_0.1.4             highr_0.11                 </span></span>
+<span><span class="co">#&gt; [181] shinyjs_2.1.0               orca_1.1-2                 </span></span>
+<span><span class="co">#&gt; [183] lazyeval_0.2.2              shiny_1.9.1                </span></span>
+<span><span class="co">#&gt; [185] dynamicTreeCut_1.63-1       htmltools_0.5.8.1          </span></span>
+<span><span class="co">#&gt; [187] GO.db_3.19.1                rappdirs_0.3.3             </span></span>
+<span><span class="co">#&gt; [189] glue_1.7.0                  rprojroot_2.0.4            </span></span>
+<span><span class="co">#&gt; [191] treeio_1.29.1               mnormt_2.1.1               </span></span>
+<span><span class="co">#&gt; [193] jpeg_0.1-10                 gridExtra_2.3              </span></span>
+<span><span class="co">#&gt; [195] boot_1.3-31                 igraph_2.0.3               </span></span>
+<span><span class="co">#&gt; [197] R6_2.5.1                    fdrtool_1.2.18             </span></span>
+<span><span class="co">#&gt; [199] labeling_0.4.3              listviewer_4.0.0           </span></span>
+<span><span class="co">#&gt; [201] cluster_2.1.6               Rhdf5lib_1.27.0            </span></span>
+<span><span class="co">#&gt; [203] aplot_0.2.3                 nloptr_2.1.1               </span></span>
+<span><span class="co">#&gt; [205] DirichletMultinomial_1.47.0 DelayedArray_0.31.11       </span></span>
+<span><span class="co">#&gt; [207] tidyselect_1.2.1            vipor_0.4.7                </span></span>
+<span><span class="co">#&gt; [209] WGCNA_1.72-5                htmlTable_2.4.3            </span></span>
+<span><span class="co">#&gt; [211] ggforce_0.4.2               AnnotationDbi_1.67.0       </span></span>
+<span><span class="co">#&gt; [213] filematrix_1.3              rsvd_1.0.5                 </span></span>
+<span><span class="co">#&gt; [215] munsell_0.5.1               data.table_1.16.0          </span></span>
+<span><span class="co">#&gt; [217] htmlwidgets_1.6.4           RColorBrewer_1.1-3         </span></span>
+<span><span class="co">#&gt; [219] rlang_1.1.4                 Cairo_1.6-2                </span></span>
+<span><span class="co">#&gt; [221] ggnewscale_0.5.0            fansi_1.0.6                </span></span>
+<span><span class="co">#&gt; [223] beeswarm_0.4.0</span></span></code></pre></div>
 </div>
   </div>
 
