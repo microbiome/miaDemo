@@ -832,9 +832,8 @@ objects. We will demonstrate its capability by reproducing some of the plots
 that were previously created in this workshop, this time without the need of
 coding (small lie).
 
-As we did before for `tse`, we add alpha and beta diversity metrics also to the
-to the agglomerated experiment `tse_family`, so we will be able to visualize
-these metrics in the app.
+As we did before for `tse`, we add alpha and beta diversity metrics also to the agglomerated experiment `tse_family`, so we will be able to visualize these
+metrics in the app.
 
 ```{r prep_iSEEtree}
 # Add information on alpha diversity
