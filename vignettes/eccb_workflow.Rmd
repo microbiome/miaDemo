@@ -826,10 +826,22 @@ This task could be performed with the NetCoMi function `netCompare`, as describe
 
 ## Interactive microbiome data exploration with iSEEtree
 
+[iSEEtree](https://microbiome.github.io/iSEEtree/) is a shiny app that provides
+a Graphical User Interface (GUI) to visualize and interactively explore `TreeSE`
+objects. We will demonstrate its capability by reproducing some of the plots
+that were previously created in this workshop, this time without the need of
+coding (small lie).
+
+As we did before for `tse`, we add alpha and beta diversity metrics also to the
+to the agglomerated experiment `tse_family`, so we will be able to visualize
+these metrics in the app.
+
 ```{r prep_iSEEtree}
+# Add information on alpha diversity
 tse_family <- addAlpha(tse_family,
                        index = c("coverage_diversity", "shannon_diversity"))
 
+# Add information on beta diversity
 tse_family <- runMDS(tse_family,
                      FUN = getDissimilarity,
                      method = "bray",
@@ -837,12 +849,6 @@ tse_family <- runMDS(tse_family,
                      ncomp = 10,
                      name = "MDS_bray")
 ```
-
-[iSEEtree](https://microbiome.github.io/iSEEtree/) is a shiny app that provides
-a Graphical User Interface (GUI) to visualize and interactively explore `TreeSE`
-objects. We will demonstrate its capability by reproducing some of the plots
-that were previously created in this workshop, this time without the need of
-coding.
 
 Launching the app is easy. All you need to do is run the command `iSEE` on the
 `TreeSE` object that you want to explore.
