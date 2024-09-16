@@ -826,17 +826,28 @@ This task could be performed with the NetCoMi function `netCompare`, as describe
 
 ## Interactive microbiome data exploration with iSEEtree
 
-```{r agg_iseetree}
-tse_phylum <- agglomerateByRank(tse, rank = "phylum")
-tse_phylum <- transformAssay(tse_phylum, method = "relabundance")
-tse_phylum <- transformAssay(tse_phylum, method = "clr", pseudocount = 1)
-```
-
 [iSEEtree](https://microbiome.github.io/iSEEtree/) is a shiny app that provides
 a Graphical User Interface (GUI) to visualize and interactively explore `TreeSE`
 objects. We will demonstrate its capability by reproducing some of the plots
 that were previously created in this workshop, this time without the need of
-coding.
+coding (small lie).
+
+As we did before for `tse`, we add alpha and beta diversity metrics also to the agglomerated experiment `tse_family`, so we will be able to visualize these
+metrics in the app.
+
+```{r prep_iSEEtree}
+# Add information on alpha diversity
+tse_family <- addAlpha(tse_family,
+                       index = c("coverage_diversity", "shannon_diversity"))
+
+# Add information on beta diversity
+tse_family <- runMDS(tse_family,
+                     FUN = getDissimilarity,
+                     method = "bray",
+                     assay.type = "relabundance",
+                     ncomp = 10,
+                     name = "MDS_bray")
+```
 
 Launching the app is easy. All you need to do is run the command `iSEE` on the
 `TreeSE` object that you want to explore.
@@ -844,7 +855,7 @@ Launching the app is easy. All you need to do is run the command `iSEE` on the
 ```{r iseetree1}
 # Launch app
 if (interactive()) {
-  iSEE(tse_phylum)
+  iSEE(tse_family)
 }
 ```
 
@@ -855,7 +866,7 @@ panel layout with the `initial` argument to generate the alpha diversity plot.
 ```{r iseetree2}
 # Launch app with custom layout
 if (interactive()) {
-  iSEE(tse_phylum, initial = c(ColumnDataTable(), ColumnDataPlot()))
+  iSEE(tse_family, initial = c(ColumnDataTable(), ColumnDataPlot()))
 }
 ```
 
