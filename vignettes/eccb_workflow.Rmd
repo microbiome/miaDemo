@@ -21,7 +21,7 @@ Authors:
     Stefanie Peschel,
     Leo Lahti.
 <br/>
-Last modified: 15 September, 2024.
+Last modified: 16 September, 2024.
 
 <img src="figures/mia_logo.png" width="150"/>
 
@@ -819,21 +819,25 @@ This task could be performed with the NetCoMi function `netCompare`, as describe
 
 ## Interactive microbiome data exploration with iSEEtree
 
+```{r agg_iseetree}
+tse_phylum <- agglomerateByRank(tse, rank = "phylum")
+tse_phylum <- transformAssay(tse_phylum, method = "relabundance")
+tse_phylum <- transformAssay(tse_phylum, method = "clr", pseudocount = 1)
+```
+
 [iSEEtree](https://microbiome.github.io/iSEEtree/) is a shiny app that provides
-a Graphical User Interface (GUI) to visualize and interactively explore TreeSE
+a Graphical User Interface (GUI) to visualize and interactively explore `TreeSE`
 objects. We will demonstrate its capability by reproducing some of the plots
 that were previously created in this workshop, this time without the need of
 coding.
 
 Launching the app is easy. All you need to do is run the command `iSEE` on the
-TreeSE object that you want to explore.
+`TreeSE` object that you want to explore.
 
-```{r}
-library(iSEEtree)
-
+```{r iseetree1}
 # Launch app
 if (interactive()) {
-  iSEE(tse_family)
+  iSEE(tse_phylum)
 }
 ```
 
@@ -841,10 +845,10 @@ The default panel layout does not contain the so-called `ColumnDataTable` panel,
 which plots variables from the `colData.` Therefore, we need to specify a custom
 panel layout with the `initial` argument to generate the alpha diversity plot.
 
-```{r}
+```{r iseetree2}
 # Launch app with custom layout
 if (interactive()) {
-  iSEE(tse_family, initial = c(ColumnDataTable(), ColumnDataPlot()))
+  iSEE(tse_phylum, initial = c(ColumnDataTable(), ColumnDataPlot()))
 }
 ```
 
