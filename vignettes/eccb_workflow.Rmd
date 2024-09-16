@@ -827,7 +827,8 @@ This task could be performed with the NetCoMi function `netCompare`, as describe
 ## Interactive microbiome data exploration with iSEEtree
 
 ```{r prep_iSEEtree}
-tse_family <- addAlpha(tse_family)
+tse_family <- addAlpha(tse_family,
+                       index = c("coverage_diversity", "shannon_diversity"))
 
 tse_family <- runMDS(tse_family,
                      FUN = getDissimilarity,
