@@ -615,7 +615,7 @@ Sparse association estimation (sparsity assumption is needed due to the underdet
 * **Proportionality**
   + [propr](https://cran.r-project.org/web/packages/propr/index.html)
 
-These methods are also available through the R package [NetCoMi`](https://github.com/stefpeschel/NetCoMi), which we will use to construct and analyze an association network for the gut microbiome. 
+These methods are also available through the R package [NetCoMi](https://github.com/stefpeschel/NetCoMi), which we will use to construct and analyze an association network for the gut microbiome. 
 
 The complete workflow implemented in `NetCoMi` is shown in the [OMA chapter](https://microbiome.github.io/OMA/docs/devel/pages/network_learning.html#sec-network-learning-workflow) on network learning.
 
@@ -623,14 +623,18 @@ The complete workflow implemented in `NetCoMi` is shown in the [OMA chapter](htt
 
 The function for network construction `netConstruct()` offers the possibility to **filter** samples and taxa according to certain criteria. Here, we keep only **taxa occurring in at least 10% of the samples**.
 
-We use the **SPIEC-EASI** method to **estimate microbial associations**. The package offers two graphical model inference procedures: 1) Meinhausen and Bühlmann's neighborhood selection (the MB method) and 2) inverse covariance selection (the glasso
-method). We will use **glasso** here. 
+We use the **SPIEC-EASI** method to **estimate microbial associations**. The approach includes two graphical model inference procedures: 
 
-`SpiecEasi` uses the **StARS** ("Stability Approach to Regularization Selection")
+* Meinhausen and Bühlmann's neighborhood selection (the MB method) 
+* Inverse covariance selection (the glasso method). 
+
+We will use **glasso** here. 
+
+SPIEC-EASI uses the **StARS** ("Stability Approach to Regularization Selection")
 method to obtain a **sparse association matrix**. We set the StARS threshold to 0.1
 to get a denser graph (the default is 0.05).
 
-Since zero replacement, normalization, and sparsification (model selection) is done by `SpiecEasi`, we set the corresponding `netConstruct` arguments to "none". 
+Since zero replacement, normalization, and sparsification (model selection) is included in SPIEC-EASI, we set the corresponding `netConstruct` arguments to "none". 
 
 ```{r network_construction, eval=FALSE}
 net <- netConstruct(
