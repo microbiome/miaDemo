@@ -1,6 +1,6 @@
 Package: miaDemo
 Title: Package Demo: mia
-Version: 2.0.6
+Version: 2.0.7
 Authors@R: 
     c(person(given = "Tuomas", family = "Borman", role = c("aut", "cre"),
              email = "tuomas.v.borman@utu.fi",
@@ -32,6 +32,7 @@ Suggests:
     cobiclust,
     ComplexHeatmap,
     corpcor,
+    cowplot,
     curatedMetagenomicData,
     dada2,
     dendextend,
@@ -40,19 +41,18 @@ Suggests:
     dplyr,
     DT,
     factoextra,
-    forcats,
     fido,
+    forcats,
     ggplot2,
     ggpubr,
     ggtree,
     glmnet,
     glue,
     grid,
-    gtools,
     gsEasy,
+    gtools,
     igraph,
-    iSEEtree,
-    kableExtra,
+    IntegratedLearner,
     knitr,
     Maaslin2,
     mia,
@@ -65,13 +65,13 @@ Suggests:
     MMUPHin,
     MOFA2,
     multiview,
-    NetCoMi,
     NbClust,
+    NetCoMi,
     NMF,
     patchwork,
     phyloseq,
-    pkgdown,
     plotly,
+    plotROC,
     purrr,
     qgraph,
     RColorBrewer,
@@ -79,10 +79,9 @@ Suggests:
     reshape2,
     reticulate,
     rgl,
-    rmarkdown,
-    ROCR,
     scales,
     scater,
+    scuttle,
     sechm,
     sessioninfo,
     shadowtext,
@@ -102,7 +101,8 @@ Remotes:
     github::microbiome/miaTime,
     github::stefpeschel/NetCoMi,
     github::zdk123/SpiecEasi,
-    github::GraceYoon/SPRING
+    github::GraceYoon/SPRING,
+    github::himelmallick/IntegratedLearner
 URL: https://microbiome.github.io/miaDemo/
 BugReports: https://github.com/microbiome/miaDemo/issues/
 VignetteBuilder: knitr
