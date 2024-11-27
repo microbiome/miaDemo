@@ -1,6 +1,6 @@
 Package: miaDemo
 Title: Package Demo: mia
-Version: 2.0.9
+Version: 2.0.10
 Authors@R: 
     c(person(given = "Tuomas", family = "Borman", role = c("aut", "cre"),
              email = "tuomas.v.borman@utu.fi",
