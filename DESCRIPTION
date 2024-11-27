@@ -1,6 +1,6 @@
 Package: miaDemo
 Title: Package Demo: mia
-Version: 2.0.7
+Version: 2.0.8
 Authors@R: 
     c(person(given = "Tuomas", family = "Borman", role = c("aut", "cre"),
              email = "tuomas.v.borman@utu.fi",
@@ -14,7 +14,8 @@ Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.0
-Depends: 
+Depends:
+    R (>= 4.3),
     Biobase
 Suggests:
     ALDEx2,
