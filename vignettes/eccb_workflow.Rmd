@@ -580,10 +580,6 @@ For more information on data integration, see the following sections:
 
 ## Microbial network analysis
 
-```{r, include = FALSE}
-knitr::opts_chunk$set(eval = FALSE)
-```
-
 After having analyzed associations between microbial families and pathways in the last section, we are now interested in the **microbial associations** itself, which helps us to understand the complex interplay of microbial communities. 
 
 In a typical microbiome network, **nodes are ASVs or taxa** on a certain rank (here family). The nodes are connected by **edges, which represent microbial associations**. Higher edge thickness corresponds to higher edge weight. Edges with a positive underlying association are blue, those with a negative association are red.
