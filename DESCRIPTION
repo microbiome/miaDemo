@@ -15,7 +15,7 @@ LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.0
 Depends:
-    R (>= 4.3),
+    R (>= 4.4),
     Biobase
 Suggests:
     ALDEx2,
