@@ -880,6 +880,20 @@ Ideas for self-learning:
 - Use selection parameters to show a subset of the data
 - Save a plot to image and/or access its R code
 
+## Acknowledgements
+
+This project has received funding from the European Union’s Horizon 2020
+research and innovation programme under grant agreement No 952914
+(FindingPheno).
+
+```{r}
+#| label: findingpheno
+#| echo: false
+#| out.width: 30%
+
+knitr::include_graphics("figures/findingpheno_logo.png")
+```
+
 ## Session info
 
 ```{r session_info}
