@@ -135,13 +135,13 @@ with plans for its upcoming publication on Bioconductor.
 ### 2 Demonstration
 
 In this demo, we will follow
-[the introductory workflow from OMA](https://microbiome.github.io/OMA/docs/devel/pages/introductory_workflow.html)
+[the introductory workflow from OMA](introductory_workflow.html)
 by copy-pasting code examples provided there. The goal is to familiarize you with
 _TreeSE_ and related methods while introducing you to OMA to support continued
 learning beyond the workshop.
 
 1. Set up your local computer or access [an online environment](https://workshop.bioconductor.org/).
-2. Go to [the introductory workflow](https://microbiome.github.io/OMA/docs/devel/pages/introductory_workflow.html).
+2. Go to [the introductory workflow](introductory_workflow.html).
 3. Be ready to follow along with the demonstration.
 
 ### 3 Q&A and free exploration

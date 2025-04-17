@@ -1,0 +1,7 @@
+format: 
+  html:
+    grid:
+      sidebar-width: 400px
+      body-width: 1000px
+    bibliography: bibliography.bib
+    citation-location: margin
