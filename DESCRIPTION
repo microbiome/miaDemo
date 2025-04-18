@@ -74,6 +74,7 @@ Suggests:
     plotROC,
     purrr,
     qgraph,
+    quarto,
     RColorBrewer,
     rebook,
     reshape2,
@@ -106,5 +107,5 @@ Remotes:
     github::himelmallick/IntegratedLearner
 URL: https://microbiome.github.io/miaDemo/
 BugReports: https://github.com/microbiome/miaDemo/issues/
-VignetteBuilder: knitr
+VignetteBuilder: quarto
 DockerImage: ghcr.io/microbiome/miaDemo:latest
