@@ -593,7 +593,6 @@ knitr::include_graphics("figures/Exemplary_microbiome_network.png")
 An essential step in microbial network learning is to obtain an adjacency matrix representing the network from a given read count matrix:
 
 ```{r from_counts_to_networks, echo=FALSE, out.width='90%', fig.cap=''}
-#| label: fig-from_counts_to_networks
 knitr::include_graphics("figures/From_counts_to_networks.png")
 ```
 
