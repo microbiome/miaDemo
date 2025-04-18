@@ -80,8 +80,8 @@ if( !require("BiocManager") ){
     library("BiocManager")
 }
 
-# If there are packages that need to be installed, installs them with BiocManager
-# Updates old packages.
+# If there are packages that need to be installed, installs them with
+# BiocManager
 if( length(packages_need_to_install) > 0 ) {
    install(packages_need_to_install, ask = FALSE)
 }
@@ -103,11 +103,13 @@ The next step involves importing your data into the R environment.
 Depending on the bioinformatics tools used in the upstream section of the
 workflow, importing the data may vary slightly. We cover the most widely used
 formats, with importers available for convenience. You can also build a
-`TreeSummarizedExperiment` (`TreeSE`) from scratch from basic text files. For more
-information, see @sec-loading-experimental-microbiome-data.
+`TreeSummarizedExperiment` (`TreeSE`) from scratch from basic text files. For
+more information, see
+[OMA](https://microbiome.github.io/OMA/docs/devel/pages/import.html).
 
 For this demonstration, you can either use your own data or one of the
-built-in datasets provided by mia, which you can find here: @sec-example-data.
+built-in datasets provided by mia, which you can find
+[here](https://microbiome.github.io/OMA/docs/devel/pages/import.html#sec-package-data).
 
 In this tutorial, we'll be using the @Tengeler2020 dataset. In the study,
 they explored the impact of altered microbiomes on brain
@@ -129,7 +131,8 @@ tse <- Tengeler2020
 Once loaded, we often need to wrangle and preprocess the data. The `TreeSE`
 object, a primary data container in the _miaverse_ framework, is designed to
 handle complex microbiome data effectively. For more details about the `TreeSE`
-and other data containers, see [@sec-containers].
+and other data containers, see
+[OMA](https://microbiome.github.io/OMA/docs/devel/pages/containers.html).
 
 ### Subsetting
 
@@ -150,7 +153,7 @@ dim(tse)
 
 This will create a `TreeSE` object only containing
 samples of the second cohort. You can find more information on subsetting from
-here [@sec-rows-and-cols].
+[here](https://microbiome.github.io/OMA/docs/devel/pages/subsetting.html).
 
 ### Accessing data
 
@@ -159,7 +162,8 @@ Here's a quick reminder on how to access certain types of data:
 
 You can access the abundance table, or assays, as follows. In this example,
 we specify that we want to fetch an abundance table named "counts". For more
-details, see [@sec-assay-slot].
+details, see
+[OMA](https://microbiome.github.io/OMA/docs/devel/pages/containers.html).
 
 ```{r}
 #| label: showAssay
@@ -168,8 +172,7 @@ assay(tse, "counts") |> head()
 ```
 
 Sample (or column) metadata is stored in `colData`. In this example, it includes
-the diagnoses of the patients from whom the samples were drawn. See for more
-info on `colData` from [@sec-add-or-modify-data].
+the diagnoses of the patients from whom the samples were drawn.
 
 ```{r}
 #| label: showColdata
@@ -178,7 +181,7 @@ colData(tse)
 ```
 
 `rowData` contains data on feature characteristics,
-particularly taxonomic information (see [@sec-rowData]).
+particularly taxonomic information.
 
 ```{r}
 #| label: showRowdata
@@ -237,12 +240,15 @@ assay(tse, "relabundance") |> head()
 ```
 
 For more information on the capabilities and transformation options of 
-`mia::transformAssay()`, see [@sec-assay-transform].
+`mia::transformAssay()`, see
+[OMA](https://microbiome.github.io/OMA/docs/devel/pages/transformation.html).
 
 ## Community composition
 
 A common way to summarize composition is to use a bar plot to display relative
-abundances. See [@sec-microbiome-community] for more details on composition
+abundances. See
+[OMA](https://microbiome.github.io/OMA/docs/devel/pages/composition.html) for
+more details on composition
 summaries. This approach visualizes the relative abundances of selected
 taxonomic features
 in each sample, providing a quick overview of common compositions and major
@@ -273,7 +279,8 @@ index apart is its incorporation of phylogeny into the diversity calculation.
 This index considers both the number and the relatedness of different
 taxonomic features, using
 branch lengths on a phylogenetic tree. For
-more information on diversity, see [@sec-alpha-diversity].
+more information on diversity, see
+[OMA](https://microbiome.github.io/OMA/docs/devel/pages/alpha_diversity.html).
 
 ```{r}
 #| label: calculateAlpha
@@ -314,7 +321,8 @@ a technique that reduces the complexity of high-dimensional data by projecting
 it into a lower-dimensional space while preserving the dissimilarities
 (or distances) between samples. This enables us to visualize the relationships
 and differences between samples in a simplified manner. For more information,
-refer to [@sec-community-similarity].
+refer to
+[OMA](https://microbiome.github.io/OMA/docs/devel/pages/beta_diversity.html).
 
 In this analysis, we use UniFrac dissimilarity, which takes into account
 the phylogenetic relationships among features. UniFrac measures the phylogenetic
@@ -359,4 +367,4 @@ profiles differ between ADHD patients and controls.
 
 To further explore the factors driving these differences in microbial profiles,
 we can perform a differential abundance analysis, for instance
-(see [@sec-differential-abundance]).
+(see [OMA](https://microbiome.github.io/OMA/docs/devel/pages/differential_abundance.html)).

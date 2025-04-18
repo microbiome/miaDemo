@@ -1,5 +1,8 @@
 ---
 title: Introductory (French)
+format:
+  html:
+    html-math-method: katex
 vignette: >
     %\VignetteIndexEntry{Introductory (French)}
     %\VignetteEngine{quarto::html}
@@ -101,9 +104,10 @@ if( length(pkgs_not_loaded) > 0 ){
 ```
 
 Vous pouvez choisir d'utiliser vos propres données ou l'un des ensembles
-de données intégrés fournis par mia que vous trouverez ici @sec-example-data:
+de données intégrés fournis par mia que vous trouverez ici
+[OMA](https://microbiome.github.io/OMA/docs/devel/pages/import.html#sec-package-data):
 
-Dans ce tutoriel, nous utiliserons l'ensemble de données @Tengeler2020. Cet
+Dans ce tutoriel, nous utiliserons l'ensemble de données Tengeler2020. Cet
 ensemble de données a été créé par A.C. Tengeler pour essayer de démontrer
 l'impact des microbiomes altérés sur la structure du cerveau. Voici comment
 nous pouvons charger les données dans notre environnement R :
@@ -117,9 +121,12 @@ tse <- Tengeler2020
 
 Bien sûr, il existe d'autres moyens d'importer vos données en utilisant le
 [**package mia**](https://microbiome.github.io/mia/). Ceux-ci incluent :
-utiliser **vos propres données** ([@sec-import-from-file]) ou convertir un
+utiliser **vos propres données** (
+[OMA](https://microbiome.github.io/OMA/docs/devel/pages/import.html)) ou
+convertir un
 objet existant en un objet `TreeSummarizedExperiment` comme indiqué
-dans **cette section** : [@sec-conversions-between-data-formats-in-r].
+dans **cette section** :
+[OMA](https://microbiome.github.io/OMA/docs/devel/pages/convert.html).
 
 <hr>
 
@@ -132,8 +139,9 @@ stocker et d'accéder aux données de manière efficace.
 
 Voici un rappel rapide sur la façon d'accéder à certains types de données :
 
-Vous pouvez accéder aux assays  **assays** ([@sec-assay-slot]) de cette
-manière :
+Vous pouvez accéder aux assays  **assays** (
+[OMA](https://microbiome.github.io/OMA/docs/devel/pages/containers.html)) de
+cette manière :
 
 ```{r}
 #| label: showAssay
@@ -141,7 +149,7 @@ manière :
 assay(tse)[1:5,1:10]
 ```
 
-Alors que `colData` ([@sec-add-or-modify-data]) est accessible via :
+Alors que `colData` est accessible via :
 
 ```{r}
 #| label: showColdata
@@ -153,7 +161,7 @@ tse_df_colData <- as.data.frame(colData(tse))
 datatable(tse_df_colData,options = list(pageLength = 5),rownames = FALSE)
 ```
 
-**rowData** ([@sec-rowData]) contient des données sur les caractéristiques
+**rowData** contient des données sur les caractéristiques
 des échantillons, notamment des informations taxonomiques.
 
 ```{r}
@@ -324,7 +332,8 @@ plots <- lapply(plots, "+",
 Il est très important de faire toutes ces comparaisons afin de quantifier
 la diversité et de comparer les échantillons dans nos données en utilisant
 différentes mesures. - Vous pouvez trouver d'autres types de comparaisons
-directement dans le livre @sec-alpha-diversity.
+directement dans le livre
+[OMA](https://microbiome.github.io/OMA/docs/devel/pages/alpha_diversity.html).
 
 <hr>
 
@@ -386,8 +395,7 @@ Pour visualiser la dissimilarité entre les différents échantillons, nous
 pouvons effectuer une analyse en coordonnées principales sur l'assay
 nouvellement créé. Cela projette essentiellement les dimensions de Bray-Curtis
 sur un espace inférieur tout en conservant autant de variation que possible,
-les valeurs projetées étant appelées coordonnées principales. Vous pouvez en
-lire plus sur @Multidimensional-scaling ici.
+les valeurs projetées étant appelées coordonnées principales.
 
 `mia` fournit certaines techniques de réduction de dimension, telles que dbRDA.
 De plus, nous pouvons utiliser le package `scater` de Bioconductor et le
@@ -428,7 +436,7 @@ Et voilà ! Chaque axe montre la quantité de variance ou dans notre cas de
 dissimilarité retenue par chaque coordonnée principale. Vous pouvez
 également ajouter d'autres options pour colorier par une certaine
 caractéristique par exemple. Vous pouvez en savoir plus dans
-[@sec-community-similarity].
+[OMA](https://microbiome.github.io/OMA/docs/devel/pages/beta_diversity.html).
 
 <hr>
 
@@ -440,7 +448,8 @@ une heatmap de base pour visualiser les caractéristiques les plus répandues
 en utilisant la
 [**bibliothèque sechm**](https://bioconductor.org/packages/release/bioc/html/sechm.html).
 Pour une carte de chaleur plus détaillée, veuillez vous reporter
-à **cette section** [@sec-cross-correlation].
+à **cette section**
+[OMA](https://microbiome.github.io/OMA/docs/devel/pages/cross_correlation.html).
 
 Ensuite, nous allons créer un sous-ensemble de TreeSE pour les taxons les
 plus répandus en utilisant une expérience alternative :

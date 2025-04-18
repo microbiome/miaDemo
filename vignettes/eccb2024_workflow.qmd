@@ -627,7 +627,7 @@ After having analyzed associations between microbial families and pathways in th
 In a typical microbiome network, **nodes are ASVs or taxa** on a certain rank (here family). The nodes are connected by **edges, which represent microbial associations**. Higher edge thickness corresponds to higher edge weight. Edges with a positive underlying association are blue, those with a negative association are red.
 
 ```{r}
-#| label: from_counts_to_networks
+#| label: from_counts_to_networks1
 #| echo: false
 #| fig-cap: "An exemplary microbiome network."
 
@@ -639,7 +639,7 @@ knitr::include_graphics("figures/Exemplary_microbiome_network.png")
 An essential step in microbial network learning is to obtain an adjacency matrix representing the network from a given read count matrix:
 
 ```{r}
-#| label: from_counts_to_networks
+#| label: from_counts_to_networks2
 #| echo: false
 
 knitr::include_graphics("figures/From_counts_to_networks.png")
