@@ -1,13 +1,15 @@
 ---
 title: Orchestrating Microbiome Analysis with Bioconductor (ECCB)
-output: rmarkdown::html_vignette
 vignette: >
     %\VignetteIndexEntry{ECCB workshop}
-    %\VignetteEngine{knitr::rmarkdown}
+    %\VignetteEngine{quarto::html}
     %\VignetteEncoding{UTF-8}
 ---
     
-```{r, include = FALSE}
+```{r}
+#| label: setup
+#| include: false
+
 knitr::opts_chunk$set(
     collapse = TRUE,
     comment = "#>"
@@ -127,7 +129,11 @@ knitr::include_graphics(here::here("vignettes", "figures", "TreeSE.png"))
 First, we load the required packages into the session. The following script
 ensures that any packages not already installed are automatically installed.
 
-```{r setup, message=FALSE}
+```{r}
+#| label: install
+#| message: false
+#| warning: false
+
 # List of packages that we need
 packages <- c(
     "ComplexHeatmap",
@@ -209,7 +215,9 @@ with alterations in the gut microbiota.
 
 Let's fetch the data from the database.
 
-```{r import_dataset}
+```{r}
+#| label: import-dataset
+
 # Study from which we want to fetch data
 study <- "GuptaA_2019"
 # Experiments that we want to fetch
@@ -261,7 +269,9 @@ covered in [agglomeration](https://microbiome.github.io/OMA/docs/devel/pages/agg
 and [transformation](https://microbiome.github.io/OMA/docs/devel/pages/transformation.html)
 chapters in OMA, respectively.
 
-```{r preprocess}
+```{r}
+#| label: preprocess
+
 # Agglomerate data
 tse_family <- agglomerateByRank(tse, rank = "family")
 
@@ -295,7 +305,15 @@ You can explore further [in the OMA book](https://microbiome.github.io/OMA/docs/
 For simplicity, let's calculate the microbial richness and alpha diversity 
 using the Shannon index (other calculation using different index also available, and you can explore further)
 
-```{r alpha diversity}
+```{r}
+#| label: alpha-diversity
+
+tse <- addAlpha(tse, index = c("observed", "shannon"))
+
+head(tse$observed)
+head(tse$shannon)
+
+
 tse <- addAlpha(tse, index = c("observed", "shannon"))
 
 # to see the observed and shannon calculation
@@ -318,7 +336,9 @@ want to perform more than two groups comparison.
 
 The information about diseases state is available from the `colData` of `tse` object, in the "diseases" column.
 
-```{r alpha diversity viz}
+```{r}
+#| label: alpha-diversity-viz
+
 # Changes old levels with new levels
 tse$disease <- factor(tse$disease)
 # Access the levels of the factor
@@ -370,7 +390,9 @@ explained various indexes that commonly used in the microbial ecology context.
 For this tutorial, let's try to calculate 
 the bray-curtis distance and plot the PCoA. 
 
-```{r PCoA}
+```{r}
+#| label: PCoA
+
 # Perform PCoA
 tse <- runMDS(
     tse,
@@ -397,7 +419,9 @@ p1
 
 Sometimes, we also want to create ellipse to guide our visualization whether the microbial community in two groups is different. You can achieve it using the code below.
 
-```{r PCoA elipse}
+```{r}
+#| label: fig-pcoa-ellipse
+#| 
 p_ellipse <- p1 + stat_ellipse(aes(color = colour_by), level = 0.95)
 p_ellipse
 ```
@@ -445,14 +469,18 @@ this list and the connections between samples can be error-prone and cumbersome.
 To simplify this, we can use the `altExp` slot to handle the bookkeeping.
 Let’s start by checking which experiments are available:
 
-```{r show_experiments}
+```{r}
+#| label: show_experiments
+
 names(data_list)
 ```
 
 As we see, we have metabolic pathway predictions in addition to taxonomic
 profiling. We can add the entire list of experiments to the `altExp` slot.
 
-```{r add_altexp}
+```{r}
+#| label: add_altexp
+
 altExps(tse) <- data_list
 tse
 ```
@@ -460,7 +488,9 @@ tse
 With the `altExp` slot now populated, you can access the data using the
 `altExp()` function and specify which experiment you want to retrieve.
 
-```{r access_altxp}
+```{r}
+#| label: access_altxp
+
 altExp(tse, "pathway")
 ```
 
@@ -470,7 +500,9 @@ automatically subsets all associated experiments accordingly.
 
 For example, let’s select only the samples from senior patients.
 
-```{r subset_altexp}
+```{r}
+#| label: subset_altexp
+
 tse_sub <- tse[ , tse$age_category == "senior"]
 tse_sub
 
@@ -484,7 +516,9 @@ names matching across experiments.
 In addition to adding the entire list, we can also add individual experiments.
 Let’s add the agglomerated data separately to keep the whole dataset organized.
 
-```{r add_agg}
+```{r}
+#| label: add_agg
+
 altExp(tse, "family") <- tse_family
 tse
 ```
@@ -501,7 +535,9 @@ relationships. First, we’ll preprocess the functional annotation data by
 agglomerating the pathways based on each pathway's function, and then further by
 prevalence.
 
-```{r agglomerate_func}
+```{r}
+#| label: agglomerate_func
+
 # Agglomerate based on pathways function
 altExp(tse, "pathway_func") <- agglomerateByVariable(
     altExp(tse, "pathway"),
@@ -521,7 +557,9 @@ The data now includes the most prevalent pathways, each representing a single
 metabolic activity. Next, we apply a transformation as the final preprocessing
 step for our functional data.
 
-```{r transform_func}
+```{r}
+#| label: transform_func
+
 altExp(tse, "pathway_prev") <- transformAssay(
     altExp(tse, "pathway_prev"),
     assay.type = "relabundance",
@@ -534,7 +572,11 @@ We’re now ready to perform the cross-association analysis. We will examine the
 associations between microbial families and the most abundant pathways. To
 visualize the results, we’ll use a heatmap.
 
-```{r cross_association, fig.height=15, fig.width=15}
+```{r}
+#| label: cross_association
+#| fig-width: 15
+#| fig-height: 15
+
 # Perform cross-associaton
 res <- getCrossAssociation(
     tse,
@@ -584,7 +626,11 @@ After having analyzed associations between microbial families and pathways in th
 
 In a typical microbiome network, **nodes are ASVs or taxa** on a certain rank (here family). The nodes are connected by **edges, which represent microbial associations**. Higher edge thickness corresponds to higher edge weight. Edges with a positive underlying association are blue, those with a negative association are red.
 
-```{r microbiome-network, echo=FALSE, out.width='90%', fig.cap="An exemplary microbiome network."}
+```{r}
+#| label: from_counts_to_networks
+#| echo: false
+#| fig-cap: "An exemplary microbiome network."
+
 knitr::include_graphics("figures/Exemplary_microbiome_network.png")
 ```
 
@@ -592,7 +638,10 @@ knitr::include_graphics("figures/Exemplary_microbiome_network.png")
 
 An essential step in microbial network learning is to obtain an adjacency matrix representing the network from a given read count matrix:
 
-```{r from_counts_to_networks, echo=FALSE, out.width='90%', fig.cap=''}
+```{r}
+#| label: from_counts_to_networks
+#| echo: false
+
 knitr::include_graphics("figures/From_counts_to_networks.png")
 ```
 
@@ -644,7 +693,10 @@ to get a denser graph (the default is 0.05).
 
 Since zero replacement, normalization, and sparsification (model selection) is included in SPIEC-EASI, we set the corresponding `netConstruct` arguments to "none". 
 
-```{r network_construction, eval=FALSE}
+```{r}
+#| label: network_construction
+#| eval: false
+
 net <- netConstruct(
     tse_family,
     taxRank = "family",
@@ -665,11 +717,18 @@ net <- netConstruct(
     seed = 16092024)
 ```
 
-```{r store_network, echo=FALSE, eval=FALSE}
+```{r}
+#| label: store_network
+#| echo: false
+#| eval: false
+
 saveRDS(net, file = "data/spieceasi_network.rds")
 ```
 
-```{r load_network, echo=FALSE}
+```{r}
+#| label: load_network
+#| echo: false
+
 net <- readRDS("data/spieceasi_network.rds")
 ```
 
@@ -677,7 +736,9 @@ net <- readRDS("data/spieceasi_network.rds")
 
 The object also contains an **edge list**, giving each edge’s estimated association, dissimilarity, and adjacency. Let’s take a quick look at the edges with the highest and lowest edge weights:
 
-```{r network_edgelist}
+```{r}
+#| label: network_edgelist
+
 edgelist <- net$edgelist1[order(net$edgelist1$adja, 
                                 decreasing = TRUE), ]
 head(edgelist)
@@ -695,7 +756,9 @@ The user has several options to choose from, such as a clustering method, how
 to define hubs, and whether or not to normalize centrality values. See the
 help page `?netAnalyze` for a description of the arguments.
 
-```{r network_analysis}
+```{r}
+#| label: network_analysis
+
 netprops <- netAnalyze(net,
                        clustMethod = "cluster_fast_greedy",
                        hubPar = "eigenvector",
@@ -714,7 +777,11 @@ overlap. You may need to play around with the `repulsion` argument until you
 find a value where the labels are legible, but also the clusters are still
 well recognizable.
 
-```{r network_plot_clusters, fig.width=13, fig.height=10, out.width='100%'}
+```{r}
+#| label: network_plot_clusters
+#| fig-width: 13
+#| fig-height: 10
+
 # Palette with distinguishable colors
 nodecols <- c("#E69F00", "#56B4E9", "#009E73",  "#CC79A7", "#F0E442", 
               "#0072B2", "#D55E00")
@@ -751,7 +818,11 @@ legend(0.7, -0.7, cex = 1.5, bty = "n",
 
 We now **color** nodes according to their **phylum**. The **node sizes** are proportional to a taxon's sum of **mclr-transformed abundances**.
 
-```{r network_plot_phyla, fig.width=15, fig.height=10, out.width='100%'}
+```{r}
+#| label: network_plot_phyla
+#| fig-width: 15
+#| fig-height: 10
+
 # Generate vector with phylum names for node coloring
 phyla <- rowData(tse_family)$phylum
 
@@ -834,7 +905,9 @@ coding (small lie).
 As we did before for `tse`, we add alpha and beta diversity metrics also to the agglomerated experiment `tse_family`, so we will be able to visualize these
 metrics in the app.
 
-```{r prep_iSEEtree}
+```{r}
+#| label: prep_iSEEtree 
+
 # Add information on alpha diversity
 tse_family <- addAlpha(tse_family,
                        index = c("coverage_diversity", "shannon_diversity"))
@@ -851,7 +924,9 @@ tse_family <- runMDS(tse_family,
 Launching the app is easy. All you need to do is run the command `iSEE` on the
 `TreeSE` object that you want to explore.
 
-```{r iseetree1}
+```{r}
+#| label: iseetree1
+
 # Launch app
 if (interactive()) {
   iSEE(tse_family)
@@ -862,7 +937,9 @@ The default panel layout does not contain the so-called `ColumnDataTable` panel,
 which plots variables from the `colData.` Therefore, we need to specify a custom
 panel layout with the `initial` argument to generate the alpha diversity plot.
 
-```{r iseetree2}
+```{r}
+#| label: iseetree2
+
 # Launch app with custom layout
 if (interactive()) {
   iSEE(tse_family, initial = c(ColumnDataTable(), ColumnDataPlot()))
@@ -895,6 +972,8 @@ knitr::include_graphics("figures/findingpheno_logo.png")
 
 ## Session info
 
-```{r session_info}
+```{r}
+#| label: session_info
+
 sessionInfo()
 ```

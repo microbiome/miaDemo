@@ -1,9 +1,8 @@
 ---
 title: Introductory (French)
-output: rmarkdown::html_vignette
 vignette: >
     %\VignetteIndexEntry{Introductory (French)}
-    %\VignetteEngine{knitr::rmarkdown}
+    %\VignetteEngine{quarto::html}
     %\VignetteEncoding{UTF-8}
 ---
 
@@ -17,7 +16,10 @@ Authors:
 
 Last modified: 11 July, 2024.
     
-```{r, include = FALSE}
+```{r}
+#| label: setup
+#| include: false
+
 knitr::opts_chunk$set(
     collapse = TRUE,
     comment = "#>"
@@ -58,7 +60,11 @@ Lors de l'utilisation de packages pour le microbiome, il existe de
 nombreuses façons différentes d'importer vos données. Commençons par charger
 les packages requis:
 
-```{r install}
+```{r}
+#| label: install
+#| message: false
+#| warning: false
+
 # List of packages that we need
 packages <- c(
     "ggplot2", "knitr", "mia", "dplyr", "miaViz", "vegan", "DT",
@@ -102,7 +108,9 @@ ensemble de données a été créé par A.C. Tengeler pour essayer de démontrer
 l'impact des microbiomes altérés sur la structure du cerveau. Voici comment
 nous pouvons charger les données dans notre environnement R :
 
-```{r loadDataset}
+```{r}
+#| label: loadDataset
+
 data("Tengeler2020", package="mia")
 tse <- Tengeler2020
 ```
@@ -127,13 +135,17 @@ Voici un rappel rapide sur la façon d'accéder à certains types de données :
 Vous pouvez accéder aux assays  **assays** ([@sec-assay-slot]) de cette
 manière :
 
-```{r showAssay}
+```{r}
+#| label: showAssay
+
 assay(tse)[1:5,1:10]
 ```
 
 Alors que `colData` ([@sec-add-or-modify-data]) est accessible via :
 
-```{r showColdata}
+```{r}
+#| label: showColdata
+
 # Transform the colData to a dataframe
 tse_df_colData <- as.data.frame(colData(tse))
 
@@ -144,7 +156,9 @@ datatable(tse_df_colData,options = list(pageLength = 5),rownames = FALSE)
 **rowData** ([@sec-rowData]) contient des données sur les caractéristiques
 des échantillons, notamment des informations taxonomiques.
 
-```{r showRowdata}
+```{r}
+#| label: showRowdata
+
 tse_df_rowData <- as.data.frame(rowData(tse))
 datatable(tse_df_rowData, options = list(pageLength = 5))  
 ```
@@ -176,7 +190,9 @@ votre `TreeSummarizedExperiment` d'origine.
 En utilisant l'ensemble de données Tengeler2020, nous pouvons nous concentrer
 sur une certaine cohorte par exemple. Cela est assez simple :
 
-```{r subsetBySample}
+```{r}
+#| label: subsetBySample
+
 tse_subset_by_sample <- tse[ , tse$cohort == "Cohort_1"]
 ```
 
@@ -191,7 +207,9 @@ d'agglomérer vos données à ce niveau particulier. La fonction
 `agglomerateByRank()` simplifie ce processus, permettant des analyses plus
 fluides et efficaces. Voici un exemple :
 
-```{r agglomerating-data}
+```{r}
+#| label: agglomerating-data
+
 tse.agglomerated <- agglomerateByRank(tse, rank = "Phylum")
 
 # Check
@@ -219,13 +237,15 @@ indices :
 Le **coefficient de @Hill** combine ces mesures en une seule équation.
 Toutes ces variations sont appelées diversité alpha.
 
-```{r calculateRichness}
+```{r}
+#| label: calculateRichness
+
 # Estimate (observed) richness
 tse_alpha <- addAlpha(
     tse,
     assay.type = "counts",
     index = "observed",
-    name="observed")
+    name = "observed")
 
 # Check some of the first values in colData
 tse_alpha$observed |> head()
@@ -237,7 +257,9 @@ idée de la diversité de chaque échantillon en termes de nombre d'espèces
 différentes présentes. Nous pouvons ensuite créer un graphique pour
 visualiser cela.
 
-```{r plotColdata}
+```{r}
+#| label: plotColdata
+
 plotColData(
     tse_alpha,
     "observed",
@@ -262,7 +284,9 @@ $$ p~i~ étant la proportion d'un certain microorganisme.
 D'abord, nous pouvons facilement calculer cette mesure et l'ajouter à
 notre TreeSE.
 
-```{r calculateDiversity}
+```{r}
+#| label: calculateDiversity
+
 tse_alpha <- addAlpha(
     tse_alpha,
     assay.type = "counts",
@@ -273,7 +297,9 @@ tse_alpha <- addAlpha(
 Nous pouvons également comparer les deux mesures de diversité en produisant
 les graphiques suivants.
 
-```{r violinPlots}
+```{r}
+#| label: violinPlots
+
 # Create the plots
 plots <- lapply(
     c("observed", "shannon"),
@@ -320,7 +346,9 @@ Heureusement pour nous, le [**package mia**](https://microbiome.github.io/mia/)
 fournit un moyen facile de calculer l'abondance relative pour notre TreeSE en
 utilisant la méthode transformAssay.
 
-```{r calculateRelabundance}
+```{r}
+#| label: calculateRelabundance
+
 tse <- transformAssay(
     tse,
     assay.type = "counts",
@@ -338,7 +366,9 @@ assay(tse, "relabundance")[5:10,1:10]
 
 Ensuite, nous pouvons ajouter la dissimilarité de Bray-Curtis :
 
-```{r calculateBrayCurtis}
+```{r}
+#| label: calculateBrayCurtis
+
 # Run PCoA on relabundance assay with Bray-Curtis distances
 tse <- addMDS(
     tse,
@@ -364,7 +394,9 @@ De plus, nous pouvons utiliser le package `scater` de Bioconductor et le
 package `vegan`, créé par @R_vegan pour transformer la dissimilarité en distances
 réelles pouvant être visualisées :
 
-```{r showPCoA}
+```{r}
+#| label: showPCoA
+
 # Create ggplot object
 p <- plotReducedDim(tse, "MDS_bray",colour_by = "cohort")
 
@@ -376,7 +408,9 @@ Cependant, les axes ne sont pas très informatifs et la quantité de variance
 capturée par l'algorithme n'est nulle part indiquée. Nous pouvons ajuster le
 graphique pour montrer plus d'informations comme suit :
 
-```{r addVariancePCoA}
+```{r}
+#| label: addVariancePCoA
+
 # Calculate explained variance
 e <- attr(reducedDim(tse, "MDS_bray"), "eig")
 rel_eig <- e / sum(e[e > 0])

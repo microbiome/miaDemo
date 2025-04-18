@@ -1,9 +1,8 @@
 ---
 title: Introductory (Dutch)
-output: rmarkdown::html_vignette
 vignette: >
     %\VignetteIndexEntry{Introductory (Dutch)}
-    %\VignetteEngine{knitr::rmarkdown}
+    %\VignetteEngine{quarto::html}
     %\VignetteEncoding{UTF-8}
 ---
 
@@ -17,7 +16,10 @@ Authors:
 
 Last modified: 11 July, 2024.
     
-```{r, include = FALSE}
+```{r}
+#| label: setup
+#| include: false
+
 knitr::opts_chunk$set(
     collapse = TRUE,
     comment = "#>"
@@ -52,7 +54,11 @@ naar een hoger niveau zullen tillen 🚀.
 Bij het gebruik van microbiome-pakketten zijn er veel verschillende manieren
 om je data te importeren. Laten we eerst alle paketten laden:
 
-```{r install}
+```{r}
+#| label: install
+#| message: false
+#| warning: false
+
 # List of packages that we need
 packages <- c(
     "ggplot2", "knitr", "mia", "dplyr", "miaViz", "vegan", "DT",
@@ -97,7 +103,9 @@ gemaakt door A.C. Tengeler om de impact van aangetaste microbiomen op de
 hersenstructuur aan te tonen. Hier is hoe we de data in onze R-omgeving
 kunnen laden:
 
-```{r laad-dataset}
+```{r}
+#| label: loadDataset
+
 data("Tengeler2020", pakket="mia")
 tse <- Tengeler2020
 ```
@@ -129,7 +137,9 @@ een `assay` door alleen de eerste 5 rijen en de eerste 10 kolommen te tonen.
 Dit maakt het eenvoudiger om te begrijpen en te lezen. Later in de worklow
 zal er meer uitleg worden gegeven over het maken van subsets.
 
-```{r assay}
+```{r}
+#| label: assay
+
 assay(tse)[1:5,1:10]
 ```
 
@@ -138,7 +148,9 @@ assay(tse)[1:5,1:10]
 Een ander belangrijk aspect van microbiome-analyse is
 **monsterdata**([@sec-add-or-modify-data]).
 
-```{r coldata}
+```{r}
+#| label: coldata
+
 # verandert de colData in een dataframe
 tse_df_colData <- as.data.frame(colData(tse))
 
@@ -155,7 +167,9 @@ monster en elke kolom bevat gegevens over dat monster.
 `rowData`([@sec-rowData]) bevat gegevens van een type microbe,
 voornamelijk taxonomische informatie.
 
-```{r tse-naar-datatable}
+```{r}
+#| label: tse-naar-datatable
+
 tse_df_rowData <- as.data.frame(rowData(tse))
 datatable(tse_df_rowData, options = list(pageLength = 5))
 ```
@@ -193,7 +207,9 @@ In sommige gevallen hoeft u slechts een deel van uw originele
 Met de Tengeler2020 dataset, kunnen we de focus leggen op een bepaald
 cohort bijvoorbeeld. Dit resultaat kan op de volgende manier behaald worden:
 
-```{r subset-tse}
+```{r}
+#| label: subset-tse
+
 tse_subset_by_sample <- tse[ , tse$cohort == "Cohort_1"]
 ```
 
@@ -202,7 +218,9 @@ monsters van het eerste cohort. Om het resulterende object beter te
 visualiseren, kunnen we de `meltAssay()`-methode gebruiken en specificeren welk
 type kolom behouden moet blijven:
 
-```{r tse-naar-df}
+```{r}
+#| label: tse-naar-df
+
 molten_tse <- meltAssay(
     tse_subset_by_sample,
     add_row_data = TRUE,
@@ -220,7 +238,9 @@ zijn om de gegevens samen te voegen tot dat specifieke niveau. De functie
 `agglomerateByRank` vereenvoudigt dit proces en maakt meer geraffineerde en
 effectieve analyses mogelijk. Hier volgt een voorbeeld:
 
-```{r data-samenvoegen}
+```{r}
+#| label: data-samenvoegen
+
 tse.agglomerated <- agglomerateByRank(tse, rank = "Phylum")
 
 # Check
@@ -248,7 +268,9 @@ vershillende manieren:
 combineert deze soorten metingen tot een formule. De drie vorige maatstaven
 worden ook wel *Alfabetische diversiteit (alpha-diversiteit)* genoemd.
 
-```{r rijkdom}
+```{r}
+#| label: rijkdom
+
 # Schatting (waargenomen) rijkdom
 tse_alpha <- addAlpha(
     tse,
@@ -265,7 +287,9 @@ of locaties binnen de dataset. Het geeft een idee van hoe divers elk monster
 is in verhouding tot het aantal verschillende soorten dat aanwezig is. We
 kunnen dan vervolgens een figuur tekenen om dit te visualiseren.
 
-```{r rijkdom-grafiek}
+```{r}
+#| label: rijkdom-grafiek
+
 plotColData(
     tse_alpha,
     "observed",
@@ -293,7 +317,9 @@ microbioom.
 
 Eerst kunnen we deze maatstaf eenvoudig berekenen en toevoegen aan onze TSE.
 
-```{r diversiteit}
+```{r}
+#| label: diversiteit
+
 tse_alpha <- addAlpha(
     tse_alpha,
     assay.type = "counts",
@@ -304,7 +330,9 @@ tse_alpha <- addAlpha(
 En daarna kunnen we de twee maten van diversiteit vergelijken door de
 volgende grafieken te maken.
 
-```{r shanon-grafiek}
+```{r}
+#| label: shanon-grafiek
+
 # Initialisatie van het grafiek object
 plots <- lapply(
     c("observed", "shannon"),
@@ -351,7 +379,9 @@ eenvoudige manier om ten eerste de relatieve overvloed te berekenen en daarna
 de Bray-Curtis ongelijkheid. de relatieve overvloed kan worden toegevoegd aan
 onze TSE met behulp van de `transformAssay()` methode:
 
-```{r bereken-relabundance}
+```{r}
+#| label: bereken-relabundance
+
 tse <- transformAssay(tse, assay.type = "counts", method = "relabundance")
 ```
 
@@ -359,7 +389,9 @@ Dit resulteert in een matrix waarbij de verschillende monsters als rijen
 worden weergegeven en de overvloed ten opzichte van de monsters als kolommen.
 Deze nieuwe maatstaaf is makkelijk toegankelijk via de assays van de tse:
 
-```{r toon-relabundance}
+```{r}
+#| label: toon-relabundance
+
 assay(tse, "relabundance")[5:10,1:10]
 ```
 
@@ -377,7 +409,9 @@ kunnen wel gebruik maken van Bioconductor's `scater` pakket en het `vegan` pakke
 dat @R_vegan hier kan worden gevonden om de ongelijkheid om te zetten in
 werkelijke afstanden die gevisualiseerd kunnen worden:
 
-```{r Hoofdcomponentenanalyse}
+```{r}
+#| label: Hoofdcomponentenanalyse
+
 # Voer een Hoofdcomponentenanalyse uit  op de relabundance assay en behoudt de Bray-Curtis afstanden.
 tse <- addMDS(
     tse,
@@ -390,7 +424,9 @@ tse <- addMDS(
 Nu we de hoofdcoördinaten hebben berekend, kunnen we ze als volgt weergeven
 in een tweedimensionale ruimte:
 
-```{r grafiek-hoofdcomponentenanalyse}
+```{r}
+#| label: grafiek-hoofdcomponentenanalyse
+
 # Maak een ggplot object
 p <- plotReducedDim(tse, "MDS_bray", colour_by = "cohort")
 
@@ -402,7 +438,9 @@ De assen zijn echter niet erg informatief en de hoeveelheid behouden variantie
 door het algoritme is nergens te vinden. We kunnen de grafiek op de volgende
 manier aanpassen om meer informatie weer te geven :
 
-```{r Bereken-variantie}
+```{r}
+#| label: Bereken-variantie
+
 # Berekent de behouden variantie
 e <- attr(reducedDim(tse, "MDS_bray"), "eig")
 rel_eig <- e / sum(e[e > 0])
@@ -435,7 +473,9 @@ Ga voor een meer gedetailleerde heatmap naar
 Laten we de TreeSE subsetten naar de meest voorkomende taxa met behulp
 van een alternatief experiment:
 
-```{r meest-voorkomende}
+```{r}
+#| label: meest-voorkomende
+
 altExp(tse, "prevalence-subset") <- subsetByPrevalent(tse,prevalence=0.5)[1:5,]
 ```
 
@@ -446,7 +486,9 @@ subset. Daardoor moeten we de waarden opnieuw berekenen om de subset accuraat
 te kunnen weergeven door middel van een heatmap. Omwille van de leesbaarheid
 subsetten we ook de eerste vijf taxa na de eerste subset.
 
-```{r herbereken-relabundance}
+```{r}
+#| label: herbereken-relabundance
+
 altExp(tse, "prevalence-subset") <- transformAssay(
     altExp(tse, "prevalence-subset"),
     assay.type = "counts",
@@ -456,7 +498,9 @@ altExp(tse, "prevalence-subset") <- transformAssay(
 Nu we de gegevens hebben voorbereid, kunnen we de eerder geladen
 `sechm`-bibliotheek gebruiken om de heatmap weer te geven:
 
-```{r heatmap}
+```{r}
+#| label: heatmap
+
 # Definieert de kleuren.
 setSechmOption("hmcols", value=c("#F0F0FF","#007562"))
 
