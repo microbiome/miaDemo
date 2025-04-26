@@ -31,11 +31,11 @@ knitr::opts_chunk$set(
 
 ::: {#translate style="display: flex; gap: 1em; align-items: center;"}
 
-<a href="introductory_workflow.Rmd" style="display: flex; align-items: center; gap: 0.5em;">
+<a href="introductory_workflow.qmd" style="display: flex; align-items: center; gap: 0.5em;">
   <img src="figures/flags/GB_flag.png" alt="Great Britain flag" style="width: 30px; height: auto;"/> <strong>English</strong>
 </a>
 
-<a href="introductory_workflow_french_version.Rmd" style="display: flex; align-items: center; gap: 0.5em;">
+<a href="introductory_workflow_french_version.qmd" style="display: flex; align-items: center; gap: 0.5em;">
   <img src="figures/flags/France_flag.png" alt="French flag" style="width: 30px; height: auto;"/> <strong>French</strong>
 </a>
 
