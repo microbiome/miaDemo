@@ -2,3 +2,7 @@ inst/doc
 *~
 .Rproj.user
 *Rproj
+/doc/
+/Meta/
+.Rhistory
+.RData
