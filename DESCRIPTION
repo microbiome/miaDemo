@@ -53,6 +53,7 @@ Suggests:
     gsEasy,
     gtools,
     igraph,
+    iSEEtree,
     knitr,
     Maaslin2,
     maaslin3,
