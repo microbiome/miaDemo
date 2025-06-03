@@ -46,11 +46,6 @@ jobs:
         run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "warning", check_dir = "check")
         shell: Rscript {0}
 
-      - name: Install Quarto CLI
-        run: |
-          wget https://github.com/quarto-dev/quarto-cli/releases/download/v1.7.31/quarto-1.7.31-linux-amd64.deb
-          sudo dpkg -i quarto-1.7.31-linux-amd64.deb
-
       - name: Build pkgdown
         run: |
            PATH=$PATH:$HOME/bin/ Rscript -e 'pkgdown::build_site(".")'
