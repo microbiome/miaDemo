@@ -1,6 +1,7 @@
 url: https://microbiome.github.io/miaDemo/
 
 template:
+  bootstrap: 5
   params:
     bootswatch: flatly
     #ganalytics: UA-99999999-9
@@ -14,5 +15,5 @@ navbar:
   right:
    - icon: fa-github
      href: https://github.com/microbiome/miaDemo
-     
+
 
