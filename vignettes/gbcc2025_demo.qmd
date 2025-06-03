@@ -246,6 +246,7 @@ patients with colorectal cancer (CRC).
 
 ```{r}
 #| label: import_data
+#| eval: false
 library(curatedMetagenomicData)
 
 res <- curatedMetagenomicData(
@@ -262,7 +263,23 @@ list and store it into a variable named `tse`.
 
 ```{r}
 #| label: import_data2
+#| eval: false
 tse <- res[["2021-03-31.GuptaA_2019.relative_abundance"]]
+```
+
+```{r}
+#| label: save_data
+#| eval: false
+#| include: false
+saveRDS(tse, "data/GuptaA_2019_tse.rds")
+```
+
+```{r}
+#| label: read_data
+#| eval: true
+#| include: false
+library(TreeSummarizedExperiment)
+tse <- readRDS("data/GuptaA_2019_tse.rds")
 ```
 
 #### Data container
