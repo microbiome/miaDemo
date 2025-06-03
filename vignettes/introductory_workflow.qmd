@@ -2,7 +2,7 @@
 title: Introductory
 vignette: >
     %\VignetteIndexEntry{Introductory}
-    %\VignetteEngine{quarto::quarto_vignette}
+    %\VignetteEngine{quarto::html}
     %\VignetteEncoding{UTF-8}
 ---
 

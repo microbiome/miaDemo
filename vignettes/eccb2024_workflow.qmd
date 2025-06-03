@@ -2,7 +2,7 @@
 title: Orchestrating Microbiome Analysis with Bioconductor (ECCB)
 vignette: >
     %\VignetteIndexEntry{ECCB workshop}
-    %\VignetteEngine{quarto::quarto_vignette}
+    %\VignetteEngine{quarto::html}
     %\VignetteEncoding{UTF-8}
 ---
     
