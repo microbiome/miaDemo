@@ -53,9 +53,9 @@ Suggests:
     gsEasy,
     gtools,
     igraph,
-    IntegratedLearner,
     knitr,
     Maaslin2,
+    maaslin3,
     mia,
     miaTime,
     miaViz,
@@ -104,7 +104,6 @@ Remotes:
     github::stefpeschel/NetCoMi,
     github::zdk123/SpiecEasi,
     github::GraceYoon/SPRING,
-    github::himelmallick/IntegratedLearner,
     github::waldronlab/curatedMetagenomicData
 URL: https://microbiome.github.io/miaDemo/
 BugReports: https://github.com/microbiome/miaDemo/issues/
