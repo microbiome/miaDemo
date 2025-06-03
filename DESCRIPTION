@@ -92,7 +92,6 @@ Suggests:
     stringr,
     SuperLearner,
     tidyverse,
-    topGO,
     vegan,
     WGCNA,
     xgboost
