@@ -1,6 +1,6 @@
 Package: miaDemo
 Title: Package Demo: mia
-Version: 2.0.13
+Version: 2.0.14
 Authors@R: 
     c(person(given = "Tuomas", family = "Borman", role = c("aut", "cre"),
              email = "tuomas.v.borman@utu.fi",
@@ -55,6 +55,7 @@ Suggests:
     igraph,
     iSEEtree,
     knitr,
+    limma,
     Maaslin2,
     maaslin3,
     mia,
