@@ -24,7 +24,7 @@ jobs:
           BiocManager::install(ask=FALSE)
           saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
         shell: Rscript {0}
-        
+
       - name: Cache R packages
         if: runner.os != 'Windows'
         uses: actions/cache@v4
@@ -45,6 +45,11 @@ jobs:
           _R_CHECK_CRAN_INCOMING_REMOTE_: false
         run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "warning", check_dir = "check")
         shell: Rscript {0}
+
+      - name: Install Quarto CLI
+        run: |
+          wget https://github.com/quarto-dev/quarto-cli/releases/latest/download/quarto-linux-amd64.deb
+          sudo dpkg -i quarto-linux-amd64.deb
 
       - name: Build pkgdown
         run: |
