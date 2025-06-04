@@ -1,7 +1,7 @@
 ---
-title: Orchestrating Microbiome Analysis with Bioconductor (EuroBioC2024)
+title: EuroBioC 2024
 vignette: >
-  %\VignetteIndexEntry{mia workshop in EuroBioC2024}
+  %\VignetteIndexEntry{EuroBioC 2024}
   %%\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
 ---
