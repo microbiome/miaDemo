@@ -1,9 +1,9 @@
 ---
 title: Introductory
 vignette: >
-    %\VignetteIndexEntry{Introductory}
-    %\VignetteEngine{quarto::html}
-    %\VignetteEncoding{UTF-8}
+  %\VignetteIndexEntry{Introductory}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 Authors:
@@ -28,11 +28,11 @@ knitr::opts_chunk$set(
 
 ::: {#translate style="display: flex; gap: 1em; align-items: center;"}
 
-<a href="introductory_workflow_french_version.qmd" style="display: flex; align-items: center; gap: 0.5em;">
+<a href="introductory_french.Rmd" style="display: flex; align-items: center; gap: 0.5em;">
   <img src="figures/flags/France_flag.png" alt="French flag" style="width: 30px; height: auto;"/> <strong>French</strong>
 </a>
 
-<a href="introductory_workflow_dutch_version.qmd" style="display: flex; align-items: center; gap: 0.5em;">
+<a href="introductory_dutch.Rmd" style="display: flex; align-items: center; gap: 0.5em;">
   <img src="figures/flags/Netherland_flag.jpg" alt="Netherland flag" style="width: 30px; height: auto;"/> <strong>Dutch</strong>
 </a>
 

@@ -1,9 +1,9 @@
 ---
-title: Orchestrating Microbiome Analysis with Bioconductor (GBCC2025)
+title: GBCC 2025
 vignette: >
-  %\VignetteIndexEntry{Orchestrating Microbiome Analysis with Bioconductor training session in EuroBioC2024}
-  %%\VignetteEngine{quarto::html}
-  %\VignetteEncoding{UTF-8}
+    %\VignetteIndexEntry{GBCC 2025}
+    %\VignetteEngine{knitr::rmarkdown}
+    %\VignetteEncoding{UTF-8}
 execute:
   warning: false
   message: false

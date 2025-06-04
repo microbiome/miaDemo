@@ -108,5 +108,5 @@ Remotes:
     github::waldronlab/curatedMetagenomicData
 URL: https://microbiome.github.io/miaDemo/
 BugReports: https://github.com/microbiome/miaDemo/issues/
-VignetteBuilder: quarto
+VignetteBuilder: knitr
 DockerImage: ghcr.io/microbiome/miaDemo:latest

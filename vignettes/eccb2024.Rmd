@@ -1,8 +1,8 @@
 ---
-title: Orchestrating Microbiome Analysis with Bioconductor (ECCB)
+title: ECCB 2024
 vignette: >
-    %\VignetteIndexEntry{ECCB workshop}
-    %\VignetteEngine{quarto::html}
+    %\VignetteIndexEntry{ECCB 2024}
+    %\VignetteEngine{knitr::rmarkdown}
     %\VignetteEncoding{UTF-8}
 ---
     
