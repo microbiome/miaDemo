@@ -10,6 +10,7 @@ execute:
 output:
   html_document:
     code_folding: hide
+bibliography: ../inst/bibliography.bib
 ---
 
 ```{r}
@@ -36,7 +37,7 @@ Last modified: 4 June, 2025.
 
 This training session introduces Bioconductor tools for microbiome data science
 through a practical case study. It focuses on a framework built around the
-TreeSummarizedExperiment data container, designed for improved efficiency,
+`r BiocStyle::Biocpkg("TreeSummarizedExperiment")` data container, designed for improved efficiency,
 scalability, and data integration. Participants will gain hands-on experience
 with common analysis and visualization methods using the mia package family,
 along with other interoperable tools from the Bioconductor ecosystem. After the
@@ -68,9 +69,8 @@ To facilitate this, Galaxy & Bioconductor provide
 ### _R_ / _Bioconductor_ packages used
 
 In this training session, we will cover a common methods and packages for
-microbiome data science in _SummarizedExperiment_ ecosystem. We will have
-specific focus on 
-[the _mia_ package](https://bioconductor.org/packages/devel/bioc/html/mia.html),
+microbiome data science in `r BiocStyle::Biocpkg("SummarizedExperiment")` ecosystem. We will have
+specific focus on `r BiocStyle::Biocpkg("mia")`,
 which provides essential methods for conducting microbiome analysis.
 
 ### Time outline
@@ -87,12 +87,12 @@ which provides essential methods for conducting microbiome analysis.
 #### Questions
 
 - What is _mia_ and _OMA_?
-- How microbiome data science is conducted in _SummarizezExperiment_ ecosystem?
+- How microbiome data science is conducted in `r BiocStyle::Biocpkg("SummarizedExperiment")` ecosystem?
 - What benefits this new ecosystem have compared to previous approaches?
 
 #### Objectives
 
-- **Analyze and apply methods**:  Apply the _SummarizedExperiment_ ecosystem to process and analyze microbiome data.
+- **Analyze and apply methods**:  Apply the `r BiocStyle::Biocpkg("SummarizedExperiment")` ecosystem to process and analyze microbiome data.
 
 - **Create visualizations**: Generate and interpret visualizations.
 
@@ -207,7 +207,7 @@ ggplot(timeline_data, aes(x = year, y = 0)) +
 - [iSEEtree](https://bioconductor.org/packages/release/bioc/html/iSEEtree.html) (Interactive visualization)
 - [Expanded by independent developers](https://microbiome.github.io/OMA/docs/devel/pages/miaverse.html#sec-packages)
 
-**Interoperable with the _SummarizedExperiment_ ecosystem**
+**Interoperable with the `r BiocStyle::Biocpkg("SummarizedExperiment")` ecosystem**
 
 :::
 
@@ -261,7 +261,7 @@ res <- curatedMetagenomicData(
 )
 ```
 
-Once loaded, we can see that the data includes several _TreeSE_ objects, which
+Once loaded, we can see that the data includes several `r BiocStyle::Biocpkg("TreeSummarizedExperiment")` objects, which
 include taxonomy annotations and functional predictions. In this demonstration,
 we are only interested on the taxonomy annotations, so we select it from the
 list and store it into a variable named `tse`.
@@ -289,10 +289,10 @@ tse <- readRDS("data/GuptaA_2019_tse.rds")
 
 #### Data container
 
-_TreeSE_ extends _SE_ class by adding a support for microbiome-specific
+`r BiocStyle::Biocpkg("TreeSummarizedExperiment")` extends `r BiocStyle::Biocpkg("SummarizedExperiment")` class by adding a support for microbiome-specific
 datatypes. These include, for instance, `rowTree` slot that can be utilized to
 store phylogeny or any other hierarchical presentation of the data. All slots
-derived from _SE_ class are also available in _TreeSE_, providing full backward
+derived from `r BiocStyle::Biocpkg("SummarizedExperiment")` class are also available in `r BiocStyle::Biocpkg("TreeSummarizedExperiment")`, providing full backward
 compatibility.
 
 ![](figures/TreeSE.png){width=80%}
@@ -374,7 +374,7 @@ assay(tse, "clr")[1:5, 1:5]
 
 #### Community summaries
 
-While `mia` package include common methods for analysis, `miaViz` provides
+While `r BiocStyle::Biocpkg("mia")` package include common methods for analysis, `r BiocStyle::Biocpkg("miaViz")` provides
 methods for visualizing microbiome data. For instance, we can visualize
 abundance of phyla with a bar plot. To compare controls and CRC patients, we can
 visualize the groups separately.
@@ -486,7 +486,7 @@ knitr::include_graphics(file_path)
 
 ## Questions, discussion and recap
 
-1. Microbiome data science in _SummarizedExperiment_ ecosystem
+1. Microbiome data science in `r BiocStyle::Biocpkg("SummarizedExperiment")` ecosystem
 2. Scalable and computationally efficient
 3. Integration of multi-table and multi-omics datasets
 

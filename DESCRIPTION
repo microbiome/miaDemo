@@ -107,6 +107,6 @@ Remotes:
     github::GraceYoon/SPRING,
     github::waldronlab/curatedMetagenomicData
 URL: https://microbiome.github.io/OMATutorials/
-BugReports: https://github.com/microbiome/OMATutorials/issues/
+BugReports: https://github.com/microbiome/omatutorials/issues/
 VignetteBuilder: knitr
 DockerImage: ghcr.io/microbiome/OMATutorials:latest
