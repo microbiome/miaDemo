@@ -1,10 +1,14 @@
-pandoc: 3.6.1
-pkgdown: 2.1.1
+pandoc: 3.6.4
+pkgdown: 2.1.3
 pkgdown_sha: ~
 articles:
-  eccb_workflow: eccb_workflow.html
-  mia_demo: mia_demo.html
-last_built: 2025-01-09T15:16Z
+  eccb2024: eccb2024.html
+  eurobioc2024: eurobioc2024.html
+  gbcc2025: gbcc2025.html
+  introductory_dutch: introductory_dutch.html
+  introductory_french: introductory_french.html
+  introductory: introductory.html
+last_built: 2025-06-04T06:56Z
 urls:
   reference: https://microbiome.github.io/miaDemo/reference
   article: https://microbiome.github.io/miaDemo/articles
