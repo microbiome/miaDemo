@@ -502,13 +502,9 @@ knitr::include_graphics(file_path)
 
 ## Session information
 
-::: {.callout-note collapse="true"}
-
 ```{r}
 #| label: session_info
 sessionInfo()
 ```
 
-:::
-
-
+## References
