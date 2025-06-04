@@ -26,7 +26,7 @@ knitr::opts_chunk$set(
 Authors:
     Tuomas Borman^[University of Turku, tvborm@utu.fi]
     <br/>
-Last modified: 1 June, 2025.
+Last modified: 4 June, 2025.
 
 <img src="figures/gbcc_logo_transparent.png" width="150"/> <img src="figures/mia_logo.png" width="150"/>
 
@@ -87,7 +87,7 @@ which provides essential methods for conducting microbiome analysis.
 #### Questions
 
 - What is _mia_ and _OMA_?
-- How microbiome data science is conducted in _SummarizezExperiment_ ecosystem.?
+- How microbiome data science is conducted in _SummarizezExperiment_ ecosystem?
 - What benefits this new ecosystem have compared to previous approaches?
 
 #### Objectives
@@ -102,7 +102,7 @@ which provides essential methods for conducting microbiome analysis.
 
 ### Background
 
-#### Microbiome data science
+#### Microbiome data science [@MorenoIndias2021]
 
 <img src="figures/moreno-indias2021.png" width="500"/>
 
@@ -111,7 +111,6 @@ which provides essential methods for conducting microbiome analysis.
 ```{r}
 #| label: microbiome_bioconductor
 #| fig-width: 15
-#| include: false
 library(ggplot2)
 library(ggrepel)
 
@@ -187,15 +186,15 @@ ggplot(timeline_data, aes(x = year, y = 0)) +
     )
 ```
 
-### SummarizedExperinent, SE (Huber et al., 2015)
+#### SummarizedExperinent, SE [@Huber2015]
 
 <img src="figures/SE.png" width="80%"/>
 
-### TreeSummarizedExperiment, TreeSE (Huang et al., 2021)
+#### TreeSummarizedExperiment, TreeSE [@Huang2021]
 
 <img src="figures/TreeSE.png" width="100%"/>
 
-### Ochestrating Microbiome Analysis with Bioconductor (OMA)
+#### Ochestrating Microbiome Analysis with Bioconductor (OMA)
 
 ::: columns
 ::: {.column width="70%"}
@@ -241,7 +240,8 @@ ggplot(timeline_data, aes(x = year, y = 0)) +
 
 The curated metagenomic data project provides free access to a collection of
 curated microbiome datasets, which are available through the
-_curatedMetagenomicData_ R package. Currently, it contains over 20,000 samples
+_curatedMetagenomicData_ R package [@Pasolli2017]. Currently, it contains over
+20,000 samples
 from 100 studies, which can be imported directly to `TreeSE` format. You can
 see the full list of available datasets from
 [the documentation](https://waldronlab.io/curatedMetagenomicData/index.html).
@@ -307,7 +307,8 @@ Slots can be accessed with dedicated accessor functions. For instance,
 
 ```{r}
 #| label: show_coldata
-colData(tse) |> head()
+# Show only first five rows and columns
+colData(tse)[1:5, 1:5]
 ```
 
 #### Data processing
@@ -367,7 +368,8 @@ We can access the transformed data with the following command:
 
 ```{r}
 #| label: access_clr
-assay(tse, "clr") |> head()
+
+assay(tse, "clr")[1:5, 1:5]
 ```
 
 #### Community summaries
