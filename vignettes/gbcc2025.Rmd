@@ -23,7 +23,7 @@ Authors:
     <br/>
 Last modified: 1 June, 2025.
 
-<img src="https://gbcc2025.bioconductor.org/img/gbcc_logo_transparent.png" width="150"/> <img src="figures/mia_logo.png" width="150"/>
+<img src="figures/gbcc_logo_transparent.png" width="150"/> <img src="figures/mia_logo.png" width="150"/>
 
 ## Overview
 

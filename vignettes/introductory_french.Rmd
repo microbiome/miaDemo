@@ -31,20 +31,15 @@ knitr::opts_chunk$set(
 
 ::: {#translate style="display: flex; gap: 1em; align-items: center;"}
 
-<a href="introductory.Rmd" style="display: flex; align-items: center; gap: 0.5em;">
+<a href="introductory.qmd" style="display: flex; align-items: center; gap: 0.5em;">
   <img src="figures/flags/GB_flag.png" alt="Great Britain flag" style="width: 30px; height: auto;"/> <strong>English</strong>
 </a>
 
-<a href="introductory_dutch.Rmd" style="display: flex; align-items: center; gap: 0.5em;">
-  <img src="figures/flags/Netherland_flag.jpg" alt="Netherland flag" style="width: 30px; height: auto;"/> <strong>Dutch</strong>
+<a href="introductory_dutch.qmd" style="display: flex; align-items: center; gap: 0.5em;">
+  <img src="figures/flags/Netherland_flag.jpg" alt="Netherland flag" style="width: 30px; height: auto;"/> <strong>French</strong>
 </a>
 
 :::
-
-<div id="translate">
-  <a href="introductory_workflow.Rmd"><img src="figures/flags/GB_flag.png" alt="Great Britain flag" class="flag"/> **English** </a>
-  <a href="introductory_workflow_dutch_version.Rmd"><img src="figures/flags/Netherland_flag.jpg" alt="Netherland flag" class="flag"/> **Dutch** </a>
-</div>
 
 <img src="figures/intro_workflow_logo.svg" alt="logo workflow" id="banner"/>
 
