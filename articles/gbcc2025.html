@@ -99,7 +99,7 @@
 
     
     
-<p>Authors: Tuomas Borman<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> <br> Last modified: 1 June, 2025.</p>
+<p>Authors: Tuomas Borman<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> <br> Last modified: 4 June, 2025.</p>
 <p><img src="figures/gbcc_logo_transparent.png" width="150"><img src="figures/mia_logo.png" width="150"></p>
 <div class="section level2">
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
@@ -188,7 +188,7 @@ conducting microbiome analysis.</p>
 <ul>
 <li>What is <em>mia</em> and <em>OMA</em>?</li>
 <li>How microbiome data science is conducted in
-<em>SummarizezExperiment</em> ecosystem.?</li>
+<em>SummarizezExperiment</em> ecosystem?</li>
 <li>What benefits this new ecosystem have compared to previous
 approaches?</li>
 </ul>
@@ -215,28 +215,102 @@ additional tools and methods.</p></li>
 <h3 id="background">Background<a class="anchor" aria-label="anchor" href="#background"></a>
 </h3>
 <div class="section level4">
-<h4 id="microbiome-data-science">Microbiome data science<a class="anchor" aria-label="anchor" href="#microbiome-data-science"></a>
+<h4 id="microbiome-data-science-morenoindias2021">Microbiome data science <span class="citation">[@MorenoIndias2021]</span><a class="anchor" aria-label="anchor" href="#microbiome-data-science-morenoindias2021"></a>
 </h4>
 <p><img src="figures/moreno-indias2021.png" width="500"></p>
 </div>
 <div class="section level4">
 <h4 id="microbiome-data-science-in-bioconductor">Microbiome data science in Bioconductor<a class="anchor" aria-label="anchor" href="#microbiome-data-science-in-bioconductor"></a>
 </h4>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggrepel.slowkow.com/" class="external-link">ggrepel</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Timeline data</span></span>
+<span><span class="va">timeline_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>    year <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2012</span>, <span class="fl">2015</span>, <span class="fl">2017</span>, <span class="fl">2019</span><span class="op">)</span>,</span>
+<span>    event <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>        <span class="st">"phyloseq\nMcMurdie and Holmes, 2013"</span>,</span>
+<span>        <span class="st">"SummarizedExperiment\nHuber et al., 2015"</span>,</span>
+<span>        <span class="st">"SingleCellExperiment\nAmezquita et al., 2020"</span>, </span>
+<span>        <span class="st">"TreeSummarizedExperiment\nHuang et al., 2021"</span></span>
+<span>    <span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Create a single polygon for the entire arrow (rectangle + arrowhead)</span></span>
+<span><span class="va">arrow_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>    x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2021</span>, <span class="fl">2024.5</span>, <span class="fl">2024.5</span>, <span class="fl">2025</span>, <span class="fl">2024.5</span>, <span class="fl">2024.5</span>, <span class="fl">2021</span><span class="op">)</span>,</span>
+<span>    y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.13</span>, <span class="op">-</span><span class="fl">0.13</span>, <span class="op">-</span><span class="fl">0.15</span>, <span class="op">-</span><span class="fl">0.10</span>, <span class="op">-</span><span class="fl">0.05</span>, <span class="op">-</span><span class="fl">0.07</span>, <span class="op">-</span><span class="fl">0.07</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">timeline_data</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">year</span>, y <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="co"># Base timeline</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/annotate.html" class="external-link">annotate</a></span><span class="op">(</span></span>
+<span>        <span class="st">"segment"</span>, x <span class="op">=</span> <span class="fl">2011</span>, xend <span class="op">=</span> <span class="fl">2025</span>, y <span class="op">=</span> <span class="fl">0</span>, yend <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>        arrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/arrow.html" class="external-link">arrow</a></span><span class="op">(</span>length <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">0.4</span>, <span class="st">"cm"</span><span class="op">)</span>, type <span class="op">=</span> <span class="st">"closed"</span><span class="op">)</span>,</span>
+<span>        linewidth <span class="op">=</span> <span class="fl">1.5</span>, color <span class="op">=</span> <span class="st">"gray40"</span></span>
+<span>        <span class="op">)</span> <span class="op">+</span></span>
+<span>    </span>
+<span>    <span class="co"># Timeline points and segments</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">5</span>, color <span class="op">=</span> <span class="st">"#2C3E50"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    </span>
+<span>    <span class="co"># Repelled labels</span></span>
+<span>    <span class="fu"><a href="https://ggrepel.slowkow.com/reference/geom_text_repel.html" class="external-link">geom_label_repel</a></span><span class="op">(</span></span>
+<span>        <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span></span>
+<span>          label <span class="op">=</span> <span class="va">event</span><span class="op">)</span>,</span>
+<span>          direction <span class="op">=</span> <span class="st">"y"</span>,</span>
+<span>          nudge_y <span class="op">=</span> <span class="fl">0.02</span>,</span>
+<span>          box.padding <span class="op">=</span> <span class="fl">0.4</span>,</span>
+<span>          point.padding <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>          size <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>          fontface <span class="op">=</span> <span class="st">"bold"</span>,</span>
+<span>          color <span class="op">=</span> <span class="st">"#34495E"</span>,</span>
+<span>          segment.color <span class="op">=</span> <span class="st">"gray60"</span></span>
+<span>        <span class="op">)</span> <span class="op">+</span></span>
+<span>    </span>
+<span>    <span class="co"># mia: draw arrow-box from 2021 to 2025</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_polygon.html" class="external-link">geom_polygon</a></span><span class="op">(</span></span>
+<span>        data <span class="op">=</span> <span class="va">arrow_data</span>,</span>
+<span>        mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span><span class="op">)</span>,</span>
+<span>        fill <span class="op">=</span> <span class="st">"white"</span>, color <span class="op">=</span> <span class="st">"black"</span>, linewidth <span class="op">=</span> <span class="fl">0.8</span></span>
+<span>        <span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/annotate.html" class="external-link">annotate</a></span><span class="op">(</span></span>
+<span>        <span class="st">"text"</span>, x <span class="op">=</span> <span class="fl">2022.75</span>, y <span class="op">=</span> <span class="op">-</span><span class="fl">0.10</span>,</span>
+<span>        label <span class="op">=</span> <span class="st">"OMA\n(Borman et al., 2025)"</span>,</span>
+<span>        size <span class="op">=</span> <span class="fl">5</span>, fontface <span class="op">=</span> <span class="st">"bold"</span>, color <span class="op">=</span> <span class="st">"black"</span>, lineheight <span class="op">=</span> <span class="fl">1.1</span></span>
+<span>        <span class="op">)</span> <span class="op">+</span></span>
+<span>    </span>
+<span>    <span class="co"># Final theming</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_continuous</a></span><span class="op">(</span></span>
+<span>        breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">timeline_data</span><span class="op">$</span><span class="va">year</span>, <span class="fl">2021</span>, <span class="fl">2025</span><span class="op">)</span>,</span>
+<span>        limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2010</span>, <span class="fl">2025</span><span class="op">)</span></span>
+<span>        <span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.25</span>, <span class="fl">0.3</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal</a></span><span class="op">(</span>base_size <span class="op">=</span> <span class="fl">15</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span></span>
+<span>        axis.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>        axis.text.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>        axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">12</span><span class="op">)</span>,</span>
+<span>        axis.ticks <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>        panel.grid <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>        legend.position <span class="op">=</span> <span class="st">"none"</span>,</span>
+<span>        plot.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>face <span class="op">=</span> <span class="st">"bold"</span>, size <span class="op">=</span> <span class="fl">16</span>, hjust <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span></code></pre></div>
+<p><img src="gbcc2025_files/figure-html/microbiome_bioconductor-1.png" width="1440"></p>
 </div>
-</div>
-<div class="section level3">
-<h3 id="summarizedexperinent-se-huber-et-al--2015">SummarizedExperinent, SE (Huber et al., 2015)<a class="anchor" aria-label="anchor" href="#summarizedexperinent-se-huber-et-al--2015"></a>
-</h3>
+<div class="section level4">
+<h4 id="summarizedexperinent-se-huber2015">SummarizedExperinent, SE <span class="citation">[@Huber2015]</span><a class="anchor" aria-label="anchor" href="#summarizedexperinent-se-huber2015"></a>
+</h4>
 <p><img src="figures/SE.png" width="80%"></p>
 </div>
-<div class="section level3">
-<h3 id="treesummarizedexperiment-treese-huang-et-al--2021">TreeSummarizedExperiment, TreeSE (Huang et al., 2021)<a class="anchor" aria-label="anchor" href="#treesummarizedexperiment-treese-huang-et-al--2021"></a>
-</h3>
+<div class="section level4">
+<h4 id="treesummarizedexperiment-treese-huang2021">TreeSummarizedExperiment, TreeSE <span class="citation">[@Huang2021]</span><a class="anchor" aria-label="anchor" href="#treesummarizedexperiment-treese-huang2021"></a>
+</h4>
 <p><img src="figures/TreeSE.png" width="100%"></p>
 </div>
-<div class="section level3">
-<h3 id="ochestrating-microbiome-analysis-with-bioconductor-oma">Ochestrating Microbiome Analysis with Bioconductor (OMA)<a class="anchor" aria-label="anchor" href="#ochestrating-microbiome-analysis-with-bioconductor-oma"></a>
-</h3>
+<div class="section level4">
+<h4 id="ochestrating-microbiome-analysis-with-bioconductor-oma">Ochestrating Microbiome Analysis with Bioconductor (OMA)<a class="anchor" aria-label="anchor" href="#ochestrating-microbiome-analysis-with-bioconductor-oma"></a>
+</h4>
 <div class="columns">
 <div class="column" style="width:70%;">
 <ul>
@@ -269,6 +343,7 @@ ecosystem</strong></p>
 </div>
 </div>
 </div>
+</div>
 <div class="section level3">
 <h3 id="trained-guided-live-coding">Trained-guided live coding<a class="anchor" aria-label="anchor" href="#trained-guided-live-coding"></a>
 </h3>
@@ -286,14 +361,14 @@ ecosystem</strong></p>
 </h4>
 <p>The curated metagenomic data project provides free access to a
 collection of curated microbiome datasets, which are available through
-the <em>curatedMetagenomicData</em> R package. Currently, it contains
-over 20,000 samples from 100 studies, which can be imported directly to
+the <em>curatedMetagenomicData</em> R package <span class="citation">[@Pasolli2017]</span>. Currently, it contains over
+20,000 samples from 100 studies, which can be imported directly to
 <code>TreeSE</code> format. You can see the full list of available
 datasets from <a href="https://waldronlab.io/curatedMetagenomicData/index.html" class="external-link">the
 documentation</a>.</p>
 <p>Below, we we load a dataset containing 60 samples from healthy
 controls and patients with colorectal cancer (CRC).</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/waldronlab/curatedMetagenomicData" class="external-link">curatedMetagenomicData</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/curatedMetagenomicData/man/curatedMetagenomicData.html" class="external-link">curatedMetagenomicData</a></span><span class="op">(</span></span>
@@ -306,7 +381,7 @@ controls and patients with colorectal cancer (CRC).</p>
 functional predictions. In this demonstration, we are only interested on
 the taxonomy annotations, so we select it from the list and store it
 into a variable named <code>tse</code>.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tse</span> <span class="op">&lt;-</span> <span class="va">res</span><span class="op">[[</span><span class="st">"2021-03-31.GuptaA_2019.relative_abundance"</span><span class="op">]</span><span class="op">]</span></span></code></pre></div>
 </div>
 <div class="section level4">
@@ -319,7 +394,7 @@ other hierarchical presentation of the data. All slots derived from
 <em>SE</em> class are also available in <em>TreeSE</em>, providing full
 backward compatibility.</p>
 <p><img src="figures/TreeSE.png" style="width:80.0%"></p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tse</span></span>
 <span><span class="co">#&gt; class: TreeSummarizedExperiment </span></span>
 <span><span class="co">#&gt; dim: 308 60 </span></span>
@@ -342,9 +417,10 @@ backward compatibility.</p>
 <p>Slots can be accessed with dedicated accessor functions. For
 instance, <code>colData</code> (sample metadata) can be accessed with
 <code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">colData()</a></code> function.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">colData</a></span><span class="op">(</span><span class="va">tse</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; DataFrame with 6 rows and 27 columns</span></span>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Show only first five rows and columns</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">colData</a></span><span class="op">(</span><span class="va">tse</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span>
+<span><span class="co">#&gt; DataFrame with 5 rows and 5 columns</span></span>
 <span><span class="co">#&gt;             study_name  subject_id   body_site antibiotics_current_use</span></span>
 <span><span class="co">#&gt;            &lt;character&gt; &lt;character&gt; &lt;character&gt;             &lt;character&gt;</span></span>
 <span><span class="co">#&gt; GupDM_A_11 GuptaA_2019   GupDM_A11       stool                      no</span></span>
@@ -352,55 +428,13 @@ instance, <code>colData</code> (sample metadata) can be accessed with
 <span><span class="co">#&gt; GupDM_A1   GuptaA_2019    GupDM_A1       stool                      no</span></span>
 <span><span class="co">#&gt; GupDM_A10  GuptaA_2019   GupDM_A10       stool                      no</span></span>
 <span><span class="co">#&gt; GupDM_A12  GuptaA_2019   GupDM_A12       stool                      no</span></span>
-<span><span class="co">#&gt; GupDM_A13  GuptaA_2019   GupDM_A13       stool                      no</span></span>
-<span><span class="co">#&gt;            study_condition     disease       age age_category      gender</span></span>
-<span><span class="co">#&gt;                &lt;character&gt; &lt;character&gt; &lt;integer&gt;  &lt;character&gt; &lt;character&gt;</span></span>
-<span><span class="co">#&gt; GupDM_A_11             CRC         CRC        41        adult      female</span></span>
-<span><span class="co">#&gt; GupDM_A_15             CRC         CRC        59        adult        male</span></span>
-<span><span class="co">#&gt; GupDM_A1               CRC         CRC        62        adult        male</span></span>
-<span><span class="co">#&gt; GupDM_A10              CRC         CRC        65        adult      female</span></span>
-<span><span class="co">#&gt; GupDM_A12              CRC         CRC        65        adult        male</span></span>
-<span><span class="co">#&gt; GupDM_A13              CRC         CRC        48        adult        male</span></span>
-<span><span class="co">#&gt;                country    location non_westernized sequencing_platform</span></span>
-<span><span class="co">#&gt;            &lt;character&gt; &lt;character&gt;     &lt;character&gt;         &lt;character&gt;</span></span>
-<span><span class="co">#&gt; GupDM_A_11         IND      Kerala              no     IlluminaNextSeq</span></span>
-<span><span class="co">#&gt; GupDM_A_15         IND      Kerala              no     IlluminaNextSeq</span></span>
-<span><span class="co">#&gt; GupDM_A1           IND      Kerala              no     IlluminaNextSeq</span></span>
-<span><span class="co">#&gt; GupDM_A10          IND      Kerala              no     IlluminaNextSeq</span></span>
-<span><span class="co">#&gt; GupDM_A12          IND      Kerala              no     IlluminaNextSeq</span></span>
-<span><span class="co">#&gt; GupDM_A13          IND      Kerala              no     IlluminaNextSeq</span></span>
-<span><span class="co">#&gt;            DNA_extraction_kit        PMID number_reads number_bases</span></span>
-<span><span class="co">#&gt;                   &lt;character&gt; &lt;character&gt;    &lt;integer&gt;    &lt;numeric&gt;</span></span>
-<span><span class="co">#&gt; GupDM_A_11             Qiagen    31719139      6227234    883347281</span></span>
-<span><span class="co">#&gt; GupDM_A_15             Qiagen    31719139      9884266   1384530792</span></span>
-<span><span class="co">#&gt; GupDM_A1               Qiagen    31719139     27687226   3808647004</span></span>
-<span><span class="co">#&gt; GupDM_A10              Qiagen    31719139      8468208   1174245166</span></span>
-<span><span class="co">#&gt; GupDM_A12              Qiagen    31719139      6988838    984235167</span></span>
-<span><span class="co">#&gt; GupDM_A13              Qiagen    31719139      8067640   1118699109</span></span>
-<span><span class="co">#&gt;            minimum_read_length median_read_length NCBI_accession</span></span>
-<span><span class="co">#&gt;                      &lt;integer&gt;          &lt;integer&gt;    &lt;character&gt;</span></span>
-<span><span class="co">#&gt; GupDM_A_11                  60                151     SRR8865600</span></span>
-<span><span class="co">#&gt; GupDM_A_15                  60                150     SRR8865596</span></span>
-<span><span class="co">#&gt; GupDM_A1                    60                150     SRR8865598</span></span>
-<span><span class="co">#&gt; GupDM_A10                   60                150     SRR8865599</span></span>
-<span><span class="co">#&gt; GupDM_A12                   60                150     SRR8865601</span></span>
-<span><span class="co">#&gt; GupDM_A13                   60                150     SRR8865594</span></span>
-<span><span class="co">#&gt;                           curator       BMI disease_subtype         tnm</span></span>
-<span><span class="co">#&gt;                       &lt;character&gt; &lt;numeric&gt;     &lt;character&gt; &lt;character&gt;</span></span>
-<span><span class="co">#&gt; GupDM_A_11 Arianna_Bonetti;Paol..     19.22  adenocarcinoma      t2m0n0</span></span>
-<span><span class="co">#&gt; GupDM_A_15 Arianna_Bonetti;Paol..     21.40  adenocarcinoma      t2n0m0</span></span>
-<span><span class="co">#&gt; GupDM_A1   Arianna_Bonetti;Paol..     20.08  adenocarcinoma      t2n0m0</span></span>
-<span><span class="co">#&gt; GupDM_A10  Arianna_Bonetti;Paol..     21.01  adenocarcinoma      t3n2m0</span></span>
-<span><span class="co">#&gt; GupDM_A12  Arianna_Bonetti;Paol..     20.32  adenocarcinoma      t2n2m0</span></span>
-<span><span class="co">#&gt; GupDM_A13  Arianna_Bonetti;Paol..     18.69  adenocarcinoma      t3n0m0</span></span>
-<span><span class="co">#&gt;                   fobt disease_stage disease_location</span></span>
-<span><span class="co">#&gt;            &lt;character&gt;   &lt;character&gt;      &lt;character&gt;</span></span>
-<span><span class="co">#&gt; GupDM_A_11         yes             I           rectum</span></span>
-<span><span class="co">#&gt; GupDM_A_15         yes             I           rectum</span></span>
-<span><span class="co">#&gt; GupDM_A1           yes             I           rectum</span></span>
-<span><span class="co">#&gt; GupDM_A10          yes           III            colon</span></span>
-<span><span class="co">#&gt; GupDM_A12          yes           III           rectum</span></span>
-<span><span class="co">#&gt; GupDM_A13          yes            II           rectum</span></span></code></pre></div>
+<span><span class="co">#&gt;            study_condition</span></span>
+<span><span class="co">#&gt;                &lt;character&gt;</span></span>
+<span><span class="co">#&gt; GupDM_A_11             CRC</span></span>
+<span><span class="co">#&gt; GupDM_A_15             CRC</span></span>
+<span><span class="co">#&gt; GupDM_A1               CRC</span></span>
+<span><span class="co">#&gt; GupDM_A10              CRC</span></span>
+<span><span class="co">#&gt; GupDM_A12              CRC</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="data-processing">Data processing<a class="anchor" aria-label="anchor" href="#data-processing"></a>
@@ -415,7 +449,7 @@ Agglomeration means merging data into higher taxonomic levels by summing
 the abundances of related taxa.</p>
 <p>Below, we agglomerate the data into all available taxonomy
 levels.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/microbiome/mia" class="external-link">mia</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">tse</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/mia/man/agglomerate-methods.html" class="external-link">agglomerateByRanks</a></span><span class="op">(</span><span class="va">tse</span><span class="op">)</span></span></code></pre></div>
@@ -425,7 +459,7 @@ keeps track of the sample mapping and stores different versions of the
 data.</p>
 <p>We can access data agglomeration into the phylum level with the
 following command:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/SingleCellExperiment/man/altExps.html" class="external-link">altExp</a></span><span class="op">(</span><span class="va">tse</span>, <span class="st">"phylum"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; class: TreeSummarizedExperiment </span></span>
 <span><span class="co">#&gt; dim: 11 60 </span></span>
@@ -452,7 +486,7 @@ maintains consistent sample mapping for us.</p>
 approaches is transformation. Below, we apply centered lo-ratio (CLR)
 transformation which respect the compositional nature of microbiome
 data.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tse</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/mia/man/transformAssay.html" class="external-link">transformAssay</a></span><span class="op">(</span></span>
 <span>    <span class="va">tse</span>,</span>
 <span>    assay.type <span class="op">=</span> <span class="st">"relative_abundance"</span>,</span>
@@ -463,127 +497,20 @@ data.</p>
 slot. This slot now contains two tables: the original abundance table
 and the CLR-transformed table We can access the transformed data with
 the following command:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">assay</a></span><span class="op">(</span><span class="va">tse</span>, <span class="st">"clr"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">assay</a></span><span class="op">(</span><span class="va">tse</span>, <span class="st">"clr"</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span>
 <span><span class="co">#&gt;                                       GupDM_A_11 GupDM_A_15 GupDM_A1 GupDM_A10</span></span>
 <span><span class="co">#&gt; species:Escherichia coli               10.178496 11.6516053 8.595739 10.189020</span></span>
 <span><span class="co">#&gt; species:Alistipes putredinis            9.652743 -0.5960068 5.186345 -1.540499</span></span>
 <span><span class="co">#&gt; species:Porphyromonas asaccharolytica   8.918831 -0.5960068 4.300300 -1.540499</span></span>
 <span><span class="co">#&gt; species:Bacteroides uniformis           8.903202 -0.5960068 5.464096 -1.540499</span></span>
 <span><span class="co">#&gt; species:Prevotella stercorea            8.773817 -0.5960068 5.231728 -1.540499</span></span>
-<span><span class="co">#&gt; species:Prevotella sp. CAG:279          8.275991 -0.5960068 6.916097 -1.540499</span></span>
-<span><span class="co">#&gt;                                       GupDM_A12 GupDM_A13  GupDM_A14 GupDM_A2</span></span>
-<span><span class="co">#&gt; species:Escherichia coli               7.042800  9.503066  8.9427722 8.562983</span></span>
-<span><span class="co">#&gt; species:Alistipes putredinis          -1.410307 -1.242950 -0.9184766 5.947247</span></span>
-<span><span class="co">#&gt; species:Porphyromonas asaccharolytica -1.410307 -1.242950 -0.9184766 6.878012</span></span>
-<span><span class="co">#&gt; species:Bacteroides uniformis          5.473920 -1.242950  8.6665784 8.477563</span></span>
-<span><span class="co">#&gt; species:Prevotella stercorea           3.672227 -1.242950  8.4668020 6.788793</span></span>
-<span><span class="co">#&gt; species:Prevotella sp. CAG:279        -1.410307 -1.242950 10.5103138 5.873675</span></span>
-<span><span class="co">#&gt;                                        GupDM_A3  GupDM_A4  GupDM_A5  GupDM_A6</span></span>
-<span><span class="co">#&gt; species:Escherichia coli              -1.127463  2.317838  7.757352 -1.055581</span></span>
-<span><span class="co">#&gt; species:Alistipes putredinis          -1.127463  8.000004  4.011796 10.448836</span></span>
-<span><span class="co">#&gt; species:Porphyromonas asaccharolytica -1.127463 -1.234388 -1.340579 -1.055581</span></span>
-<span><span class="co">#&gt; species:Bacteroides uniformis          7.496417  5.626675 -1.340579  9.459107</span></span>
-<span><span class="co">#&gt; species:Prevotella stercorea          -1.127463 -1.234388  7.122857 -1.055581</span></span>
-<span><span class="co">#&gt; species:Prevotella sp. CAG:279        -1.127463 -1.234388  5.805606 -1.055581</span></span>
-<span><span class="co">#&gt;                                        GupDM_A7   GupDM_A8   GupDM_A9</span></span>
-<span><span class="co">#&gt; species:Escherichia coli               8.524709 11.5478749  6.0731995</span></span>
-<span><span class="co">#&gt; species:Alistipes putredinis           4.368608 -0.6678539 -0.8844709</span></span>
-<span><span class="co">#&gt; species:Porphyromonas asaccharolytica -1.318983 -0.6678539 -0.8844709</span></span>
-<span><span class="co">#&gt; species:Bacteroides uniformis          5.872378 -0.6678539  5.3216284</span></span>
-<span><span class="co">#&gt; species:Prevotella stercorea          -1.318983 -0.6678539 -0.8844709</span></span>
-<span><span class="co">#&gt; species:Prevotella sp. CAG:279        -1.318983 -0.6678539 -0.8844709</span></span>
-<span><span class="co">#&gt;                                        GupDM_HAG  GupDM_HAH  GupDM_HAI</span></span>
-<span><span class="co">#&gt; species:Escherichia coli               7.3308997  4.9732325  3.6692098</span></span>
-<span><span class="co">#&gt; species:Alistipes putredinis          -0.7249792 -0.7679625 -0.7823853</span></span>
-<span><span class="co">#&gt; species:Porphyromonas asaccharolytica -0.7249792 -0.7679625 -0.7823853</span></span>
-<span><span class="co">#&gt; species:Bacteroides uniformis         -0.7249792 -0.7679625 -0.7823853</span></span>
-<span><span class="co">#&gt; species:Prevotella stercorea          -0.7249792 -0.7679625 -0.7823853</span></span>
-<span><span class="co">#&gt; species:Prevotella sp. CAG:279         7.9039472  6.1679561  6.3788982</span></span>
-<span><span class="co">#&gt;                                        GupDM_HAJ GupDM_HAK GupDM_HAL GupDM_HAM</span></span>
-<span><span class="co">#&gt; species:Escherichia coli              -0.9190839  5.894817  8.085475  8.782763</span></span>
-<span><span class="co">#&gt; species:Alistipes putredinis           8.7833406 -1.038836 -1.331975  8.510811</span></span>
-<span><span class="co">#&gt; species:Porphyromonas asaccharolytica -0.9190839 -1.038836 -1.331975 -1.686894</span></span>
-<span><span class="co">#&gt; species:Bacteroides uniformis          6.8706266 -1.038836 -1.331975  5.480326</span></span>
-<span><span class="co">#&gt; species:Prevotella stercorea          -0.9190839  9.027511  8.298320  8.010798</span></span>
-<span><span class="co">#&gt; species:Prevotella sp. CAG:279        -0.9190839  7.610734  2.532003 -1.686894</span></span>
-<span><span class="co">#&gt;                                       GupDM_HAN GupDM_HAO  GupDM_HAP GupDM_HAR</span></span>
-<span><span class="co">#&gt; species:Escherichia coli               5.848803  5.301296  5.9111758  3.550550</span></span>
-<span><span class="co">#&gt; species:Alistipes putredinis           8.300598 -1.053074 -0.8368588 -0.364740</span></span>
-<span><span class="co">#&gt; species:Porphyromonas asaccharolytica -1.143945 -1.053074 -0.8368588 -0.364740</span></span>
-<span><span class="co">#&gt; species:Bacteroides uniformis          8.891474  7.898352 -0.8368588 -0.364740</span></span>
-<span><span class="co">#&gt; species:Prevotella stercorea          -1.143945  9.604820 -0.8368588  9.741418</span></span>
-<span><span class="co">#&gt; species:Prevotella sp. CAG:279        -1.143945  9.650303 -0.8368588  5.255200</span></span>
-<span><span class="co">#&gt;                                        GupDM_HAT GupDM_HBR  GupDM_HCL</span></span>
-<span><span class="co">#&gt; species:Escherichia coli               8.8352422 -1.047140 -0.5633904</span></span>
-<span><span class="co">#&gt; species:Alistipes putredinis          -0.8638867  5.461630 -0.5633904</span></span>
-<span><span class="co">#&gt; species:Porphyromonas asaccharolytica -0.8638867 -1.047140 -0.5633904</span></span>
-<span><span class="co">#&gt; species:Bacteroides uniformis         -0.8638867  6.509098 -0.5633904</span></span>
-<span><span class="co">#&gt; species:Prevotella stercorea          -0.8638867 -1.047140  6.4025138</span></span>
-<span><span class="co">#&gt; species:Prevotella sp. CAG:279         4.9108342 -1.047140 -0.5633904</span></span>
-<span><span class="co">#&gt;                                        GupDM_HCM GupDM_HCN  GupDM_HCO GupDM_HCP</span></span>
-<span><span class="co">#&gt; species:Escherichia coli               8.0043746  6.786712 -0.6304997  8.729406</span></span>
-<span><span class="co">#&gt; species:Alistipes putredinis           5.5803307 -1.472459  2.0872007 -1.127742</span></span>
-<span><span class="co">#&gt; species:Porphyromonas asaccharolytica -0.7509447 -1.472459 -0.6304997 -1.127742</span></span>
-<span><span class="co">#&gt; species:Bacteroides uniformis          4.0140226  8.106272  6.0492593  7.069862</span></span>
-<span><span class="co">#&gt; species:Prevotella stercorea          -0.7509447  4.677213 -0.6304997 -1.127742</span></span>
-<span><span class="co">#&gt; species:Prevotella sp. CAG:279         7.8570759 -1.472459 -0.6304997  8.930010</span></span>
-<span><span class="co">#&gt;                                       GupDM_HCQ  GupDM_HCR  GupDM_HCS</span></span>
-<span><span class="co">#&gt; species:Escherichia coli               4.394912  8.8317542 -0.7676699</span></span>
-<span><span class="co">#&gt; species:Alistipes putredinis           9.555674 -0.9382737 -0.7676699</span></span>
-<span><span class="co">#&gt; species:Porphyromonas asaccharolytica -1.102777 -0.9382737 -0.7676699</span></span>
-<span><span class="co">#&gt; species:Bacteroides uniformis         10.567346  6.9496720 -0.7676699</span></span>
-<span><span class="co">#&gt; species:Prevotella stercorea          -1.102777 -0.9382737  9.0612871</span></span>
-<span><span class="co">#&gt; species:Prevotella sp. CAG:279        -1.102777  8.9155279  7.9574683</span></span>
-<span><span class="co">#&gt;                                        GupDM_HCT  GupDM_HCU  GupDM_HCV</span></span>
-<span><span class="co">#&gt; species:Escherichia coli               5.7846644  9.3437668  4.8035086</span></span>
-<span><span class="co">#&gt; species:Alistipes putredinis          -0.7435327 -0.6573711  4.9810769</span></span>
-<span><span class="co">#&gt; species:Porphyromonas asaccharolytica -0.7435327 -0.6573711 -0.6914964</span></span>
-<span><span class="co">#&gt; species:Bacteroides uniformis         -0.7435327 -0.6573711  6.0762233</span></span>
-<span><span class="co">#&gt; species:Prevotella stercorea          -0.7435327 10.5632587 -0.6914964</span></span>
-<span><span class="co">#&gt; species:Prevotella sp. CAG:279        -0.7435327  7.5333009 -0.6914964</span></span>
-<span><span class="co">#&gt;                                        GupDM_HCY GupDM_HDB  GupDM_HDF</span></span>
-<span><span class="co">#&gt; species:Escherichia coli               9.4872803 -1.022368  5.8668671</span></span>
-<span><span class="co">#&gt; species:Alistipes putredinis           8.7721562  4.961751  9.7781474</span></span>
-<span><span class="co">#&gt; species:Porphyromonas asaccharolytica -0.9970278 -1.022368 -0.7762833</span></span>
-<span><span class="co">#&gt; species:Bacteroides uniformis          8.1875416  6.657236 10.6390849</span></span>
-<span><span class="co">#&gt; species:Prevotella stercorea          -0.9970278 -1.022368 -0.7762833</span></span>
-<span><span class="co">#&gt; species:Prevotella sp. CAG:279        -0.9970278 -1.022368 -0.7762833</span></span>
-<span><span class="co">#&gt;                                         GupDM_HP  GupDM_HR  GupDM_HS   GupDM_JA</span></span>
-<span><span class="co">#&gt; species:Escherichia coli               6.4561311  4.373159  5.832322 -0.7694119</span></span>
-<span><span class="co">#&gt; species:Alistipes putredinis          -0.8969741  7.285753 -1.035198 -0.7694119</span></span>
-<span><span class="co">#&gt; species:Porphyromonas asaccharolytica -0.8969741 -0.837320 -1.035198 -0.7694119</span></span>
-<span><span class="co">#&gt; species:Bacteroides uniformis         -0.8969741 -0.837320 -1.035198 -0.7694119</span></span>
-<span><span class="co">#&gt; species:Prevotella stercorea           8.0415933  9.160860  7.147163 -0.7694119</span></span>
-<span><span class="co">#&gt; species:Prevotella sp. CAG:279        -0.8969741 -0.837320  8.027053 -0.7694119</span></span>
-<span><span class="co">#&gt;                                        GupDM_JB  GupDM_JC  GupDM_JD  GupDM_JE</span></span>
-<span><span class="co">#&gt; species:Escherichia coli               7.419571  7.126865  8.332806  7.105100</span></span>
-<span><span class="co">#&gt; species:Alistipes putredinis          -1.250412  5.735379  5.026985  5.241152</span></span>
-<span><span class="co">#&gt; species:Porphyromonas asaccharolytica -1.250412 -1.296924 -1.434738 -1.241650</span></span>
-<span><span class="co">#&gt; species:Bacteroides uniformis          7.739846  6.253899  7.397634 -1.241650</span></span>
-<span><span class="co">#&gt; species:Prevotella stercorea           3.798161  7.623047  9.242605 10.504029</span></span>
-<span><span class="co">#&gt; species:Prevotella sp. CAG:279         9.555003  2.744850  5.145901  7.416692</span></span>
-<span><span class="co">#&gt;                                        GupDM_JG   GupDM_JH  GupDM_JI  GupDM_JJ</span></span>
-<span><span class="co">#&gt; species:Escherichia coli               9.437733  6.9407422  7.497642  7.846444</span></span>
-<span><span class="co">#&gt; species:Alistipes putredinis          -1.455942 -0.9285831  3.861976  4.445362</span></span>
-<span><span class="co">#&gt; species:Porphyromonas asaccharolytica -1.455942 -0.9285831 -1.898531 -1.680435</span></span>
-<span><span class="co">#&gt; species:Bacteroides uniformis          2.913506  8.6447386  6.667089  7.727269</span></span>
-<span><span class="co">#&gt; species:Prevotella stercorea           6.859046  7.3185607  6.389707  9.671764</span></span>
-<span><span class="co">#&gt; species:Prevotella sp. CAG:279        -1.455942 10.6091419  8.153000  5.925898</span></span>
-<span><span class="co">#&gt;                                        GupDM_JK  GupDM_JL  GupDM_JM  GupDM_JN</span></span>
-<span><span class="co">#&gt; species:Escherichia coli               6.635303  5.302204  6.663421  6.927608</span></span>
-<span><span class="co">#&gt; species:Alistipes putredinis           4.082423 -1.059098  4.541131  5.008500</span></span>
-<span><span class="co">#&gt; species:Porphyromonas asaccharolytica -1.575538 -1.059098 -1.547914 -1.556073</span></span>
-<span><span class="co">#&gt; species:Bacteroides uniformis          7.371791 -1.059098  7.267629  7.355329</span></span>
-<span><span class="co">#&gt; species:Prevotella stercorea           9.437692  6.152941  7.283912  7.182024</span></span>
-<span><span class="co">#&gt; species:Prevotella sp. CAG:279         9.399841 -1.059098  9.104514  9.150327</span></span>
-<span><span class="co">#&gt;                                        GupDM_JO  GupDM_JP</span></span>
-<span><span class="co">#&gt; species:Escherichia coli               7.551281  8.226905</span></span>
-<span><span class="co">#&gt; species:Alistipes putredinis           3.581914  3.139297</span></span>
-<span><span class="co">#&gt; species:Porphyromonas asaccharolytica -1.885225 -1.970388</span></span>
-<span><span class="co">#&gt; species:Bacteroides uniformis          6.666847  5.391346</span></span>
-<span><span class="co">#&gt; species:Prevotella stercorea           6.341630  8.744812</span></span>
-<span><span class="co">#&gt; species:Prevotella sp. CAG:279         8.306611  7.324265</span></span></code></pre></div>
+<span><span class="co">#&gt;                                       GupDM_A12</span></span>
+<span><span class="co">#&gt; species:Escherichia coli               7.042800</span></span>
+<span><span class="co">#&gt; species:Alistipes putredinis          -1.410307</span></span>
+<span><span class="co">#&gt; species:Porphyromonas asaccharolytica -1.410307</span></span>
+<span><span class="co">#&gt; species:Bacteroides uniformis          5.473920</span></span>
+<span><span class="co">#&gt; species:Prevotella stercorea           3.672227</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="community-summaries">Community summaries<a class="anchor" aria-label="anchor" href="#community-summaries"></a>
@@ -593,7 +520,7 @@ the following command:</p>
 For instance, we can visualize abundance of phyla with a bar plot. To
 compare controls and CRC patients, we can visualize the groups
 separately.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/microbiome/miaViz" class="external-link">miaViz</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Get phylum-level data</span></span>
@@ -618,13 +545,13 @@ separately.</p>
 is commonly calculated. There are several diversity indices available,
 all of which measure the number of distinct taxa and how evenly their
 abundances are distributed, each with a different emphasis.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tse</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/mia/man/addAlpha.html" class="external-link">addAlpha</a></span><span class="op">(</span><span class="va">tse</span>, assay.type <span class="op">=</span> <span class="st">"relative_abundance"</span><span class="op">)</span></span></code></pre></div>
 <p>The results are stored in <code>colData</code>. By default,
 <code><a href="https://rdrr.io/pkg/mia/man/addAlpha.html" class="external-link">addAlpha()</a></code> returns a set of indices that considers
 different aspects of diversity. Below, we visualize Faith’s diversity
 that assess the phylogenetic diversity of samples.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://bioconductor.org/packages/scater/" class="external-link">scater</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/scater/man/plotColData.html" class="external-link">plotColData</a></span><span class="op">(</span><span class="va">tse</span>, x <span class="op">=</span> <span class="st">"disease"</span>, y <span class="op">=</span> <span class="st">"faith_diversity"</span><span class="op">)</span></span></code></pre></div>
@@ -643,7 +570,7 @@ covariates — such as diagnosis, in this case.</p>
 <p>Below, we calculate perform principal coordinate analysis (PCoA) also
 known as multidimensional scaling (MDS). We apply UniFrac dissimilarity
 that takes into account phylogeny.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tse</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/mia/man/addMDS.html" class="external-link">addMDS</a></span><span class="op">(</span></span>
 <span>    <span class="va">tse</span>,</span>
 <span>    assay.type <span class="op">=</span> <span class="st">"relative_abundance"</span>,</span>
@@ -651,7 +578,7 @@ that takes into account phylogeny.</p>
 <span><span class="op">)</span></span></code></pre></div>
 <p>After calculating the results, we can visualize them with the
 diagnosis.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/scater/man/plotReducedDim.html" class="external-link">plotReducedDim</a></span><span class="op">(</span><span class="va">tse</span>, dimred <span class="op">=</span> <span class="st">"MDS"</span>, colour_by <span class="op">=</span> <span class="st">"disease"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="gbcc2025_files/figure-html/visualize_mds-1.png" width="700"></p>
 <p>We can see clear pattern: microbial profiles of CRC patients are
@@ -673,11 +600,11 @@ distinct from healthy controls.</p>
 <div class="section level4">
 <h4 id="differential-abundance-analysis">Differential abundance analysis<a class="anchor" aria-label="anchor" href="#differential-abundance-analysis"></a>
 </h4>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://huttenhower.sph.harvard.edu/maaslin3" class="external-link">maaslin3</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/maaslin3/man/maaslin3.html" class="external-link">maaslin3</a></span><span class="op">(</span><span class="va">tse</span>, formula <span class="op">=</span> <span class="op">~</span> <span class="va">disease</span>, output <span class="op">=</span> <span class="st">"maaslin3_output"</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">file_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"maaslin3_output"</span>, <span class="st">"figures"</span>, <span class="st">"summary_plot.png"</span><span class="op">)</span></span>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html" class="external-link">include_graphics</a></span><span class="op">(</span><span class="va">file_path</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -708,7 +635,7 @@ and Bioconductor Zulip</p></li>
 <h2 id="session-information">Session information<a class="anchor" aria-label="anchor" href="#session-information"></a>
 </h2>
 <div class="callout-note" collapse="true">
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; R version 4.5.0 (2025-04-11)</span></span>
 <span><span class="co">#&gt; Platform: x86_64-pc-linux-gnu</span></span>
