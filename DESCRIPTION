@@ -1,4 +1,4 @@
-Package: miaDemo
+Package: OMATutorials
 Title: Package Demo: mia
 Version: 2.0.14
 Authors@R: 
@@ -106,7 +106,7 @@ Remotes:
     github::zdk123/SpiecEasi,
     github::GraceYoon/SPRING,
     github::waldronlab/curatedMetagenomicData
-URL: https://microbiome.github.io/miaDemo/
-BugReports: https://github.com/microbiome/miaDemo/issues/
+URL: https://microbiome.github.io/OMATutorials/
+BugReports: https://github.com/microbiome/OMATutorials/issues/
 VignetteBuilder: knitr
-DockerImage: ghcr.io/microbiome/miaDemo:latest
+DockerImage: ghcr.io/microbiome/OMATutorials:latest

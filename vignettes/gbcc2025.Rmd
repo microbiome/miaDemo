@@ -59,7 +59,7 @@ If your time allows, we recommend to spend some time to explore beforehand
 
 Participants are encouraged to ask questions throughout the workshop. The
 session will follow
-[a tutorial](https://microbiome.github.io/miaDemo/),
+[a tutorial](https://microbiome.github.io/OMATutorials/),
 with participants running the tutorial alongside the instructor.
 
 To facilitate this, Galaxy & Bioconductor provide
