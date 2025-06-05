@@ -12,6 +12,17 @@ output:
 bibliography: ../inst/bibliography.bib
 ---
 
+```{r}
+#| label: setup
+#| include: false
+knitr::opts_chunk$set(
+    collapse = TRUE,
+    comment = "#>",
+    warning = FALSE,
+    message = FALSE
+)
+```
+
 Authors:
     Tuomas Borman^[University of Turku, tvborm@utu.fi]
     <br/>
@@ -96,10 +107,9 @@ which provides essential methods for conducting microbiome analysis.
 
 #### Microbiome data science in Bioconductor
 
-```{r}
+```{r, results='hide'}
 #| label: microbiome_bioconductor
 #| fig-width: 15
-#| results: "hide"
 library(ggplot2)
 library(ggrepel)
 
