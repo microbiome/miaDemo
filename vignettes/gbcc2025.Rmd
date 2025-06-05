@@ -4,12 +4,11 @@ vignette: >
     %\VignetteIndexEntry{GBCC 2025}
     %\VignetteEngine{knitr::rmarkdown}
     %\VignetteEncoding{UTF-8}
-execute:
-  warning: false
-  message: false
 output:
   html_document:
     code_folding: hide
+    message: false
+    warning: false
 bibliography: ../inst/bibliography.bib
 ---
 
@@ -31,7 +30,7 @@ scalability, and data integration. Participants will gain hands-on experience
 with common analysis and visualization methods using the mia package family,
 along with other interoperable tools from the Bioconductor ecosystem. After the
 session, participants can continue learning through the freely available
-["Orchestrating Microbiome Analysis (OMA) online book"](https://microbiome.github.io/OMA/docs/devel/).
+[Orchestrating Microbiome Analysis (OMA) online book](https://microbiome.github.io/OMA/docs/devel/).
 
 ### Pre-requisites
 
@@ -97,9 +96,10 @@ which provides essential methods for conducting microbiome analysis.
 
 #### Microbiome data science in Bioconductor
 
-```{r, results='hide'}
+```{r}
 #| label: microbiome_bioconductor
 #| fig-width: 15
+#| results: "hide"
 library(ggplot2)
 library(ggrepel)
 
