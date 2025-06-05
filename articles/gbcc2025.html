@@ -374,17 +374,16 @@ controls and patients with colorectal cancer (CRC).</p>
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/waldronlab/curatedMetagenomicData" class="external-link">curatedMetagenomicData</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/curatedMetagenomicData/man/curatedMetagenomicData.html" class="external-link">curatedMetagenomicData</a></span><span class="op">(</span></span>
-<span>    pattern <span class="op">=</span> <span class="st">"GuptaA_2019"</span>,</span>
+<span>    pattern <span class="op">=</span> <span class="st">"GuptaA_2019.relative_abundance"</span>,</span>
 <span>    dryrun <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>    rownames <span class="op">=</span> <span class="st">"short"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p>Once loaded, we can see that the data includes several <em><a href="https://bioconductor.org/packages/3.22/TreeSummarizedExperiment" class="external-link">TreeSummarizedExperiment</a></em>
-objects, which include taxonomy annotations and functional predictions.
-In this demonstration, we are only interested on the taxonomy
-annotations, so we select it from the list and store it into a variable
-named <code>tse</code>.</p>
+<p>Once loaded, we can see that the data includes a list of single
+<em><a href="https://bioconductor.org/packages/3.22/TreeSummarizedExperiment" class="external-link">TreeSummarizedExperiment</a></em>
+object, which including taxonomy annotations. We select it from the list
+and store it into a variable named <code>tse</code>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">tse</span> <span class="op">&lt;-</span> <span class="va">res</span><span class="op">[[</span><span class="st">"2021-03-31.GuptaA_2019.relative_abundance"</span><span class="op">]</span><span class="op">]</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">tse</span> <span class="op">&lt;-</span> <span class="va">res</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="data-container">Data container<a class="anchor" aria-label="anchor" href="#data-container"></a>
