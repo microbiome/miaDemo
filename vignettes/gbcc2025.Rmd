@@ -97,10 +97,10 @@ which provides essential methods for conducting microbiome analysis.
 
 #### Microbiome data science in Bioconductor
 
-```{r}
+```{r, results='hide'}
 #| label: microbiome_bioconductor
 #| fig-width: 15
-#| results: "hide"
+#| include: false
 library(ggplot2)
 library(ggrepel)
 
@@ -280,7 +280,9 @@ tse <- readRDS("data/GuptaA_2019_tse.rds")
 
 #### Data container
 
-`r BiocStyle::Biocpkg("TreeSummarizedExperiment")` extends `r BiocStyle::Biocpkg("SummarizedExperiment")` class by adding a support for microbiome-specific
+`r BiocStyle::Biocpkg("TreeSummarizedExperiment")` extends
+`r BiocStyle::Biocpkg("SummarizedExperiment")` class by adding a support for
+microbiome-specific
 datatypes. These include, for instance, `rowTree` slot that can be utilized to
 store phylogeny or any other hierarchical presentation of the data. All slots
 derived from `r BiocStyle::Biocpkg("SummarizedExperiment")` class are also available in `r BiocStyle::Biocpkg("TreeSummarizedExperiment")`, providing full backward
