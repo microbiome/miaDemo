@@ -100,7 +100,6 @@ which provides essential methods for conducting microbiome analysis.
 ```{r, results='hide'}
 #| label: microbiome_bioconductor
 #| fig-width: 15
-#| include: false
 library(ggplot2)
 library(ggrepel)
 
