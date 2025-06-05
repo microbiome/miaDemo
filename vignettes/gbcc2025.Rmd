@@ -246,21 +246,21 @@ patients with colorectal cancer (CRC).
 library(curatedMetagenomicData)
 
 res <- curatedMetagenomicData(
-    pattern = "GuptaA_2019",
+    pattern = "GuptaA_2019.relative_abundance",
     dryrun = FALSE,
     rownames = "short"
 )
 ```
 
-Once loaded, we can see that the data includes several `r BiocStyle::Biocpkg("TreeSummarizedExperiment")` objects, which
-include taxonomy annotations and functional predictions. In this demonstration,
-we are only interested on the taxonomy annotations, so we select it from the
+Once loaded, we can see that the data includes a list of single
+`r BiocStyle::Biocpkg("TreeSummarizedExperiment")` object, which
+including taxonomy annotations. We select it from the
 list and store it into a variable named `tse`.
 
 ```{r}
 #| label: import_data2
 #| eval: false
-tse <- res[["2021-03-31.GuptaA_2019.relative_abundance"]]
+tse <- res[[1]]
 ```
 
 ```{r}
