@@ -107,7 +107,7 @@ which provides essential methods for conducting microbiome analysis.
 
 #### Microbiome data science in Bioconductor
 
-```{r, results='hide'}
+```{r, echo=FALSE}
 #| label: microbiome_bioconductor
 #| fig-width: 15
 library(ggplot2)
