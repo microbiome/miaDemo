@@ -100,13 +100,39 @@ which provides essential methods for conducting microbiome analysis.
 
 ### Background
 
-#### Microbiome data science [@MorenoIndias2021]
+#### Microbiome data science
 
-<img src="figures/moreno-indias2021.png" width="500"/>
+In microbiome research, researchers study interactions between microbes and their
+hosts, such as humans. Because of the intricate nature of these relationships,
+computational methods have become essential.
 
-#### Microbiome data science in Bioconductor
+<figure>
+  <img src="figures/moreno-indias2021.png" width="500"/>
+  <figcaption><span>@MorenoIndias2021</span></figcaption>
+</figure>
 
-```{r, echo=FALSE}
+#### Microbiome-related data containers and ecosystems in Bioconductor
+
+Data containers provide a structured and standardized way to represent complex
+datasets. This is particularly important in biological research, where a single
+data table is often insufficient to capture the full richness of a dataset.
+
+Over the years, several approaches to data organization have been developed.
+One of the first widely adopted data containers in microbiome research was
+`r BiocStyle::Biocpkg("phyloseq")` [@McMurdie2013], designed for 16S amplicon
+sequencing data. However, it has limitations, particularly in linking multiple
+experiments and ensuring interoperability between tools in Bioconductor.
+
+`r BiocStyle::Biocpkg("SummarizedExperiment")` (SE) [@Huber2015], on the other
+hand, was introduced as a general-purpose container for biological data and has
+become the most widely used format within the Bioconductor ecosystem. It has
+since been extended to more specialized formats, including
+`r BiocStyle::Biocpkg("SingleCellExperiment")` [@Amezquita2020] for single-cell
+data and
+`r BiocStyle::Biocpkg("TreeSummarizedExperiment")` (TreeSE) [@Huang2021], which
+is tailored for microbiome datasets.
+
+```{r, echo=FALSE, fig.cap="Timeline of microbiome-related data containter in Bioconductor"}
 #| label: microbiome_bioconductor
 #| fig-width: 15
 library(ggplot2)
@@ -184,13 +210,12 @@ ggplot(timeline_data, aes(x = year, y = 0)) +
     )
 ```
 
-#### SummarizedExperinent, SE [@Huber2015]
+#### TreeSummarizedExperiment, TreeSE
 
-<img src="figures/SE.png" width="80%"/>
-
-#### TreeSummarizedExperiment, TreeSE [@Huang2021]
-
-<img src="figures/TreeSE.png" width="100%"/>
+<figure>
+  <img src="figures/TreeSE.png" width="500"/>
+  <figcaption><span>@Huang2021</span></figcaption>
+</figure>
 
 #### Ochestrating Microbiome Analysis with Bioconductor (OMA)
 
