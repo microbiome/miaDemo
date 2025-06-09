@@ -214,27 +214,51 @@ additional tools and methods.</p></li>
 <h3 id="background">Background<a class="anchor" aria-label="anchor" href="#background"></a>
 </h3>
 <div class="section level4">
-<h4 id="microbiome-data-science-morenoindias2021">Microbiome data science <span class="citation">(Moreno-Indias et al.
-2021)</span><a class="anchor" aria-label="anchor" href="#microbiome-data-science-morenoindias2021"></a>
+<h4 id="microbiome-data-science">Microbiome data science<a class="anchor" aria-label="anchor" href="#microbiome-data-science"></a>
 </h4>
-<p><img src="figures/moreno-indias2021.png" width="500"></p>
+<p>In microbiome research, researchers study interactions between
+microbes and their hosts, such as humans. Because of the intricate
+nature of these relationships, computational methods have become
+essential.</p>
+<figure><img src="figures/moreno-indias2021.png" width="500"><figcaption><span><span class="citation">Moreno-Indias et al. (2021)</span></span>
+</figcaption></figure>
 </div>
 <div class="section level4">
-<h4 id="microbiome-data-science-in-bioconductor">Microbiome data science in Bioconductor<a class="anchor" aria-label="anchor" href="#microbiome-data-science-in-bioconductor"></a>
+<h4 id="microbiome-related-data-containers-and-ecosystems-in-bioconductor">Microbiome-related data containers and ecosystems in
+Bioconductor<a class="anchor" aria-label="anchor" href="#microbiome-related-data-containers-and-ecosystems-in-bioconductor"></a>
 </h4>
-<p><img src="gbcc2025_files/figure-html/microbiome_bioconductor-1.png" width="1440"></p>
+<p>Data containers provide a structured and standardized way to
+represent complex datasets. This is particularly important in biological
+research, where a single data table is often insufficient to capture the
+full richness of a dataset.</p>
+<p>Over the years, several approaches to data organization have been
+developed. One of the first widely adopted data containers in microbiome
+research was <em><a href="https://bioconductor.org/packages/3.22/phyloseq" class="external-link">phyloseq</a></em>
+<span class="citation">(McMurdie and Holmes 2013)</span>, designed for
+16S amplicon sequencing data. However, it has limitations, particularly
+in linking multiple experiments and ensuring interoperability between
+tools in Bioconductor.</p>
+<p><em><a href="https://bioconductor.org/packages/3.22/SummarizedExperiment" class="external-link">SummarizedExperiment</a></em>
+(SE) <span class="citation">(Huber et al. 2015)</span>, on the other
+hand, was introduced as a general-purpose container for biological data
+and has become the most widely used format within the Bioconductor
+ecosystem. It has since been extended to more specialized formats,
+including <em><a href="https://bioconductor.org/packages/3.22/SingleCellExperiment" class="external-link">SingleCellExperiment</a></em>
+<span class="citation">(Amezquita et al. 2020)</span> for single-cell
+data and <em><a href="https://bioconductor.org/packages/3.22/TreeSummarizedExperiment" class="external-link">TreeSummarizedExperiment</a></em>
+(TreeSE) <span class="citation">(Huang et al. 2021)</span>, which is
+tailored for microbiome datasets.</p>
+<div class="figure">
+<img src="gbcc2025_files/figure-html/microbiome_bioconductor-1.png" alt="Timeline of microbiome-related data containter in Bioconductor" width="1440"><p class="caption">
+Timeline of microbiome-related data containter in Bioconductor
+</p>
+</div>
 </div>
 <div class="section level4">
-<h4 id="summarizedexperinent-se-huber2015">SummarizedExperinent, SE <span class="citation">(Huber et al.
-2015)</span><a class="anchor" aria-label="anchor" href="#summarizedexperinent-se-huber2015"></a>
+<h4 id="treesummarizedexperiment-treese">TreeSummarizedExperiment, TreeSE<a class="anchor" aria-label="anchor" href="#treesummarizedexperiment-treese"></a>
 </h4>
-<p><img src="figures/SE.png" width="80%"></p>
-</div>
-<div class="section level4">
-<h4 id="treesummarizedexperiment-treese-huang2021">TreeSummarizedExperiment, TreeSE <span class="citation">(Huang et
-al. 2021)</span><a class="anchor" aria-label="anchor" href="#treesummarizedexperiment-treese-huang2021"></a>
-</h4>
-<p><img src="figures/TreeSE.png" width="100%"></p>
+<figure><img src="figures/TreeSE.png" width="500"><figcaption><span><span class="citation">Huang et al. (2021)</span></span>
+</figcaption></figure>
 </div>
 <div class="section level4">
 <h4 id="ochestrating-microbiome-analysis-with-bioconductor-oma">Ochestrating Microbiome Analysis with Bioconductor (OMA)<a class="anchor" aria-label="anchor" href="#ochestrating-microbiome-analysis-with-bioconductor-oma"></a>
@@ -656,7 +680,7 @@ and Bioconductor Zulip</p></li>
 <span><span class="co">#&gt; [103] stringi_1.8.7               UCSC.utils_1.5.0           </span></span>
 <span><span class="co">#&gt; [105] ggfun_0.1.8                 lazyeval_0.2.2             </span></span>
 <span><span class="co">#&gt; [107] yaml_2.3.10                 evaluate_1.0.3             </span></span>
-<span><span class="co">#&gt; [109] codetools_0.2-20            tibble_3.2.1               </span></span>
+<span><span class="co">#&gt; [109] codetools_0.2-20            tibble_3.3.0               </span></span>
 <span><span class="co">#&gt; [111] BiocManager_1.30.26         ggplotify_0.1.2            </span></span>
 <span><span class="co">#&gt; [113] cli_3.6.5                   xtable_1.8-4               </span></span>
 <span><span class="co">#&gt; [115] systemfonts_1.2.3           jquerylib_0.1.4            </span></span>
@@ -675,6 +699,11 @@ and Bioconductor Zulip</p></li>
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
 <div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="ref-Amezquita2020" class="csl-entry">
+Amezquita, Robert, Aaron Lun, Stephanie Hicks, and Raphael Gottardo.
+2020. <em>Orchestrating Single-Cell Analysis with Bioconductor</em>.
+Bioconductor. <a href="https://bioconductor.org/books/release/OSCA/" class="external-link">https://bioconductor.org/books/release/OSCA/</a>.
+</div>
 <div id="ref-Huang2021" class="csl-entry">
 Huang, Ruizhu, Charlotte Soneson, Felix G. M. Ernst, et al. 2021.
 <span>“TreeSummarizedExperiment: A S4 Class for Data with Hierarchical
@@ -685,6 +714,11 @@ Huber, W., V. J. Carey, R. Gentleman, S. Anders, M. Carlson, B. S.
 Carvalho, H. C. Bravo, et al. 2015. <span>“<span>O</span>rchestrating
 High-Throughput Genomic Analysis with <span>B</span>ioconductor.”</span>
 <em>Nature Methods</em> 12 (2): 115–21. <a href="http://www.nature.com/nmeth/journal/v12/n2/full/nmeth.3252.html" class="external-link">http://www.nature.com/nmeth/journal/v12/n2/full/nmeth.3252.html</a>.
+</div>
+<div id="ref-McMurdie2013" class="csl-entry">
+McMurdie, PJ, and S Holmes. 2013. <span>“<span><em>Phyloseq:</em></span>
+An r Package for Reproducible Interactive Analysis and Graphics of
+Microbiome Census Data.”</span> <em>PLoS ONE</em> 8: e61217. <a href="https://doi.org/10.1371/journal.pone.0061217" class="external-link">https://doi.org/10.1371/journal.pone.0061217</a>.
 </div>
 <div id="ref-MorenoIndias2021" class="csl-entry">
 Moreno-Indias, Isabel, Leo Lahti, Miroslava Nedyalkova, Ilze Elbere,
