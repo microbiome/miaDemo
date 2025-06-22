@@ -25,7 +25,7 @@ knitr::opts_chunk$set(
 Authors:
     Tuomas Borman^[University of Turku, tvborm@utu.fi]
     <br/>
-Last modified: 4 June, 2025.
+Last modified: 22 June, 2025.
 
 <img src="figures/gbcc_logo_transparent.png" width="150"/> <img src="figures/mia_logo.png" width="150"/>
 
@@ -104,7 +104,7 @@ which provides essential methods for conducting microbiome analysis.
 
 In microbiome research, researchers study interactions between microbes and their
 hosts, such as humans. Because of the intricate nature of these relationships,
-computational methods have become essential.
+computational methods are essential.
 
 <figure>
   <img src="figures/moreno-indias2021.png" width="500"/>
@@ -485,8 +485,8 @@ healthy controls.
 ### Time to try things out on your own!
 
 - Go to OMA ([microbiome.github.io/OMA](https://microbiome.github.io/OMA/docs/devel/))
-- Navigate to _Differential abundance analysis_ chapter
-- Do exercises 1-3
+- Navigate to [_Differential abundance analysis_ chapter](https://microbiome.github.io/OMA/docs/devel/pages/differential_abundance.html)
+- Do exercises 4-6
 - Explore the book!
 
 <p style="text-align: right;">
