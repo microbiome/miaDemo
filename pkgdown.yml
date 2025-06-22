@@ -1,4 +1,4 @@
-pandoc: 3.6.4
+pandoc: 3.7.0.2
 pkgdown: 2.1.3
 pkgdown_sha: ~
 articles:
@@ -8,7 +8,7 @@ articles:
   introductory_dutch: introductory_dutch.html
   introductory_french: introductory_french.html
   introductory: introductory.html
-last_built: 2025-06-09T19:46Z
+last_built: 2025-06-22T13:42Z
 urls:
   reference: https://microbiome.github.io/OMATutorials/reference
   article: https://microbiome.github.io/OMATutorials/articles
