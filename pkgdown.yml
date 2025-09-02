@@ -4,11 +4,12 @@ pkgdown_sha: ~
 articles:
   eccb2024: eccb2024.html
   eurobioc2024: eurobioc2024.html
+  eurobioc2025: eurobioc2025.html
   gbcc2025: gbcc2025.html
   introductory_dutch: introductory_dutch.html
   introductory_french: introductory_french.html
   introductory: introductory.html
-last_built: 2025-06-22T13:42Z
+last_built: 2025-09-02T05:41Z
 urls:
   reference: https://microbiome.github.io/OMATutorials/reference
   article: https://microbiome.github.io/OMATutorials/articles
