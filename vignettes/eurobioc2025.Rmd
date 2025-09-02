@@ -78,7 +78,7 @@ which provides essential methods for conducting microbiome analysis.
 | Activity                           | Time |
 |------------------------------------|------|
 | Practicalities and background      | 15m  |
-| Trained-guided live coding         | 45m  |
+| Trained-guided live coding         | 60m  |
 | Time to try things out on your own | 15m  |
 | Questions, discussion and recap    | 15m  |
 
