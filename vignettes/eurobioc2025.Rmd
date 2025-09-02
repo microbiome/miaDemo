@@ -1,7 +1,7 @@
 ---
-title: EuroBioC2025
+title: EuroBioC 2025
 vignette: >
-    %\VignetteIndexEntry{EuroBioC2025}
+    %\VignetteIndexEntry{EuroBioC 2025}
     %\VignetteEngine{knitr::rmarkdown}
     %\VignetteEncoding{UTF-8}
 output:
@@ -509,25 +509,6 @@ healthy controls.
 <p style="text-align: right;">
   [![](figures/OMA_ss.png){width=500px}](https://microbiome.github.io/OMA/docs/devel/){preview-link="true"}
 </p>
-
-#### Differential abundance analysis
-
-```{r}
-#| label: calculate_daa
-#| eval: false
-
-library(maaslin3)
-
-res <- maaslin3(tse, formula = ~ disease, output = "maaslin3_output")
-```
-
-```{r}
-#| label: visualize_daa
-#| eval: false
-
-file_path <- file.path("maaslin3_output", "figures", "summary_plot.png")
-knitr::include_graphics(file_path)
-```
 
 ## Questions, discussion and recap
 
