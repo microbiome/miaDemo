@@ -503,7 +503,7 @@ healthy controls.
 
 - Go to OMA ([microbiome.github.io/OMA](https://microbiome.github.io/OMA/docs/devel/))
 - Navigate to [_Differential abundance analysis_ chapter](https://microbiome.github.io/OMA/docs/devel/pages/differential_abundance.html)
-- Do exercises 4-6
+- Do exercises
 - Explore the book!
 
 <p style="text-align: right;">
