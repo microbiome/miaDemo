@@ -211,6 +211,106 @@ ggplot(timeline_data, aes(x = year, y = 0)) +
     )
 ```
 
+#### SummarizedExperiment, SE
+
+```{r, echo=FALSE, fig.cap="SummarizedExperiment has become the core data container in Bioconductor."}
+#| label: se
+#| fig-width: 10
+
+if( !require("BiocManager") ){
+    install("BiocManager")
+}
+pkgs <- c("BiocPkgTools", "lubridate", "tidyverse")
+temp <- sapply(pkgs, function(pkg){
+    if( !require(pkg, character.only = TRUE) ){
+        BiocManager::install(pkg)
+        library(pkg, character.only = TRUE)
+    }
+})
+
+# Get packages and info based on their BiocViews
+pkgs <- biocPkgList()
+#
+pkgs[["SE"]] <- sapply(pkgs[["Depends"]], function(x) any(grepl("summarizedexperiment", x, ignore.case = TRUE)) )
+pkgs <- pkgs[pkgs[["SE"]], ]
+fields <- sapply(pkgs$biocViews, function(x){
+    field <- "Other"
+    if( any(grepl("genomic|genetic|gene|genom|DNA", x, ignore.case = TRUE)) ){
+        field <- "Genomics"
+    }
+    if( any(grepl("proteomics|protein", x, ignore.case = TRUE)) ){
+        field <- "Proteomics"
+    }
+    if( any(grepl("metabolomics|metabolome|metabolite|Lipidom|massspectro", x, ignore.case = TRUE)) ){
+        field <- "Metabolomics"
+    }
+    if( any(grepl("transcripto|RNA-seq|RNA", x, ignore.case = TRUE)) ){
+        field <- "Transcriptomics"
+    }
+    if( any(grepl("immuno", x, ignore.case = TRUE)) ){
+        field <- "Immunology"
+    }
+    if( any(grepl("cytom", x, ignore.case = TRUE)) ){
+        field <- "Cytometrics"
+    }
+    if( any(grepl("microarray|chip", x, ignore.case = TRUE)) ){
+        field <- "Microarray"
+    }
+    if( any(grepl("single-cell|singlecell", x, ignore.case = TRUE)) ){
+        field <- "Single-cell"
+    }
+    if( any(grepl("metagenom|microbiome|16S|microbiota|amplicon|shotgun|microb|metatranscript|metametabolo|metaproteo", x, ignore.case = TRUE)) ){
+        field <- "Microbiome"
+    }
+    return(field)
+})
+pkgs[["Field"]] <- fields
+pkgs[pkgs[["Package"]] %in% c("mia", "miaViz", "miaSim", "iSEEtree", "HoloFoodR", "MGnifyR"), "Field"] <- "Microbiome"
+# Get download stats 
+df <- biocDownloadStats()
+# Subset to include only packages which BiocView we have
+df <- df[df[["Package"]] %in% pkgs$Package, ]
+# Add field info
+df[["Field"]] <- pkgs[match(df[["Package"]], pkgs[["Package"]]), "Field"][[1]]
+# df <- df[df$Package %in% pkgs$Package, ] # Take into account only current packages
+pkgs <- pkgs[, c("Package", "SE", "Field")]
+# Get table that shows which package is available in each date
+dates <- df$Date |> unique()
+dates <- dates[ dates < floor_date(Sys.time(), "month") ]
+available <- lapply(dates, function(date){
+    temp <- df[df[["Date"]] == date, ]
+    temp <- temp[match(unique(df$Package), temp$Package), ]
+    temp <- temp[["Nb_of_distinct_IPs"]] > 0 | temp[["Nb_of_downloads"]] > 0
+    temp[is.na(temp)] <- FALSE
+    temp <- as.numeric(temp)
+    return(temp)
+})
+available <- do.call(cbind, available) |> as.data.frame()
+rownames(available) <- unique(df[["Package"]])
+colnames(available) <- dates
+#
+ind <- pkgs[match(unique(df[["Package"]]), pkgs[["Package"]]), "Field"][[1]]
+pkgs_date <- rowsum(available, group = ind)
+# Put into long format
+pkgs_date <- pkgs_date |>
+    rownames_to_column("Field") |>
+    pivot_longer(
+        cols = colnames(pkgs_date)[ !colnames(pkgs_date) %in% c("Field")], 
+        names_to = "Date",
+        values_to = "N"
+    )
+pkgs_date[["Date"]] <- pkgs_date[["Date"]] |> as.Date()
+
+# Create a plot that shows number of package through date
+p <- ggplot(pkgs_date, aes(x = Date, y = N, fill = Field)) +
+    geom_area() +
+    theme_classic(base_size = 18) +
+    scale_fill_brewer(palette = "Paired") +
+    labs(x = "Year", y = "Number of packages") +
+    scale_y_continuous(expand = c(0, 0), limits = c(0, NA))
+p
+```
+
 #### TreeSummarizedExperiment, TreeSE
 
 <figure>
