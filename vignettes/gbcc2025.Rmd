@@ -27,7 +27,7 @@ Authors:
     <br/>
 Last modified: 22 June, 2025.
 
-<img src="figures/gbcc_logo_transparent.png" width="150"/> <img src="figures/mia_logo.png" width="150"/>
+<img src="figures/gbcc_logo_transparent.png" width="150"/> <img src="figures/mia_logo_old.png" width="150"/>
 
 ## Overview
 
@@ -524,7 +524,7 @@ knitr::include_graphics(file_path)
 
 - Discussion forums: [github.com/microbiome/OMA/discussions](https://github.com/microbiome/OMA/discussions) and Bioconductor Zulip
 
-<img src="figures/bioc_sticker.png" width="150"/> <img src="figures/mia_logo.png" width="150"/>
+<img src="figures/bioc_sticker.png" width="150"/> <img src="figures/mia_logo_old.png" width="150"/>
 
 ## Session information
 

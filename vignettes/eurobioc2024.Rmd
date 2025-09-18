@@ -22,7 +22,7 @@ Authors:
     <br/>
 Last modified: 1 September, 2024.
 
-<img src="figures/EuroBioC2024.png" width="150"/> <img src="figures/mia_logo.png" width="150"/>
+<img src="figures/EuroBioC2024.png" width="150"/> <img src="figures/mia_logo_old.png" width="150"/>
 
 ## Overview
 
