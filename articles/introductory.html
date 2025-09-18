@@ -307,11 +307,11 @@ level.</p>
 <p>Agglomerating your data to a specific taxonomic rank helps simplify
 the analysis and reveal broader patterns. By grouping taxonomic features
 at a chosen level, such as Phylum, you can better understand general
-trends and distributions. The <code><a href="https://rdrr.io/pkg/mia/man/agglomerate-methods.html" class="external-link">agglomerateByRank()</a></code> function
+trends and distributions. The <code><a href="https://microbiome.github.io/mia/reference/agglomerate-methods.html" class="external-link">agglomerateByRank()</a></code> function
 streamlines this process, making it easier to analyze and visualize data
 at a higher level of aggregation.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">tse_phylum</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/mia/man/agglomerate-methods.html" class="external-link">agglomerateByRank</a></span><span class="op">(</span><span class="va">tse</span>, rank <span class="op">=</span> <span class="st">"Phylum"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">tse_phylum</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://microbiome.github.io/mia/reference/agglomerate-methods.html" class="external-link">agglomerateByRank</a></span><span class="op">(</span><span class="va">tse</span>, rank <span class="op">=</span> <span class="st">"Phylum"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Check</span></span>
 <span><span class="va">tse_phylum</span></span>
@@ -341,11 +341,11 @@ rank.</p>
 </h3>
 <p>The <a href="https://microbiome.github.io/mia/" class="external-link"><code>mia</code>
 package</a> provides an easy way to calculate the relative abundances
-for our <code>TreeSE</code> using the <code><a href="https://rdrr.io/pkg/mia/man/transformAssay.html" class="external-link">transformAssay()</a></code>
+for our <code>TreeSE</code> using the <code><a href="https://microbiome.github.io/mia/reference/transformAssay.html" class="external-link">transformAssay()</a></code>
 method.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">tse</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/mia/man/transformAssay.html" class="external-link">transformAssay</a></span><span class="op">(</span><span class="va">tse</span>, method <span class="op">=</span> <span class="st">"relabundance"</span><span class="op">)</span></span>
-<span><span class="va">tse_phylum</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/mia/man/transformAssay.html" class="external-link">transformAssay</a></span><span class="op">(</span><span class="va">tse_phylum</span>, method <span class="op">=</span> <span class="st">"relabundance"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">tse</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://microbiome.github.io/mia/reference/transformAssay.html" class="external-link">transformAssay</a></span><span class="op">(</span><span class="va">tse</span>, method <span class="op">=</span> <span class="st">"relabundance"</span><span class="op">)</span></span>
+<span><span class="va">tse_phylum</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://microbiome.github.io/mia/reference/transformAssay.html" class="external-link">transformAssay</a></span><span class="op">(</span><span class="va">tse_phylum</span>, method <span class="op">=</span> <span class="st">"relabundance"</span><span class="op">)</span></span></code></pre></div>
 <p>This function takes the original counts assay and calculates the
 relative abundances, storing the newly computed matrix back into the
 <code>TreeSE</code>. You can access it in the assays of the
@@ -368,7 +368,7 @@ assay (e.g., “relabundance”):</p>
 <span><span class="co">#&gt; Akkermansia     0.13348552 0.05105137 0.038484959 0.118447457 0.07713856</span></span>
 <span><span class="co">#&gt; Bacteroides_3   0.00000000 0.00000000 0.008525149 0.000000000 0.02200055</span></span></code></pre></div>
 <p>For more information on the capabilities and transformation options
-of <code><a href="https://rdrr.io/pkg/mia/man/transformAssay.html" class="external-link">mia::transformAssay()</a></code>, see <a href="https://microbiome.github.io/OMA/docs/devel/pages/transformation.html" class="external-link">OMA</a>.</p>
+of <code><a href="https://microbiome.github.io/mia/reference/transformAssay.html" class="external-link">mia::transformAssay()</a></code>, see <a href="https://microbiome.github.io/OMA/docs/devel/pages/transformation.html" class="external-link">OMA</a>.</p>
 </div>
 </div>
 <div class="section level2">
@@ -407,7 +407,7 @@ different taxonomic features, using branch lengths on a phylogenetic
 tree. For more information on diversity, see <a href="https://microbiome.github.io/OMA/docs/devel/pages/alpha_diversity.html" class="external-link">OMA</a>.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Estimate Faith's index</span></span>
-<span><span class="va">tse</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/mia/man/addAlpha.html" class="external-link">addAlpha</a></span><span class="op">(</span><span class="va">tse</span>, index <span class="op">=</span> <span class="st">"faith"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">tse</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://microbiome.github.io/mia/reference/addAlpha.html" class="external-link">addAlpha</a></span><span class="op">(</span><span class="va">tse</span>, index <span class="op">=</span> <span class="st">"faith"</span><span class="op">)</span></span></code></pre></div>
 <p>The results are stored to <code>colData</code>. The calculated index
 shows how diverse each sample is in terms of the number of different
 microbes present. We can then create a graph to visualize this.</p>
@@ -447,7 +447,7 @@ provides a more nuanced understanding of community differences by
 incorporating evolutionary relationships.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Run PCoA</span></span>
-<span><span class="va">tse</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/mia/man/addMDS.html" class="external-link">addMDS</a></span><span class="op">(</span></span>
+<span><span class="va">tse</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://microbiome.github.io/mia/reference/addMDS.html" class="external-link">addMDS</a></span><span class="op">(</span></span>
 <span>    <span class="va">tse</span>,</span>
 <span>    FUN <span class="op">=</span> <span class="va">getDissimilarity</span>,</span>
 <span>    tree <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/TreeSummarizedExperiment/man/TreeSummarizedExperiment-accessor.html" class="external-link">rowTree</a></span><span class="op">(</span><span class="va">tse</span><span class="op">)</span>,</span>
