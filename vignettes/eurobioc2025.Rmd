@@ -28,7 +28,7 @@ Authors:
     <br/>
 Last modified: 2 September, 2025.
 
-<img src="figures/eurobioc2025_logo.png" width="150"/> <img src="figures/mia_logo.png" width="130"/>
+<img src="figures/eurobioc2025_logo.png" width="150"/> <img src="https://raw.githubusercontent.com/microbiome/outreach/refs/heads/main/figures/mia_logo.png" width="130"/>
 
 ## Overview
 
@@ -338,7 +338,7 @@ p
 
 <div style="flex: 0 0 30%;">
 
-![](https://raw.githubusercontent.com/microbiome/mia/refs/heads/devel/man/figures/mia_logo.png){fig-alt="mia logo." width=20%}
+![](https://raw.githubusercontent.com/microbiome/outreach/refs/heads/main/figures/mia_logo.png){fig-alt="mia logo." width=20%}
 ![](https://raw.githubusercontent.com/EBI-Metagenomics/MGnifyR/refs/heads/devel/man/figures/mgnifyr_logo.png){fig-alt="MGnifyR logo." width=20%}
 ![](https://raw.githubusercontent.com/EBI-Metagenomics/HoloFoodR/refs/heads/devel/man/figures/holofoodr_logo.png){fig-alt="HoloFoodR logo." width=20%}
 ![](https://raw.githubusercontent.com/Bioconductor/BiocStickers/refs/heads/devel/iSEE/iSEE.png){fig-alt="iSEE logo." width=20%}
@@ -623,7 +623,7 @@ healthy controls.
 - Online book: [microbiome.github.io/OMA](https://microbiome.github.io/OMA/docs/devel/)
 - Discussion forums: [github.com/microbiome/OMA/discussions](https://github.com/microbiome/OMA/discussions) and Bioconductor Zulip
 
-<img src="figures/bioc_sticker.png" width="150"/> <img src="figures/mia_logo.png" width="150"/>
+<img src="figures/bioc_sticker.png" width="150"/> <img src="https://raw.githubusercontent.com/microbiome/outreach/refs/heads/main/figures/mia_logo.png" width="150"/>
 
 ## Session information
 
