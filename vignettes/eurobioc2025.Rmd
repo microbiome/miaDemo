@@ -28,7 +28,7 @@ Authors:
     <br/>
 Last modified: 2 September, 2025.
 
-<img src="figures/eurobioc2025_logo.png" width="150"/> <img src="https://raw.githubusercontent.com/microbiome/outreach/refs/heads/main/figures/mia_logo.png" width="130"/>
+<img src="figures/eurobioc2025_logo.png" width="150"/> <img src="figures/mia_logo.png" width="130"/>
 
 ## Overview
 
@@ -623,7 +623,7 @@ healthy controls.
 - Online book: [microbiome.github.io/OMA](https://microbiome.github.io/OMA/docs/devel/)
 - Discussion forums: [github.com/microbiome/OMA/discussions](https://github.com/microbiome/OMA/discussions) and Bioconductor Zulip
 
-<img src="figures/bioc_sticker.png" width="150"/> <img src="https://raw.githubusercontent.com/microbiome/outreach/refs/heads/main/figures/mia_logo.png" width="150"/>
+<img src="figures/bioc_sticker.png" width="150"/> <img src="figures/mia_logo.png" width="150"/>
 
 ## Session information
 
