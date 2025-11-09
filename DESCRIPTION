@@ -1,6 +1,6 @@
 Package: OMATutorials
 Title: Package Demo: mia
-Version: 2.0.16
+Version: 2.0.17
 Authors@R: 
     c(person(given = "Tuomas", family = "Borman", role = c("aut", "cre"),
              email = "tuomas.v.borman@utu.fi",
@@ -25,6 +25,7 @@ Suggests:
     BiocBook,
     BiocManager,
     BiocParallel,
+    BiocPkgTools,
     Biostrings,
     bluster,
     caret,
