@@ -57,7 +57,6 @@ Suggests:
     iSEEtree,
     knitr,
     limma,
-    Maaslin2,
     maaslin3,
     mia,
     miaTime,
@@ -65,7 +64,6 @@ Suggests:
     microbiomeDataSets,
     MicrobiomeStat,
     mikropml,
-    MMUPHin,
     MOFA2,
     multiview,
     NbClust,
@@ -107,9 +105,7 @@ Remotes:
     github::zdk123/SpiecEasi,
     github::GraceYoon/SPRING,
     github::waldronlab/curatedMetagenomicData,
-    github::seandavi/BiocPkgTools,
-    github::biobakery/Maaslin2,
-    github::biobakery/MMUPHin
+    github::seandavi/BiocPkgTools
 URL: https://microbiome.github.io/OMATutorials/
 BugReports: https://github.com/microbiome/omatutorials/issues/
 VignetteBuilder: knitr
