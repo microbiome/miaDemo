@@ -1,6 +1,6 @@
 Package: OMATutorials
 Title: Package Demo: mia
-Version: 2.0.17
+Version: 2.0.18
 Authors@R: 
     c(person(given = "Tuomas", family = "Borman", role = c("aut", "cre"),
              email = "tuomas.v.borman@utu.fi",
@@ -107,7 +107,9 @@ Remotes:
     github::zdk123/SpiecEasi,
     github::GraceYoon/SPRING,
     github::waldronlab/curatedMetagenomicData,
-    github::seandavi/BiocPkgTools
+    github::seandavi/BiocPkgTools,
+    github::biobakery/Maaslin2,
+    github::biobakery/MMUPHin
 URL: https://microbiome.github.io/OMATutorials/
 BugReports: https://github.com/microbiome/omatutorials/issues/
 VignetteBuilder: knitr
