@@ -94,9 +94,9 @@ which provides essential methods for conducting microbiome analysis.
 |--------------------------------------|------------|
 | Practicalities and background        | 30m        |
 | Trained-guided live coding           | 60m        |
-| Break                                | 15m        |
+| Break                                | 30m        |
 | Trained-guided live coding continues | 60m        |
-| Time to try things out on your own   | 30m        |
+| Time to try things out on your own   | 15m        |
 | Questions, discussion and recap      | 15m        |
 | **Total**                            | **3h 30m** |
 
