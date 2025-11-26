@@ -328,7 +328,6 @@ tse_phyla <- altExp(tse, "phylum")
 # Create a bar plot
 plotAbundance(
     tse_phyla,
-    rank = "phylum",
     assay.type = "relabundance",
     col.var = "disease",
     facet.cols = TRUE,
