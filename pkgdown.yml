@@ -7,10 +7,11 @@ articles:
   eurobioc2024: eurobioc2024.html
   eurobioc2025: eurobioc2025.html
   gbcc2025: gbcc2025.html
+  hddd_bioinfo: hddd_bioinfo.html
   introductory_dutch: introductory_dutch.html
   introductory_french: introductory_french.html
   introductory: introductory.html
-last_built: 2025-11-26T01:53Z
+last_built: 2025-12-02T08:00Z
 urls:
   reference: https://microbiome.github.io/OMATutorials/reference
   article: https://microbiome.github.io/OMATutorials/articles
