@@ -1,7 +1,7 @@
 ---
-title: BioCAsia 2025
+title: Bioinformatics and a changing society, 4th December 2025
 vignette: >
-    %\VignetteIndexEntry{BioCAsia 2025}
+    %\VignetteIndexEntry{Bioinformatics and a changing society}
     %\VignetteEngine{knitr::rmarkdown}
     %\VignetteEncoding{UTF-8}
 output:
@@ -24,44 +24,27 @@ knitr::opts_chunk$set(
 ```
 
 Authors:
-    Tuomas Borman^[University of Turku, tvborm@utu.fi]
+    Tuomas Borman^[University of Turku, tvborm@utu.fi],
+    Matti Ruuskanen
     <br/>
-Last modified: 6 November, 2025.
+Last modified: 2 December, 2025.
 
-<img src="figures/biocasia-2025.png" width="130"/> <img src="figures/mia_logo.png" width="130"/>
+<img src="figures/bioc_sticker.png" width="150"/> <img src="figures/mia_logo.png" width="150"/>
 
 ## Overview
 
 ### Description
 
-In microbiome research, there is an increasing demand for robust, transparent,
-and reproducible computational methods. Bioconductor is well-positioned to to
-fulfill this need by providing high-quality, open-source bioinformatics
-software. At the core of Bioconductor are standardized data containers that
-harmonize data management and enable interoperability across the ecosystem.
-
-This workshop introduces the latest advances in microbiome analysis within
-Bioconductor, focusing on the `r BiocStyle::Biocpkg("mia")`
-(Microbiome Analysis) framework. The framework is built upon the
-`r BiocStyle::Biocpkg("TreeSummarizedExperiment")` data container — the central
-data structure in Bioconductor — and provides a comprehensive suite of
-statistical tools for microbiome data science. It is continuously expanding with
-new methods and offers native support for multi-table and hierarchical data,
-while being computationally more efficient than previous approaches. These
-features enable users to build modular and reproducible workflows for microbiome
-analysis.
-
-During the workshop, participants will gain hands-on experience with the
-`r BiocStyle::Biocpkg("TreeSummarizedExperiment")` data container and the
-`r BiocStyle::Biocpkg("mia")` framework through a practical case study. The
-practicals cover common downstream analysis steps, from data import and
-wrangling to diversity estimation, differential abundance analysis, and
-visualization. After the workshop, participants will have the skills to continue
-learning through the freely available
+Because of the complex nature of microbiome data, robust and reproducible
+computational approaches are essential. This workshop introduces the latest
+advances in microbiome analysis within Bioconductor, focusing on the
+`r BiocStyle::Biocpkg("mia")` (Microbiome Analysis) framework. Participants wil
+gain hands-on experience with data handling, visualization, and analysis through
+a practical case study. The workshop will also introduce the
 [Orchestrating Microbiome Analysis (OMA) online book](https://microbiome.github.io/OMA/docs/devel/),
-which promotes best practices and supports adoption of the
-ecosystem. Together, these resources foster scalable, transparent, and
-community-driven microbiome data science. 
+a freely available resource that promotes best practices and supports adoption
+of the ecosystem. Together, these resources enable scalable, transparent, and
+community-driven microbiome data science.
 
 ### Pre-requisites
 
@@ -92,13 +75,12 @@ which provides essential methods for conducting microbiome analysis.
 
 | Activity                             | Time       |
 |--------------------------------------|------------|
-| Practicalities and background        | 30m        |
-| Trained-guided live coding           | 60m        |
-| Break                                | 30m        |
-| Trained-guided live coding continues | 60m        |
-| Time to try things out on your own   | 15m        |
-| Questions, discussion and recap      | 15m        |
-| **Total**                            | **3h 30m** |
+| Practicalities and background        | 20m        |
+| Trained-guided live coding           | 40m        |
+| Break                                | 10m        |
+| Trained-guided live coding continues | 40m        |
+| Questions, discussion and recap      | 10m        |
+| **Total**                            | **2h**     |
 
 ### Learning goals and objectives
 
@@ -125,11 +107,14 @@ which provides essential methods for conducting microbiome analysis.
 
 #### Start your engines!
 
-- Open your virtual machine.
+Joining the Noppe virtual machine:
+
+1. Go to [Noppe](https://noppe.2.rahtiapp.fi/)
+2. Log in with Haka (University account) or CSC id.
+3. Click “Join workspace", ask join code from theinstructor.
+4. My workspaces -> HDDD Bioinfo 25 -> Click "power button".
 
 #### Import data
-
-- [Import](https://microbiome.github.io/outreach/import.html#/importers-and-converters){preview-link="true"}
 
 Below, we import a dataset containing 60 samples from healthy controls and
 patients with colorectal cancer (CRC). First, we import the data files.
@@ -230,37 +215,7 @@ also poses unique challenges and approaches. The `r BiocStyle::Biocpkg("mia")`
 package provides methods for performing common operations on microbiome data
 within the `r BiocStyle::Biocpkg("SummarizedExperiment")` ecosystem.
 
-##### Agglomeration
-
-- [Agglomeration](https://microbiome.github.io/outreach/agglomeration.html)
-
-Below, we agglomerate the data into all available taxonomy levels.
-
-```{r}
-#| label: agglomerate
-tse <- agglomerateByRanks(tse)
-```
-
-At first glance, it might seem that nothing has changed. However, the
-agglomerated data is stored in the `altExp` slot. This slot keeps track of the
-sample mapping and stores different versions of the data.
-
-We can access data agglomeration into the phylum level with the following
-command:
-
-```{r}
-#| label: access_phyla
-altExp(tse, "phylum")
-```
-
-The data looks similar to original data; only the number of rows has changed.
-While we could store the phylum-level data in a separate variable, it's better
-to keep it in the `altExp` slot, as it maintains consistent sample mapping for
-us.
-
 ##### Transformation
-
-- [Transformation](https://microbiome.github.io/outreach/transformation.html)
 
 Microbiome data is typically zero-inflated, meaning that there are lots of
 unobserved features. Let's first visualize the distribution of counts.
@@ -280,8 +235,7 @@ normally-distributed, one can apply centered log-ratio transformation.
 tse <- transformAssay(
     tse,
     assay.type = "counts",
-    method = "rclr",
-    altexp = altExpNames(tse)
+    method = "rclr"
 )
 ```
 
@@ -295,48 +249,12 @@ plotHistogram(tse, assay.type = "rclr")
 ... we see that the data is centered at zero and exhibit a distribution that is
 more similar to normal than before.
 
-Another common transformation is relative transformation.
-
-```{r}
-#| label: transformation_relative
-tse <- transformAssay(
-    tse,
-    assay.type = "counts",
-    method = "relabundance",
-    altexp = altExpNames(tse)
-)
-```
-
 We can access the transformed data with the following command:
 
 ```{r}
 #| label: access_clr
-assay(tse, "relabundance")[1:5, 1:5]
+assay(tse, "rclr")[1:5, 1:5]
 ```
-
-#### Community composition
-
-A common visualizing technique is to summarize relative abundances of features
-with a bar plot. Below, we visualize phyla. To compare controls and CRC patients
-we can visualize the groups separately.
-
-```{r}
-#| label: plot_abundance
-# Get phylum-level data
-tse_phyla <- altExp(tse, "phylum")
-
-# Create a bar plot
-plotAbundance(
-    tse_phyla,
-    assay.type = "relabundance",
-    col.var = "disease",
-    facet.cols = TRUE,
-    scales = "free_x"
-)
-```
-
-From the figure, we observe that especially abundance of _Proteobacteria_ seems
-to differ between the groups.
 
 #### Alpha diversity
 
@@ -429,44 +347,6 @@ first coordinate (or x-axis in our biplot). Because, CRC was also positively
 associated with the first coordinate, this suggests association between higher
 abundance of _Prevotella copri_ and CRC.
 
-#### Differential abundance analysis (DAA)
-
-- [Differential abundance analysis](https://microbiome.github.io/outreach/daa.html)
-
-In differential abundance analysis, we can dig deeper on our analysis. We use
-`r BiocStyle::Biocpkg("maaslin3")`, which uses linear models to assess
-differentially abundant (and prevalent) features.
-
-```{r}
-#| label: calculate_daa
-#| message: false
-#| warning: false
-library(maaslin3)
-
-res <- maaslin3(
-    tse,
-    assay.type = "counts",
-    formula = ~ disease,
-    normalization = "TSS",
-    transform = "LOG",
-    output = "maaslin3_output",
-    verbosity = "ERROR"
-)
-```
-
-The function generates different outputs. The output includes summary plot in
-a directory that was specified by `output` argument.
-
-```{r}
-#| label: visualize_daa
-library(knitr)
-file_path <- file.path("maaslin3_output", "figures", "summary_plot.png")
-include_graphics(file_path)
-```
-
-The results confirm our dbRDA results. There are also other features that are
-either differentially abundant or prevalent in study groups.
-
 #### Online book
 
 ![[microbiome.github.io/OMA](https://microbiome.github.io/OMA/docs/devel/)](figures/OMA_ss.png){width=500px}
@@ -495,3 +375,4 @@ sessionInfo()
 ```
 
 ## References
+
