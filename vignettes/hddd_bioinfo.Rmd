@@ -116,6 +116,8 @@ Joining the Noppe virtual machine:
 
 #### Import data
 
+- [Import](https://microbiome.github.io/outreach/import.html){preview-link="true"}
+
 Below, we import a dataset containing 60 samples from healthy controls and
 patients with colorectal cancer (CRC). First, we import the data files.
 
