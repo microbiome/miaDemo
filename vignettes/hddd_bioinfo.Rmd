@@ -1,5 +1,6 @@
 ---
-title: Bioinformatics and a changing society, 4th December 2025
+title: Health, diagnostics and drug development
+subtitle: Bioinformatics and a changing society, 4th December 2025
 vignette: >
     %\VignetteIndexEntry{Bioinformatics and a changing society}
     %\VignetteEngine{knitr::rmarkdown}
