@@ -1,5 +1,8 @@
 ---
 title: EuroBioC 2024
+output:
+  BiocStyle::html_document:
+    toc: true
 vignette: >
   %\VignetteIndexEntry{EuroBioC 2024}
   %%\VignetteEngine{quarto::html}
