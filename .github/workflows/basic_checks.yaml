@@ -19,6 +19,12 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      - name: Install base R helpers
+        run: |
+          options(repos = c(CRAN = Sys.getenv("CRAN")))
+          install.packages(c("BiocManager", "remotes", "pkgdown", "rcmdcheck"))
+        shell: Rscript {0}
+
       - name: Query dependencies and update old packages
         run: |
           BiocManager::install(ask=FALSE)
