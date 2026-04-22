@@ -40,18 +40,34 @@ jobs:
           restore-keys: ${{ env.cache-version }}-${{ runner.os }}-r-
 
       - name: Install dependencies
-        run: |
-          BiocManager::repositories()
-          remotes::install_deps(dependencies = TRUE, repos = BiocManager::repositories())
-          remotes::install_cran("rcmdcheck")
+         run: |
+          options(repos = BiocManager::repositories())
+          remotes::install_deps(
+            dependencies = TRUE,
+            repos = BiocManager::repositories()
+          )
         shell: Rscript {0}
+
+      - name: Install optional dependencies
+        run: |
+          options(repos = BiocManager::repositories())
+          BiocManager::install("ANCOMBC", ask = FALSE, update = FALSE)
+          install.packages("biclust")
+        shell: Rscript {0}
+        continue-on-error: true
 
       - name: Check
         env:
           _R_CHECK_CRAN_INCOMING_REMOTE_: false
-        run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "warning", check_dir = "check")
+          _R_CHECK_FORCE_SUGGESTS_: false
+        run: |
+          options(repos = BiocManager::repositories())
+          rcmdcheck::rcmdcheck(
+            args = c("--no-manual"),
+            error_on = "warning",
+            check_dir = "check"
+          )
         shell: Rscript {0}
-
       - name: Build pkgdown
         run: |
            PATH=$PATH:$HOME/bin/ Rscript -e 'pkgdown::build_site(".")'

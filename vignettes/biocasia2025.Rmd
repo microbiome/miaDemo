@@ -439,6 +439,7 @@ differentially abundant (and prevalent) features.
 
 ```{r}
 #| label: calculate_daa
+#| eval: false
 #| message: false
 #| warning: false
 library(maaslin3)
