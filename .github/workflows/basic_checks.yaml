@@ -92,7 +92,6 @@ jobs:
           FOLDER: docs
 
   docker-build-and-push:
-    needs: r-build-and-check
     runs-on: ubuntu-latest
     permissions:
       contents: read
