@@ -4,7 +4,7 @@ WORKDIR /home/rstudio
 
 COPY --chown=rstudio:rstudio . /home/rstudio/
 
-RUN Rscript -e "options(repos = c(CRAN = 'https://cran.r-project.org')); BiocManager::install(ask=FALSE)"
+RUN Rscript -e "options(repos = BiocManager::repositories()); BiocManager::install(ask = FALSE)"
 
 RUN Rscript -e "install.packages('remotes', repos = 'https://cloud.r-project.org')"
 
