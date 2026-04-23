@@ -459,6 +459,7 @@ The function generates different outputs. The output includes summary plot in
 a directory that was specified by `output` argument.
 
 ```{r}
+#| eval: false
 #| label: visualize_daa
 library(knitr)
 file_path <- file.path("maaslin3_output", "figures", "summary_plot.png")
