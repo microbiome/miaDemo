@@ -1,9 +1,11 @@
 FROM bioconductor/bioconductor_docker:devel
 
-WORKDIR /home/rstudio
+WORKDIR /home/rstudio/OMATutorials
 
-COPY --chown=rstudio:rstudio . /home/rstudio/
+COPY --chown=rstudio:rstudio . /home/rstudio/OMATutorials
 
-RUN Rscript -e "options(repos = c(CRAN = 'https://cran.r-project.org')); BiocManager::install(ask=FALSE)"
+RUN apt-get update && apt-get install -y libglpk-dev && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN Rscript -e "options(repos = c(CRAN = 'https://cran.r-project.org')); install.packages('remotes'); remotes::install_local('.', dependencies = TRUE, repos = BiocManager::repositories(), build_vignettes = TRUE)"
+ENV R_REMOTES_NO_ERRORS_FROM_WARNINGS=true
+
+RUN Rscript -e "install.packages('remotes'); remotes::install_local('.', dependencies = TRUE, repos = BiocManager::repositories())"
