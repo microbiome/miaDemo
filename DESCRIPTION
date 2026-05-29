@@ -89,7 +89,9 @@ Suggest:
 Remotes:
     github::microbiome/mia,
     github::microbiome/miaViz,
-    github::microbiome/miaTime
+    github::microbiome/miaTime,
+    github::Minotau-R/ariadne,
+    github::Minotau-R/MultiFactor
 URL: https://microbiome.github.io/OMATutorials/
 BugReports: https://github.com/microbiome/omatutorials/issues/
 VignetteBuilder: knitr
