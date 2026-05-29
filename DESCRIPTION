@@ -81,6 +81,7 @@ Suggests:
     qgraph,
     quarto,
     RColorBrewer,
+    remotes,
     rebook,
     reshape2,
     reticulate,
