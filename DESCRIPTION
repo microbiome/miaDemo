@@ -1,6 +1,5 @@
 Package: OMATutorials
-Title: Package Demo: mia
-Version: 2.0.20
+Version: 2.0.21
 Authors@R: 
     c(person(given = "Tuomas", family = "Borman", role = c("aut", "cre"),
              email = "tuomas.v.borman@utu.fi",
@@ -95,4 +94,4 @@ Remotes:
 URL: https://microbiome.github.io/OMATutorials/
 BugReports: https://github.com/microbiome/omatutorials/issues/
 VignetteBuilder: knitr
-DockerImage: ghcr.io/microbiome/OMATutorials:latest
+DockerImage: ghcr.io/microbiome/OMATutorials:dockertest
