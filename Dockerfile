@@ -1,8 +1,8 @@
 FROM bioconductor/bioconductor_docker:devel
 
-WORKDIR /home/rstudio/OMATutorials
+WORKDIR /home/rstudio/omatutorials
 
-COPY --chown=rstudio:rstudio . /home/rstudio/OMATutorials
+COPY --chown=rstudio:rstudio . /home/rstudio/omatutorials
 
 RUN apt-get update && apt-get install -y libglpk-dev && apt-get clean && rm -rf /var/lib/apt/lists/*
 
