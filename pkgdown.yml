@@ -1,7 +1,8 @@
-pandoc: 3.8.3
-pkgdown: 2.2.0
+pandoc: '3.10'
+pkgdown: 2.2.1
 pkgdown_sha: ~
 articles:
+  bioc2026: bioc2026.html
   biocasia2025: biocasia2025.html
   eccb2024: eccb2024.html
   eurobioc2024: eurobioc2024.html
@@ -11,7 +12,7 @@ articles:
   introductory_dutch: introductory_dutch.html
   introductory_french: introductory_french.html
   introductory: introductory.html
-last_built: 2025-12-04T07:43Z
+last_built: 2026-08-04T15:47Z
 urls:
   reference: https://microbiome.github.io/OMATutorials/reference
   article: https://microbiome.github.io/OMATutorials/articles
