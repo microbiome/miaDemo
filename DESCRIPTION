@@ -22,7 +22,6 @@ Suggests:
     anansi,
     ANCOMBC,
     ape,
-    biclust,
     BiocBook,
     BiocManager,
     BiocParallel,
