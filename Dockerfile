@@ -8,4 +8,4 @@ RUN Rscript -e "options(repos = c(CRAN = 'https://cran.r-project.org')); BiocMan
 
 RUN Rscript -e "options(repos = BiocManager::repositories()); \
     install.packages('remotes'); \
-    remotes::install_local(dependencies = TRUE, build_vignettes = TRUE, upgrade = 'never')"
+    remotes::install_local(dependencies = TRUE, build_vignettes = FALSE, upgrade = 'never')"
