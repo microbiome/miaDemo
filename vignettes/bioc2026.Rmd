@@ -26,7 +26,7 @@ knitr::opts_chunk$set(
 Authors:
     Tuomas Borman^[University of Turku, tvborm@utu.fi]
     <br/>
-Last modified: 29 July, 2026.
+Last modified: 05 August, 2026.
 
 <img src="figures/BioC2026.png" width="150"/> <img src="figures/mia_logo.png" width="130"/>
 
