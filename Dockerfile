@@ -6,4 +6,6 @@ COPY --chown=rstudio:rstudio . /home/rstudio/
 
 RUN Rscript -e "options(repos = c(CRAN = 'https://cran.r-project.org')); BiocManager::install(ask=FALSE)"
 
-RUN Rscript -e "options(repos = BiocManager::repositories()); devtools::install('.', dependencies=TRUE, build_vignettes=TRUE)"
+RUN Rscript -e "options(repos = BiocManager::repositories()); \
+    install.packages('remotes'); \
+    remotes::install_local(dependencies = TRUE, build_vignettes = TRUE, upgrade = 'never')"
