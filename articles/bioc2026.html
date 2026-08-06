@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">OMATutorials</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.24</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.25</span>
       </span>
     </div>
 
@@ -151,8 +151,6 @@ Microbiome Analysis (OMA) online book</a>.</p>
 <p>Participants are encouraged to ask questions throughout the workshop.
 The session will follow <a href="https://microbiome.github.io/OMATutorials/">a tutorial</a>, with
 participants running the tutorial alongside the instructor.</p>
-<p>To facilitate this, Galaxy &amp; Bioconductor provide <a href="https://workshop.bioconductor.org/" class="external-link">pre-installed virtual machines
-with all necessary packages</a>.</p>
 </div>
 <div class="section level3">
 <h3 id="r-bioconductor-packages-used">
@@ -315,37 +313,73 @@ ecosystem</strong></p>
 <h4 id="start-your-engines">Start your engines!<a class="anchor" aria-label="anchor" href="#start-your-engines"></a>
 </h4>
 <ul>
-<li>Go to <a href="https://workshop.bioconductor.org/" class="external-link">workshop.bioconductor.org</a>
-</li>
+<li>Follow the instructions of instructor</li>
 <li>Or prepare your local R session</li>
 </ul>
 </div>
 <div class="section level4">
 <h4 id="import-data">Import data<a class="anchor" aria-label="anchor" href="#import-data"></a>
 </h4>
-<p>The curated metagenomic data project provides free access to a
-collection of curated microbiome datasets, which are available through
-the <em>curatedMetagenomicData</em> R package <span class="citation">(Pasolli et al. 2017)</span>. Currently, it contains
-over 20,000 samples from 100 studies, which can be imported directly to
-<code>TreeSE</code> format. You can see the full list of available
-datasets from <a href="https://waldronlab.io/curatedMetagenomicData/index.html" class="external-link">the
-documentation</a>.</p>
-<p>Below, we we load a dataset containing 60 samples from healthy
-controls and patients with colorectal cancer (CRC).</p>
+<p>Many publicly available microbiome datasets can be accessed directly
+from Bioconductor packages.</p>
+<p>In this workshop, we use an example dataset from the <em><a href="https://bioconductor.org/packages/3.24/mia" class="external-link">mia</a></em> package
+<span class="citation">(Hintikka et al. 2021)</span>. The study compares
+mice fed either a high-fat or low-fat diet, with and without prebiotic
+supplementation. The dataset contains multiple data types,
+including:</p>
+<ul>
+<li>16S rRNA amplicon sequencing, which measures microbial
+abundances.</li>
+<li>Metabolomics, which measures metabolite concentrations.</li>
+</ul>
+<p>We first load the dataset and keep these two layers.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/waldronlab/curatedMetagenomicData" class="external-link">curatedMetagenomicData</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://microbiome.github.io/mia/" class="external-link">mia</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/curatedMetagenomicData/man/curatedMetagenomicData.html" class="external-link">curatedMetagenomicData</a></span><span class="op">(</span></span>
-<span>    pattern <span class="op">=</span> <span class="st">"GuptaA_2019.relative_abundance"</span>,</span>
-<span>    dryrun <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>    rownames <span class="op">=</span> <span class="st">"short"</span></span>
-<span><span class="op">)</span></span></code></pre></div>
-<p>Once loaded, we can see that the data includes a list of single
-<em><a href="https://bioconductor.org/packages/3.24/TreeSummarizedExperiment" class="external-link">TreeSummarizedExperiment</a></em>
-object, which including taxonomy annotations. We select it from the list
-and store it into a variable named <code>tse</code>.</p>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"HintikkaXOData"</span><span class="op">)</span></span>
+<span><span class="va">mae</span> <span class="op">&lt;-</span> <span class="va">HintikkaXOData</span></span>
+<span><span class="va">mae</span> <span class="op">&lt;-</span> <span class="va">mae</span><span class="op">[</span>, , <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="va">mae</span></span>
+<span><span class="co">#&gt; A MultiAssayExperiment object of 2 listed</span></span>
+<span><span class="co">#&gt;  experiments with user-defined names and respective classes.</span></span>
+<span><span class="co">#&gt;  Containing an ExperimentList class object of length 2:</span></span>
+<span><span class="co">#&gt;  [1] microbiota: TreeSummarizedExperiment with 12706 rows and 40 columns</span></span>
+<span><span class="co">#&gt;  [2] metabolites: TreeSummarizedExperiment with 38 rows and 40 columns</span></span>
+<span><span class="co">#&gt; Functionality:</span></span>
+<span><span class="co">#&gt;  experiments() - obtain the ExperimentList instance</span></span>
+<span><span class="co">#&gt;  colData() - the primary/phenotype DataFrame</span></span>
+<span><span class="co">#&gt;  sampleMap() - the sample coordination DataFrame</span></span>
+<span><span class="co">#&gt;  `$`, `[`, `[[` - extract colData columns, subset, or experiment</span></span>
+<span><span class="co">#&gt;  *Format() - convert into a long or wide DataFrame</span></span>
+<span><span class="co">#&gt;  assays() - convert ExperimentList to a SimpleList of matrices</span></span>
+<span><span class="co">#&gt;  exportClass() - save data to flat files</span></span></code></pre></div>
+<p>The dataset is stored as a <em><a href="https://bioconductor.org/packages/3.24/MultiAssayExperiment" class="external-link">MultiAssayExperiment</a></em>,
+a container designed for multi-omics data. It keeps multiple datasets
+together while maintaining the links between samples.</p>
+<p>For most of this tutorial, we focus only on the microbiome data.
+Although keeping everything in a <em><a href="https://bioconductor.org/packages/3.24/MultiAssayExperiment" class="external-link">MultiAssayExperiment</a></em>
+is generally recommended, extracting a single dataset makes it easier to
+introduc the basic analysis workflow.</p>
+<p>The microbiome data is stored as a <em><a href="https://bioconductor.org/packages/3.24/TreeSummarizedExperiment" class="external-link">TreeSummarizedExperiment</a></em>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">tse</span> <span class="op">&lt;-</span> <span class="va">res</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">tse</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://github.com/waldronlab/MultiAssayExperiment/reference/MultiAssayExperiment-helpers.html" class="external-link">getWithColData</a></span><span class="op">(</span><span class="va">mae</span>, <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">tse</span></span>
+<span><span class="co">#&gt; class: TreeSummarizedExperiment </span></span>
+<span><span class="co">#&gt; dim: 12706 40 </span></span>
+<span><span class="co">#&gt; metadata(0):</span></span>
+<span><span class="co">#&gt; assays(1): counts</span></span>
+<span><span class="co">#&gt; rownames(12706): GAYR01026362.62.2014 CVJT01000011.50.2173 ...</span></span>
+<span><span class="co">#&gt;   JRJTB:03787:02429 JRJTB:03787:02478</span></span>
+<span><span class="co">#&gt; rowData names(7): Phylum Class ... Species OTU</span></span>
+<span><span class="co">#&gt; colnames(40): C1 C2 ... C39 C40</span></span>
+<span><span class="co">#&gt; colData names(6): Sample Rat ... Fat XOS</span></span>
+<span><span class="co">#&gt; reducedDimNames(0):</span></span>
+<span><span class="co">#&gt; mainExpName: NULL</span></span>
+<span><span class="co">#&gt; altExpNames(0):</span></span>
+<span><span class="co">#&gt; rowLinks: NULL</span></span>
+<span><span class="co">#&gt; rowTree: NULL</span></span>
+<span><span class="co">#&gt; colLinks: NULL</span></span>
+<span><span class="co">#&gt; colTree: NULL</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="data-container">Data container<a class="anchor" aria-label="anchor" href="#data-container"></a>
@@ -362,44 +396,35 @@ providing full backward compatibility.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tse</span></span>
 <span><span class="co">#&gt; class: TreeSummarizedExperiment </span></span>
-<span><span class="co">#&gt; dim: 308 60 </span></span>
+<span><span class="co">#&gt; dim: 12706 40 </span></span>
 <span><span class="co">#&gt; metadata(0):</span></span>
-<span><span class="co">#&gt; assays(1): relative_abundance</span></span>
-<span><span class="co">#&gt; rownames(308): species:Escherichia coli species:Alistipes putredinis</span></span>
-<span><span class="co">#&gt;   ... species:Campylobacter ureolyticus species:Prevotella sp. oral</span></span>
-<span><span class="co">#&gt;   taxon 376</span></span>
-<span><span class="co">#&gt; rowData names(7): superkingdom phylum ... genus species</span></span>
-<span><span class="co">#&gt; colnames(60): GupDM_A_11 GupDM_A_15 ... GupDM_JO GupDM_JP</span></span>
-<span><span class="co">#&gt; colData names(27): study_name subject_id ... disease_stage</span></span>
-<span><span class="co">#&gt;   disease_location</span></span>
+<span><span class="co">#&gt; assays(1): counts</span></span>
+<span><span class="co">#&gt; rownames(12706): GAYR01026362.62.2014 CVJT01000011.50.2173 ...</span></span>
+<span><span class="co">#&gt;   JRJTB:03787:02429 JRJTB:03787:02478</span></span>
+<span><span class="co">#&gt; rowData names(7): Phylum Class ... Species OTU</span></span>
+<span><span class="co">#&gt; colnames(40): C1 C2 ... C39 C40</span></span>
+<span><span class="co">#&gt; colData names(6): Sample Rat ... Fat XOS</span></span>
 <span><span class="co">#&gt; reducedDimNames(0):</span></span>
-<span><span class="co">#&gt; mainExpName: main</span></span>
+<span><span class="co">#&gt; mainExpName: NULL</span></span>
 <span><span class="co">#&gt; altExpNames(0):</span></span>
-<span><span class="co">#&gt; rowLinks: a LinkDataFrame (308 rows)</span></span>
-<span><span class="co">#&gt; rowTree: 1 phylo tree(s) (10430 leaves)</span></span>
+<span><span class="co">#&gt; rowLinks: NULL</span></span>
+<span><span class="co">#&gt; rowTree: NULL</span></span>
 <span><span class="co">#&gt; colLinks: NULL</span></span>
 <span><span class="co">#&gt; colTree: NULL</span></span></code></pre></div>
 <p>Slots can be accessed with dedicated accessor functions. For
 instance, <code>colData</code> (sample metadata) can be accessed with
 <code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">colData()</a></code> function.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Show only first five rows and columns</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">colData</a></span><span class="op">(</span><span class="va">tse</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span>
-<span><span class="co">#&gt; DataFrame with 5 rows and 5 columns</span></span>
-<span><span class="co">#&gt;             study_name  subject_id   body_site antibiotics_current_use</span></span>
-<span><span class="co">#&gt;            &lt;character&gt; &lt;character&gt; &lt;character&gt;             &lt;character&gt;</span></span>
-<span><span class="co">#&gt; GupDM_A_11 GuptaA_2019   GupDM_A11       stool                      no</span></span>
-<span><span class="co">#&gt; GupDM_A_15 GuptaA_2019   GupDM_A15       stool                      no</span></span>
-<span><span class="co">#&gt; GupDM_A1   GuptaA_2019    GupDM_A1       stool                      no</span></span>
-<span><span class="co">#&gt; GupDM_A10  GuptaA_2019   GupDM_A10       stool                      no</span></span>
-<span><span class="co">#&gt; GupDM_A12  GuptaA_2019   GupDM_A12       stool                      no</span></span>
-<span><span class="co">#&gt;            study_condition</span></span>
-<span><span class="co">#&gt;                &lt;character&gt;</span></span>
-<span><span class="co">#&gt; GupDM_A_11             CRC</span></span>
-<span><span class="co">#&gt; GupDM_A_15             CRC</span></span>
-<span><span class="co">#&gt; GupDM_A1               CRC</span></span>
-<span><span class="co">#&gt; GupDM_A10              CRC</span></span>
-<span><span class="co">#&gt; GupDM_A12              CRC</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">colData</a></span><span class="op">(</span><span class="va">tse</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; DataFrame with 6 rows and 6 columns</span></span>
+<span><span class="co">#&gt;         Sample      Rat        Site     Diet      Fat       XOS</span></span>
+<span><span class="co">#&gt;    &lt;character&gt; &lt;factor&gt; &lt;character&gt; &lt;factor&gt; &lt;factor&gt; &lt;numeric&gt;</span></span>
+<span><span class="co">#&gt; C1          C1        1       Cecum High-fat     High         0</span></span>
+<span><span class="co">#&gt; C2          C2        2       Cecum High-fat     High         0</span></span>
+<span><span class="co">#&gt; C3          C3        3       Cecum High-fat     High         0</span></span>
+<span><span class="co">#&gt; C4          C4        4       Cecum High-fat     High         0</span></span>
+<span><span class="co">#&gt; C5          C5        5       Cecum High-fat     High         0</span></span>
+<span><span class="co">#&gt; C6          C6        6       Cecum High-fat     High         0</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="data-processing">Data processing<a class="anchor" aria-label="anchor" href="#data-processing"></a>
@@ -415,9 +440,7 @@ the abundances of related taxa.</p>
 <p>Below, we agglomerate the data into all available taxonomy
 levels.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://microbiome.github.io/mia/" class="external-link">mia</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">tse</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://microbiome.github.io/mia/reference/agglomerate-methods.html" class="external-link">agglomerateByRanks</a></span><span class="op">(</span><span class="va">tse</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">tse</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://microbiome.github.io/mia/reference/agglomerate-methods.html" class="external-link">agglomerateByRanks</a></span><span class="op">(</span><span class="va">tse</span><span class="op">)</span></span></code></pre></div>
 <p>At first glance, it might seem that nothing has changed. However, the
 agglomerated data is stored in the <code>altExp</code> slot. This slot
 keeps track of the sample mapping and stores different versions of the
@@ -425,22 +448,21 @@ data.</p>
 <p>We can access data agglomeration into the phylum level with the
 following command:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/SingleCellExperiment/man/altExps.html" class="external-link">altExp</a></span><span class="op">(</span><span class="va">tse</span>, <span class="st">"phylum"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/SingleCellExperiment/man/altExps.html" class="external-link">altExp</a></span><span class="op">(</span><span class="va">tse</span>, <span class="st">"Phylum"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; class: TreeSummarizedExperiment </span></span>
-<span><span class="co">#&gt; dim: 11 60 </span></span>
+<span><span class="co">#&gt; dim: 13 40 </span></span>
 <span><span class="co">#&gt; metadata(1): agglomerated_by_rank</span></span>
-<span><span class="co">#&gt; assays(1): relative_abundance</span></span>
-<span><span class="co">#&gt; rownames(11): Actinobacteria Bacteroidota ... Synergistetes</span></span>
-<span><span class="co">#&gt;   Verrucomicrobia</span></span>
-<span><span class="co">#&gt; rowData names(7): superkingdom phylum ... genus species</span></span>
-<span><span class="co">#&gt; colnames(60): GupDM_A_11 GupDM_A_15 ... GupDM_JO GupDM_JP</span></span>
-<span><span class="co">#&gt; colData names(27): study_name subject_id ... disease_stage</span></span>
-<span><span class="co">#&gt;   disease_location</span></span>
+<span><span class="co">#&gt; assays(1): counts</span></span>
+<span><span class="co">#&gt; rownames(13): D_1__Actinobacteria D_1__Bacteroidetes ...</span></span>
+<span><span class="co">#&gt;   D_1__Tenericutes D_1__Verrucomicrobia</span></span>
+<span><span class="co">#&gt; rowData names(7): Phylum Class ... Species OTU</span></span>
+<span><span class="co">#&gt; colnames(40): C1 C2 ... C39 C40</span></span>
+<span><span class="co">#&gt; colData names(6): Sample Rat ... Fat XOS</span></span>
 <span><span class="co">#&gt; reducedDimNames(0):</span></span>
-<span><span class="co">#&gt; mainExpName: main</span></span>
+<span><span class="co">#&gt; mainExpName: NULL</span></span>
 <span><span class="co">#&gt; altExpNames(0):</span></span>
-<span><span class="co">#&gt; rowLinks: a LinkDataFrame (11 rows)</span></span>
-<span><span class="co">#&gt; rowTree: 1 phylo tree(s) (11 leaves)</span></span>
+<span><span class="co">#&gt; rowLinks: NULL</span></span>
+<span><span class="co">#&gt; rowTree: NULL</span></span>
 <span><span class="co">#&gt; colLinks: NULL</span></span>
 <span><span class="co">#&gt; colTree: NULL</span></span></code></pre></div>
 <p>The data looks similar to original data; only the number of rows has
@@ -449,34 +471,92 @@ variable, it’s better to keep it in the <code>altExp</code> slot, as it
 maintains consistent sample mapping for us. Later, we will use
 <code>swapAltExp</code> to do this.</p>
 <p>Another data processing step where microbiome analysis has unique
-approaches is transformation. Below, we apply centered lo-ratio (CLR)
-transformation which respect the compositional nature of microbiome
+approaches is transformation. Below, we apply centered log-ratio (CLR)
+transformations which respect the compositional nature of microbiome
 data.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tse</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://microbiome.github.io/mia/reference/transformAssay.html" class="external-link">transformAssay</a></span><span class="op">(</span></span>
 <span>    <span class="va">tse</span>,</span>
-<span>    assay.type <span class="op">=</span> <span class="st">"relative_abundance"</span>,</span>
-<span>    method <span class="op">=</span> <span class="st">"clr"</span>,</span>
-<span>    pseudocount <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>    assay.type <span class="op">=</span> <span class="st">"counts"</span>,</span>
+<span>    method <span class="op">=</span> <span class="st">"rclr"</span>,</span>
+<span>    altexp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/SingleCellExperiment/man/altExps.html" class="external-link">altExpNames</a></span><span class="op">(</span><span class="va">tse</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>The transformed abundance table is stored in the <code>assay</code>
 slot. This slot now contains two tables: the original abundance table
 and the CLR-transformed table We can access the transformed data with
 the following command:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">assay</a></span><span class="op">(</span><span class="va">tse</span>, <span class="st">"clr"</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span>
-<span><span class="co">#&gt;                                       GupDM_A_11 GupDM_A_15 GupDM_A1 GupDM_A10</span></span>
-<span><span class="co">#&gt; species:Escherichia coli               10.178496 11.6516053 8.595739 10.189020</span></span>
-<span><span class="co">#&gt; species:Alistipes putredinis            9.652743 -0.5960068 5.186345 -1.540499</span></span>
-<span><span class="co">#&gt; species:Porphyromonas asaccharolytica   8.918831 -0.5960068 4.300300 -1.540499</span></span>
-<span><span class="co">#&gt; species:Bacteroides uniformis           8.903202 -0.5960068 5.464096 -1.540499</span></span>
-<span><span class="co">#&gt; species:Prevotella stercorea            8.773817 -0.5960068 5.231728 -1.540499</span></span>
-<span><span class="co">#&gt;                                       GupDM_A12</span></span>
-<span><span class="co">#&gt; species:Escherichia coli               7.042800</span></span>
-<span><span class="co">#&gt; species:Alistipes putredinis          -1.410307</span></span>
-<span><span class="co">#&gt; species:Porphyromonas asaccharolytica -1.410307</span></span>
-<span><span class="co">#&gt; species:Bacteroides uniformis          5.473920</span></span>
-<span><span class="co">#&gt; species:Prevotella stercorea           3.672227</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">assay</a></span><span class="op">(</span><span class="va">tse</span>, <span class="st">"rclr"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                                  C1            C2            C3            C4</span></span>
+<span><span class="co">#&gt; GAYR01026362.62.2014  -0.0002623441  1.778808e-05  0.0000818177  7.428821e-05</span></span>
+<span><span class="co">#&gt; CVJT01000011.50.2173   0.1587599481  2.020993e-01 -0.0579260411 -6.168435e-02</span></span>
+<span><span class="co">#&gt; KF625183.1.1786       -0.0002623441  1.778808e-05  0.0000818177  7.428821e-05</span></span>
+<span><span class="co">#&gt; AYSG01000002.292.2076  0.0155608620 -4.169080e-02 -0.0119659732 -1.045133e-02</span></span>
+<span><span class="co">#&gt; CCPS01000022.154.1916  0.1220580490  2.494333e-01 -0.1150189775 -1.255587e-01</span></span>
+<span><span class="co">#&gt; KJ923794.1.1762        0.1202980583  1.231969e-01 -0.0626982660 -6.556697e-02</span></span>
+<span><span class="co">#&gt;                                  C5            C6            C7            C8</span></span>
+<span><span class="co">#&gt; GAYR01026362.62.2014   1.248544e-06  9.100859e-05  9.327924e-05  4.739471e-05</span></span>
+<span><span class="co">#&gt; CVJT01000011.50.2173   1.525786e-01  1.570754e-01  1.019419e-01  2.112554e-01</span></span>
+<span><span class="co">#&gt; KF625183.1.1786        1.248544e-06  9.100859e-05  9.327924e-05  4.739471e-05</span></span>
+<span><span class="co">#&gt; AYSG01000002.292.2076 -3.040637e-02 -3.783660e-02 -3.237769e-02 -4.674445e-02</span></span>
+<span><span class="co">#&gt; CCPS01000022.154.1916  1.769339e-01  2.762301e-01  1.743348e-01  2.827598e-01</span></span>
+<span><span class="co">#&gt; KJ923794.1.1762        9.161459e-02  1.076615e-01  6.274237e-02  1.306155e-01</span></span>
+<span><span class="co">#&gt;                                  C9           C10           C11           C12</span></span>
+<span><span class="co">#&gt; GAYR01026362.62.2014   0.0001146643  0.0001661773 -6.390639e-05  0.0001265398</span></span>
+<span><span class="co">#&gt; CVJT01000011.50.2173   0.1579522385  0.0325893061  2.634468e-01  0.1264890204</span></span>
+<span><span class="co">#&gt; KF625183.1.1786        0.0001146643  0.0001661773 -6.390639e-05  0.0001265398</span></span>
+<span><span class="co">#&gt; AYSG01000002.292.2076 -0.0458306284 -0.0272035827 -3.394855e-02 -0.0340920221</span></span>
+<span><span class="co">#&gt; CCPS01000022.154.1916  0.2553553133  0.1457021265  3.414507e-01  0.2802335952</span></span>
+<span><span class="co">#&gt; KJ923794.1.1762        0.0977277854  0.0244708587  1.798596e-01  0.0952033696</span></span>
+<span><span class="co">#&gt;                                 C13           C14           C15           C16</span></span>
+<span><span class="co">#&gt; GAYR01026362.62.2014   4.623943e-05  0.0001452671  6.980056e-05  4.819521e-05</span></span>
+<span><span class="co">#&gt; CVJT01000011.50.2173   1.886042e-01  0.0994565361 -1.001429e-01  1.728711e-01</span></span>
+<span><span class="co">#&gt; KF625183.1.1786        4.623943e-05  0.0001452671  6.980056e-05  4.819521e-05</span></span>
+<span><span class="co">#&gt; AYSG01000002.292.2076 -3.769012e-02 -0.0349259892 -6.952171e-03 -3.383758e-02</span></span>
+<span><span class="co">#&gt; CCPS01000022.154.1916  2.897025e-01  0.2316834621 -2.087525e-01  2.802984e-01</span></span>
+<span><span class="co">#&gt; KJ923794.1.1762        1.271174e-01  0.0706919163 -9.952502e-02  1.199730e-01</span></span>
+<span><span class="co">#&gt;                                 C17           C18           C19           C20</span></span>
+<span><span class="co">#&gt; GAYR01026362.62.2014  -4.750944e-06 -0.0002087229  0.0001579506  0.0001968142</span></span>
+<span><span class="co">#&gt; CVJT01000011.50.2173   2.764851e-01  0.3393202647  0.0127524851  0.1006483699</span></span>
+<span><span class="co">#&gt; KF625183.1.1786       -4.750944e-06 -0.0002087229  0.0001579506  0.0001968142</span></span>
+<span><span class="co">#&gt; AYSG01000002.292.2076 -4.822061e-02 -0.0428019866 -0.0289664452 -0.0372817575</span></span>
+<span><span class="co">#&gt; CCPS01000022.154.1916  3.620244e-01  0.2438178548  0.0659749354  0.2996260294</span></span>
+<span><span class="co">#&gt; KJ923794.1.1762        1.795679e-01  0.1938683530 -0.0030903333  0.0828222012</span></span>
+<span><span class="co">#&gt;                                 C21           C22           C23           C24</span></span>
+<span><span class="co">#&gt; GAYR01026362.62.2014   0.0002332095 -0.0003559807  7.663236e-05  1.198863e-05</span></span>
+<span><span class="co">#&gt; CVJT01000011.50.2173  -0.0427779496  0.1631092335 -2.668052e-01 -2.297465e-01</span></span>
+<span><span class="co">#&gt; KF625183.1.1786        0.0002332095 -0.0003559807  7.663236e-05  1.198863e-05</span></span>
+<span><span class="co">#&gt; AYSG01000002.292.2076 -0.0208464876  0.0174302924  3.691718e-02  4.495590e-02</span></span>
+<span><span class="co">#&gt; CCPS01000022.154.1916  0.1006321520 -0.0024056027 -3.072529e-01 -2.504896e-01</span></span>
+<span><span class="co">#&gt; KJ923794.1.1762       -0.0192843025  0.0996090961 -1.725784e-01 -1.354709e-01</span></span>
+<span><span class="co">#&gt;                                 C25           C26           C27           C28</span></span>
+<span><span class="co">#&gt; GAYR01026362.62.2014   0.0002079828 -1.083427e-05 -1.642398e-06  5.687529e-05</span></span>
+<span><span class="co">#&gt; CVJT01000011.50.2173  -0.1635264717 -6.518717e-02 -6.935021e-02 -1.541137e-01</span></span>
+<span><span class="co">#&gt; KF625183.1.1786        0.0002079828 -1.083427e-05 -1.642399e-06  5.687529e-05</span></span>
+<span><span class="co">#&gt; AYSG01000002.292.2076  0.0215626271  2.606235e-02  2.520020e-02  2.664432e-02</span></span>
+<span><span class="co">#&gt; CCPS01000022.154.1916  0.0621612299  7.958361e-03  4.994979e-03 -1.164840e-01</span></span>
+<span><span class="co">#&gt; KJ923794.1.1762       -0.0573799225 -1.242566e-02 -1.589110e-02 -8.350816e-02</span></span>
+<span><span class="co">#&gt;                                 C29           C30           C31           C32</span></span>
+<span><span class="co">#&gt; GAYR01026362.62.2014   2.734097e-05 -9.073633e-05 -0.0003020605 -6.926019e-05</span></span>
+<span><span class="co">#&gt; CVJT01000011.50.2173  -2.650081e-01 -1.271977e-01 -0.0114001084 -2.623917e-01</span></span>
+<span><span class="co">#&gt; KF625183.1.1786        2.734097e-05 -9.073633e-05 -0.0003020605 -6.926019e-05</span></span>
+<span><span class="co">#&gt; AYSG01000002.292.2076  4.271254e-02  3.304413e-02  0.0237024600  4.924005e-02</span></span>
+<span><span class="co">#&gt; CCPS01000022.154.1916 -3.372455e-01 -2.326430e-01 -0.3341442511 -4.354326e-01</span></span>
+<span><span class="co">#&gt; KJ923794.1.1762       -1.729585e-01 -8.704963e-02 -0.0530483129 -1.857322e-01</span></span>
+<span><span class="co">#&gt;                                 C33           C34           C35          C36</span></span>
+<span><span class="co">#&gt; GAYR01026362.62.2014  -6.628544e-05  4.062687e-05  7.438632e-05 -0.000373922</span></span>
+<span><span class="co">#&gt; CVJT01000011.50.2173  -2.632823e-01 -2.895203e-01 -2.163018e-01  0.210043382</span></span>
+<span><span class="co">#&gt; KF625183.1.1786       -6.628544e-05  4.062687e-05  7.438632e-05 -0.000373922</span></span>
+<span><span class="co">#&gt; AYSG01000002.292.2076  4.961923e-02  4.509162e-02  3.264929e-02  0.012302596</span></span>
+<span><span class="co">#&gt; CCPS01000022.154.1916 -4.301310e-01 -3.631961e-01 -2.085716e-01  0.054942557</span></span>
+<span><span class="co">#&gt; KJ923794.1.1762       -1.848631e-01 -1.891635e-01 -1.298045e-01  0.131692053</span></span>
+<span><span class="co">#&gt;                                 C37           C38           C39           C40</span></span>
+<span><span class="co">#&gt; GAYR01026362.62.2014   1.312674e-05  9.813212e-05 -5.728847e-05 -0.0004510407</span></span>
+<span><span class="co">#&gt; CVJT01000011.50.2173  -1.556081e-01 -2.845526e-01 -2.805354e-01  0.2395800304</span></span>
+<span><span class="co">#&gt; KF625183.1.1786        1.312674e-05  9.813212e-05 -5.728847e-05 -0.0004510407</span></span>
+<span><span class="co">#&gt; AYSG01000002.292.2076  3.793133e-02  4.050854e-02  4.866857e-02  0.0142670753</span></span>
+<span><span class="co">#&gt; CCPS01000022.154.1916 -1.043174e-01 -2.926481e-01 -4.690684e-01  0.0250516650</span></span>
+<span><span class="co">#&gt; KJ923794.1.1762       -7.301999e-02 -1.762759e-01 -2.023994e-01  0.1430016968</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="community-summaries">Community summaries<a class="anchor" aria-label="anchor" href="#community-summaries"></a>
@@ -484,25 +564,24 @@ the following command:</p>
 <p>While <em><a href="https://bioconductor.org/packages/3.24/mia" class="external-link">mia</a></em> package
 include common methods for analysis, <em><a href="https://bioconductor.org/packages/3.24/miaViz" class="external-link">miaViz</a></em>
 provides methods for visualizing microbiome data. For instance, we can
-visualize abundance of phyla with a bar plot. To compare controls and
-CRC patients, we can visualize the groups separately.</p>
+visualize abundance of phyla with a bar plot. To compare study groups,
+we can visualize them separately.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/microbiome/miaViz" class="external-link">miaViz</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Get phylum-level data</span></span>
-<span><span class="va">tse</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SingleCellExperiment/man/swapAltExp.html" class="external-link">swapAltExp</a></span><span class="op">(</span><span class="va">tse</span>, name <span class="op">=</span> <span class="st">"phylum"</span>, withColData <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">tse</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SingleCellExperiment/man/swapAltExp.html" class="external-link">swapAltExp</a></span><span class="op">(</span><span class="va">tse</span>, name <span class="op">=</span> <span class="st">"Phylum"</span>, withColData <span class="op">=</span> <span class="cn">FALSE</span>, saved <span class="op">=</span> <span class="st">"main"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Create a bar plot</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/miaViz/man/plotAbundance.html" class="external-link">plotAbundance</a></span><span class="op">(</span></span>
 <span>    <span class="va">tse</span>,</span>
-<span>    assay.type <span class="op">=</span> <span class="st">"relative_abundance"</span>,</span>
-<span>    col.var <span class="op">=</span> <span class="st">"disease"</span>,</span>
+<span>    assay.type <span class="op">=</span> <span class="st">"counts"</span>,</span>
+<span>    as.relative <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>    col.var <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Fat"</span>, <span class="st">"XOS"</span><span class="op">)</span>,</span>
 <span>    facet.cols <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>    scales <span class="op">=</span> <span class="st">"free"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="bioc2026_files/figure-html/plot_abundance-1.png" class="r-plt" alt="" width="700"></p>
-<p>From the figure, we observe that especially abundance of
-<em>Euryarchaeota</em> seems to differ between the groups.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Switch data back to old orientation</span></span>
 <span><span class="va">tse</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SingleCellExperiment/man/swapAltExp.html" class="external-link">swapAltExp</a></span><span class="op">(</span><span class="va">tse</span>, name <span class="op">=</span> <span class="st">"main"</span>, withColData <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
@@ -515,19 +594,14 @@ is commonly calculated. There are several diversity indices available,
 all of which measure the number of distinct taxa and how evenly their
 abundances are distributed, each with a different emphasis.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">tse</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://microbiome.github.io/mia/reference/addAlpha.html" class="external-link">addAlpha</a></span><span class="op">(</span><span class="va">tse</span>, assay.type <span class="op">=</span> <span class="st">"relative_abundance"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">tse</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://microbiome.github.io/mia/reference/addAlpha.html" class="external-link">addAlpha</a></span><span class="op">(</span><span class="va">tse</span>, assay.type <span class="op">=</span> <span class="st">"counts"</span><span class="op">)</span></span></code></pre></div>
 <p>The results are stored in <code>colData</code>. By default,
 <code><a href="https://microbiome.github.io/mia/reference/addAlpha.html" class="external-link">addAlpha()</a></code> returns a set of indices that considers
-different aspects of diversity. Below, we visualize Faith’s diversity
-that assess the phylogenetic diversity of samples.</p>
+different aspects of diversity. Commonly, the results are visualized
+with a box plot.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://bioconductor.org/packages/scater/" class="external-link">scater</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/scater/man/plotColData.html" class="external-link">plotColData</a></span><span class="op">(</span><span class="va">tse</span>, x <span class="op">=</span> <span class="st">"disease"</span>, y <span class="op">=</span> <span class="st">"shannon_diversity"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/miaViz/man/plotBoxplot.html" class="external-link">plotBoxplot</a></span><span class="op">(</span><span class="va">tse</span>, x <span class="op">=</span> <span class="st">"Fat"</span>, col.var <span class="op">=</span> <span class="st">"shannon_diversity"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="bioc2026_files/figure-html/visualize_alpha-1.png" class="r-plt" alt="" width="700"></p>
-<p>From the figure, we can observe that CRC patients have more diverse
-microbiomes. This may suggest that their gut is colonized by microbes
-that are not typically present in a healthy gut.</p>
 </div>
 <div class="section level4">
 <h4 id="beta-diversity">Beta diversity<a class="anchor" aria-label="anchor" href="#beta-diversity"></a>
@@ -535,24 +609,103 @@ that are not typically present in a healthy gut.</p>
 <p>While alpha diversity reflects within-sample diversity, beta
 diversity measures diversity between samples. This allows us to assess
 whether there are patterns in microbial profiles associated with
-covariates — such as diagnosis, in this case.</p>
-<p>Below, we calculate perform principal coordinate analysis (PCoA) also
-known as multidimensional scaling (MDS). We apply UniFrac dissimilarity
-that takes into account phylogeny.</p>
+covariates.</p>
+<p>Below, we calculate perform principal component analysis (PCA). The
+standard choice is to apply it to CLR-transformed data</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">tse</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://microbiome.github.io/mia/reference/addMDS.html" class="external-link">addMDS</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://bioconductor.org/packages/scater/" class="external-link">scater</a></span><span class="op">)</span></span>
+<span><span class="va">tse</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocSingular/man/runPCA.html" class="external-link">runPCA</a></span><span class="op">(</span></span>
 <span>    <span class="va">tse</span>,</span>
-<span>    assay.type <span class="op">=</span> <span class="st">"relative_abundance"</span>,</span>
-<span>    method <span class="op">=</span> <span class="st">"bray"</span></span>
+<span>    assay.type <span class="op">=</span> <span class="st">"rclr"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>After calculating the results, we can visualize them with the
 diagnosis.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/scater/man/plotReducedDim.html" class="external-link">plotReducedDim</a></span><span class="op">(</span><span class="va">tse</span>, dimred <span class="op">=</span> <span class="st">"MDS"</span>, colour_by <span class="op">=</span> <span class="st">"disease"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="bioc2026_files/figure-html/visualize_mds-1.png" class="r-plt" alt="" width="700"></p>
-<p>We can see clear pattern: microbial profiles of CRC patients are
-distinct from healthy controls.</p>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/miaViz/man/plotOrdination.html" class="external-link">plotOrdination</a></span><span class="op">(</span><span class="va">tse</span>, dimred <span class="op">=</span> <span class="st">"PCA"</span>, colour.by <span class="op">=</span> <span class="st">"Fat"</span>, add.ellipse <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<p><img src="bioc2026_files/figure-html/visualize_pca-1.png" class="r-plt" alt="" width="700"></p>
 </div>
+</div>
+<div class="section level3">
+<h3 id="multi-omics">Multi-omics<a class="anchor" aria-label="anchor" href="#multi-omics"></a>
+</h3>
+<p>Integrating multiple omics layers has become increasingly common in
+microbiome research. While <em><a href="https://bioconductor.org/packages/3.24/MultiAssayExperiment" class="external-link">MultiAssayExperiment</a></em>
+provides a convenient container for storing multi-omics data, until
+recently relatively few analysis methods worked directly with it. As a
+result, users often had to extract individual assays before applying
+downstream methods.</p>
+<p>Fortunately, this is changing. An increasing number of packages now
+support <em><a href="https://bioconductor.org/packages/3.24/MultiAssayExperiment" class="external-link">MultiAssayExperiment</a></em>
+directly, making it easier to build streamlined workflows for
+multi-omics analysis.</p>
+<p>Let’s return to our <em><a href="https://bioconductor.org/packages/3.24/MultiAssayExperiment" class="external-link">MultiAssayExperiment</a></em>
+object. It stores one <em><a href="https://bioconductor.org/packages/3.24/SummarizedExperiment" class="external-link">SummarizedExperiment</a></em>
+for each omics layer and uses a <code>sampleMap</code> to match samples
+across assays.</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Lets put the TreeSE back to MAE</span></span>
+<span><span class="va">tse</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SingleCellExperiment/man/swapAltExp.html" class="external-link">swapAltExp</a></span><span class="op">(</span><span class="va">tse</span>, <span class="st">"Family"</span><span class="op">)</span></span>
+<span><span class="va">mae</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">tse</span></span>
+<span><span class="va">mae</span></span>
+<span><span class="co">#&gt; A MultiAssayExperiment object of 2 listed</span></span>
+<span><span class="co">#&gt;  experiments with user-defined names and respective classes.</span></span>
+<span><span class="co">#&gt;  Containing an ExperimentList class object of length 2:</span></span>
+<span><span class="co">#&gt;  [1] microbiota: TreeSummarizedExperiment with 81 rows and 40 columns</span></span>
+<span><span class="co">#&gt;  [2] metabolites: TreeSummarizedExperiment with 38 rows and 40 columns</span></span>
+<span><span class="co">#&gt; Functionality:</span></span>
+<span><span class="co">#&gt;  experiments() - obtain the ExperimentList instance</span></span>
+<span><span class="co">#&gt;  colData() - the primary/phenotype DataFrame</span></span>
+<span><span class="co">#&gt;  sampleMap() - the sample coordination DataFrame</span></span>
+<span><span class="co">#&gt;  `$`, `[`, `[[` - extract colData columns, subset, or experiment</span></span>
+<span><span class="co">#&gt;  *Format() - convert into a long or wide DataFrame</span></span>
+<span><span class="co">#&gt;  assays() - convert ExperimentList to a SimpleList of matrices</span></span>
+<span><span class="co">#&gt;  exportClass() - save data to flat files</span></span></code></pre></div>
+<p>One simple integration strategy is to calculate correlations between
+microbial taxa and metabolites. This approach is easy to interpret and
+can be further improved by restricting the analysis to biologically
+plausible feature pairs. The <em><a href="https://bioconductor.org/packages/3.24/anansi" class="external-link">anansi</a></em>
+package provides tools for this type of knowledge-guided analysis.</p>
+<p>However, microbial communities often act collectively rather than as
+individual taxa. Consequently, pairwise correlations may miss more
+complex relationships.</p>
+<p>An alternative is Joint Robust PCA (Joint-RPCA) <span class="citation">(Vargas et al. 2026)</span>, which identifies variation
+that is shared across multiple omics datasets.</p>
+<p>The method works in two stages:</p>
+<ol style="list-style-type: decimal">
+<li><p>It estimates a joint low-rank representation of the datasets,
+reducing noise while preserving variation shared across omics
+layers.</p></li>
+<li><p>It performs PCA on this shared representation to visualize the
+dominant patterns across all datasets.</p></li>
+</ol>
+<p>The following example performs Joint-RPCA using the microbiome and
+metabolomics data.</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Apply CLR without imputation</span></span>
+<span><span class="va">mae</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://microbiome.github.io/mia/reference/transformAssay.html" class="external-link">transformAssay</a></span><span class="op">(</span></span>
+<span>    <span class="va">mae</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>,</span>
+<span>    assay.type <span class="op">=</span> <span class="st">"counts"</span>,</span>
+<span>    method <span class="op">=</span> <span class="st">"rclr"</span>,</span>
+<span>    impute <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>    name <span class="op">=</span> <span class="st">"rclr_non_imputed"</span><span class="op">)</span></span>
+<span>    </span>
+<span><span class="co"># Apply log10 for metabolomics</span></span>
+<span><span class="va">mae</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://microbiome.github.io/mia/reference/transformAssay.html" class="external-link">transformAssay</a></span><span class="op">(</span></span>
+<span>    <span class="va">mae</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>,</span>
+<span>    assay.type <span class="op">=</span> <span class="st">"nmr"</span>,</span>
+<span>    method <span class="op">=</span> <span class="st">"log10"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Run joint-RPCA</span></span>
+<span><span class="va">mae</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://microbiome.github.io/mia/reference/getRPCA.html" class="external-link">addJointRPCA</a></span><span class="op">(</span></span>
+<span>    <span class="va">mae</span>,</span>
+<span>    experiments <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>,</span>
+<span>    assay.types <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"rclr_non_imputed"</span>, <span class="st">"log10"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Visualize results</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/miaViz/man/plotJointRPCA.html" class="external-link">plotJointRPCA</a></span><span class="op">(</span><span class="va">mae</span>, <span class="st">"JointRPCA"</span>, colour.by <span class="op">=</span> <span class="st">"Fat"</span>, add.ellipse <span class="op">=</span> <span class="cn">TRUE</span>, ntop <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></code></pre></div>
+<p><img src="bioc2026_files/figure-html/joint-rpca-1.png" class="r-plt" alt="" width="700"></p>
 </div>
 <div class="section level3">
 <h3 id="time-to-try-things-out-on-your-own">Time to try things out on your own!<a class="anchor" aria-label="anchor" href="#time-to-try-things-out-on-your-own"></a>
@@ -571,11 +724,11 @@ abundance analysis</em> chapter</a>
 <div class="section level4">
 <h4 id="differential-abundance-analysis">Differential abundance analysis<a class="anchor" aria-label="anchor" href="#differential-abundance-analysis"></a>
 </h4>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://huttenhower.sph.harvard.edu/maaslin3" class="external-link">maaslin3</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/maaslin3/man/maaslin3.html" class="external-link">maaslin3</a></span><span class="op">(</span><span class="va">tse</span>, formula <span class="op">=</span> <span class="op">~</span> <span class="va">disease</span>, output <span class="op">=</span> <span class="st">"maaslin3_output"</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/maaslin3/man/maaslin3.html" class="external-link">maaslin3</a></span><span class="op">(</span><span class="va">tse</span>, formula <span class="op">=</span> <span class="op">~</span> <span class="va">Fat</span>, output <span class="op">=</span> <span class="st">"maaslin3_output"</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">file_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"maaslin3_output"</span>, <span class="st">"figures"</span>, <span class="st">"summary_plot.png"</span><span class="op">)</span></span>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html" class="external-link">include_graphics</a></span><span class="op">(</span><span class="va">file_path</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -604,7 +757,7 @@ ecosystem</li>
 <div class="section level2">
 <h2 id="session-information">Session information<a class="anchor" aria-label="anchor" href="#session-information"></a>
 </h2>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; R version 4.6.1 (2026-06-24)</span></span>
 <span><span class="co">#&gt; Platform: x86_64-pc-linux-gnu</span></span>
@@ -631,14 +784,14 @@ ecosystem</li>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; other attached packages:</span></span>
 <span><span class="co">#&gt;  [1] scater_1.41.2                   scuttle_1.23.1                 </span></span>
-<span><span class="co">#&gt;  [3] miaViz_1.21.2                   ggraph_2.2.2                   </span></span>
-<span><span class="co">#&gt;  [5] mia_1.21.7                      MultiAssayExperiment_1.39.0    </span></span>
-<span><span class="co">#&gt;  [7] TreeSummarizedExperiment_2.21.0 Biostrings_2.81.6              </span></span>
-<span><span class="co">#&gt;  [9] XVector_0.53.0                  SingleCellExperiment_1.35.2    </span></span>
+<span><span class="co">#&gt;  [3] miaViz_1.21.3                   ggraph_2.2.2                   </span></span>
+<span><span class="co">#&gt;  [5] mia_1.21.7                      TreeSummarizedExperiment_2.21.0</span></span>
+<span><span class="co">#&gt;  [7] Biostrings_2.81.6               XVector_0.53.0                 </span></span>
+<span><span class="co">#&gt;  [9] SingleCellExperiment_1.35.2     MultiAssayExperiment_1.39.0    </span></span>
 <span><span class="co">#&gt; [11] SummarizedExperiment_1.43.0     Biobase_2.73.2                 </span></span>
 <span><span class="co">#&gt; [13] GenomicRanges_1.65.1            Seqinfo_1.3.0                  </span></span>
 <span><span class="co">#&gt; [15] IRanges_2.47.2                  S4Vectors_0.51.6               </span></span>
-<span><span class="co">#&gt; [17] BiocGenerics_0.59.10            generics_0.1.4                 </span></span>
+<span><span class="co">#&gt; [17] BiocGenerics_0.59.11            generics_0.1.4                 </span></span>
 <span><span class="co">#&gt; [19] MatrixGenerics_1.25.0           matrixStats_1.5.0              </span></span>
 <span><span class="co">#&gt; [21] ggrepel_0.9.8                   ggplot2_4.0.3                  </span></span>
 <span><span class="co">#&gt; </span></span>
@@ -650,58 +803,59 @@ ecosystem</li>
 <span><span class="co">#&gt;   [9] vctrs_0.7.3                 memoise_2.0.1              </span></span>
 <span><span class="co">#&gt;  [11] DelayedMatrixStats_1.35.0   ggtree_4.3.0               </span></span>
 <span><span class="co">#&gt;  [13] htmltools_0.5.9             S4Arrays_1.13.0            </span></span>
-<span><span class="co">#&gt;  [15] BiocNeighbors_2.7.2         janeaustenr_1.0.0          </span></span>
-<span><span class="co">#&gt;  [17] SparseArray_1.13.2          gridGraphics_0.5-1         </span></span>
-<span><span class="co">#&gt;  [19] sass_0.4.10                 bslib_0.12.0               </span></span>
-<span><span class="co">#&gt;  [21] tokenizers_0.3.0            htmlwidgets_1.6.4          </span></span>
-<span><span class="co">#&gt;  [23] desc_1.4.3                  plyr_1.8.9                 </span></span>
-<span><span class="co">#&gt;  [25] DECIPHER_3.9.2              cachem_1.1.0               </span></span>
-<span><span class="co">#&gt;  [27] igraph_2.3.3                lifecycle_1.0.5            </span></span>
-<span><span class="co">#&gt;  [29] pkgconfig_2.0.3             rsvd_1.0.5                 </span></span>
-<span><span class="co">#&gt;  [31] Matrix_1.7-6                R6_2.6.1                   </span></span>
-<span><span class="co">#&gt;  [33] fastmap_1.2.0               tidytext_0.4.3             </span></span>
-<span><span class="co">#&gt;  [35] digest_0.6.39               aplot_0.3.1                </span></span>
-<span><span class="co">#&gt;  [37] ggnewscale_0.5.2            patchwork_1.3.2            </span></span>
-<span><span class="co">#&gt;  [39] irlba_2.3.7                 SnowballC_0.7.1            </span></span>
-<span><span class="co">#&gt;  [41] textshaping_1.0.5           vegan_2.7-5                </span></span>
-<span><span class="co">#&gt;  [43] beachmat_2.29.0             labeling_0.4.3             </span></span>
-<span><span class="co">#&gt;  [45] polyclip_1.10-7             abind_1.4-8                </span></span>
-<span><span class="co">#&gt;  [47] mgcv_1.9-4                  compiler_4.6.1             </span></span>
-<span><span class="co">#&gt;  [49] fontquiver_0.2.1            withr_3.0.3                </span></span>
-<span><span class="co">#&gt;  [51] S7_0.2.2                    BiocParallel_1.47.0        </span></span>
-<span><span class="co">#&gt;  [53] viridis_0.6.5               DBI_1.3.0                  </span></span>
-<span><span class="co">#&gt;  [55] ggforce_0.5.0               MASS_7.3-66                </span></span>
-<span><span class="co">#&gt;  [57] rappdirs_0.3.4              DelayedArray_0.39.3        </span></span>
-<span><span class="co">#&gt;  [59] bluster_1.23.0              permute_0.9-10             </span></span>
-<span><span class="co">#&gt;  [61] tools_4.6.1                 vipor_0.4.7                </span></span>
-<span><span class="co">#&gt;  [63] otel_0.2.0                  beeswarm_0.4.0             </span></span>
-<span><span class="co">#&gt;  [65] ape_5.8-1                   glue_1.8.1                 </span></span>
-<span><span class="co">#&gt;  [67] nlme_3.1-170                grid_4.6.1                 </span></span>
-<span><span class="co">#&gt;  [69] cluster_2.1.8.3             reshape2_1.4.5             </span></span>
-<span><span class="co">#&gt;  [71] gtable_0.3.6                tidyr_1.3.2                </span></span>
-<span><span class="co">#&gt;  [73] BiocSingular_1.29.0         tidygraph_1.3.1            </span></span>
-<span><span class="co">#&gt;  [75] ScaledMatrix_1.21.0         pillar_1.11.1              </span></span>
-<span><span class="co">#&gt;  [77] stringr_1.6.0               yulab.utils_0.2.4          </span></span>
-<span><span class="co">#&gt;  [79] splines_4.6.1               dplyr_1.2.1                </span></span>
-<span><span class="co">#&gt;  [81] tweenr_2.0.3                treeio_1.37.0              </span></span>
-<span><span class="co">#&gt;  [83] lattice_0.22-9              tidyselect_1.2.1           </span></span>
-<span><span class="co">#&gt;  [85] DirichletMultinomial_1.55.0 fontLiberation_0.1.0       </span></span>
-<span><span class="co">#&gt;  [87] knitr_1.51                  fontBitstreamVera_0.1.1    </span></span>
-<span><span class="co">#&gt;  [89] gridExtra_2.3.1             xfun_0.60                  </span></span>
-<span><span class="co">#&gt;  [91] graphlayouts_1.2.5          stringi_1.8.9              </span></span>
-<span><span class="co">#&gt;  [93] lazyeval_0.2.3              ggfun_0.2.1                </span></span>
-<span><span class="co">#&gt;  [95] yaml_2.3.12                 evaluate_1.0.5             </span></span>
-<span><span class="co">#&gt;  [97] codetools_0.2-20            gdtools_0.5.1              </span></span>
-<span><span class="co">#&gt;  [99] tibble_3.3.1                BiocManager_1.30.27        </span></span>
-<span><span class="co">#&gt; [101] ggplotify_0.1.3             cli_3.6.6                  </span></span>
-<span><span class="co">#&gt; [103] systemfonts_1.3.2           jquerylib_0.1.4            </span></span>
-<span><span class="co">#&gt; [105] Rcpp_1.1.2                  parallel_4.6.1             </span></span>
-<span><span class="co">#&gt; [107] pkgdown_2.2.1               sparseMatrixStats_1.25.0   </span></span>
-<span><span class="co">#&gt; [109] decontam_1.33.0             viridisLite_0.4.3          </span></span>
-<span><span class="co">#&gt; [111] tidytree_0.4.8              ggiraph_0.9.6              </span></span>
-<span><span class="co">#&gt; [113] scales_1.4.0                purrr_1.2.2                </span></span>
-<span><span class="co">#&gt; [115] crayon_1.5.3                BiocStyle_2.41.0           </span></span>
-<span><span class="co">#&gt; [117] rlang_1.3.0                 cowplot_1.2.0</span></span></code></pre></div>
+<span><span class="co">#&gt;  [15] BiocBaseUtils_1.15.1        BiocNeighbors_2.7.2        </span></span>
+<span><span class="co">#&gt;  [17] janeaustenr_1.0.0           SparseArray_1.13.2         </span></span>
+<span><span class="co">#&gt;  [19] gridGraphics_0.5-1          sass_0.4.10                </span></span>
+<span><span class="co">#&gt;  [21] bslib_0.12.0                tokenizers_0.3.0           </span></span>
+<span><span class="co">#&gt;  [23] htmlwidgets_1.6.4           desc_1.4.3                 </span></span>
+<span><span class="co">#&gt;  [25] plyr_1.8.9                  DECIPHER_3.9.2             </span></span>
+<span><span class="co">#&gt;  [27] cachem_1.1.0                igraph_2.3.3               </span></span>
+<span><span class="co">#&gt;  [29] lifecycle_1.0.5             pkgconfig_2.0.3            </span></span>
+<span><span class="co">#&gt;  [31] rsvd_1.0.5                  Matrix_1.7-6               </span></span>
+<span><span class="co">#&gt;  [33] R6_2.6.1                    fastmap_1.2.0              </span></span>
+<span><span class="co">#&gt;  [35] tidytext_0.4.3              digest_0.6.39              </span></span>
+<span><span class="co">#&gt;  [37] aplot_0.3.1                 ggnewscale_0.5.2           </span></span>
+<span><span class="co">#&gt;  [39] patchwork_1.3.2             irlba_2.3.7                </span></span>
+<span><span class="co">#&gt;  [41] SnowballC_0.7.1             textshaping_1.0.5          </span></span>
+<span><span class="co">#&gt;  [43] vegan_2.7-5                 beachmat_2.29.0            </span></span>
+<span><span class="co">#&gt;  [45] labeling_0.4.3              polyclip_1.10-7            </span></span>
+<span><span class="co">#&gt;  [47] abind_1.4-8                 mgcv_1.9-4                 </span></span>
+<span><span class="co">#&gt;  [49] compiler_4.6.1              fontquiver_0.2.1           </span></span>
+<span><span class="co">#&gt;  [51] withr_3.0.3                 S7_0.2.2                   </span></span>
+<span><span class="co">#&gt;  [53] BiocParallel_1.47.0         viridis_0.6.5              </span></span>
+<span><span class="co">#&gt;  [55] DBI_1.3.0                   ggforce_0.5.0              </span></span>
+<span><span class="co">#&gt;  [57] MASS_7.3-66                 rappdirs_0.3.4             </span></span>
+<span><span class="co">#&gt;  [59] DelayedArray_0.39.4         bluster_1.23.0             </span></span>
+<span><span class="co">#&gt;  [61] permute_0.9-10              tools_4.6.1                </span></span>
+<span><span class="co">#&gt;  [63] vipor_0.4.7                 otel_0.2.0                 </span></span>
+<span><span class="co">#&gt;  [65] beeswarm_0.4.0              ape_5.8-1                  </span></span>
+<span><span class="co">#&gt;  [67] glue_1.8.1                  nlme_3.1-170               </span></span>
+<span><span class="co">#&gt;  [69] grid_4.6.1                  cluster_2.1.8.3            </span></span>
+<span><span class="co">#&gt;  [71] reshape2_1.4.5              gtable_0.3.6               </span></span>
+<span><span class="co">#&gt;  [73] tidyr_1.3.2                 BiocSingular_1.29.0        </span></span>
+<span><span class="co">#&gt;  [75] tidygraph_1.3.1             ScaledMatrix_1.21.0        </span></span>
+<span><span class="co">#&gt;  [77] pillar_1.11.1               stringr_1.6.0              </span></span>
+<span><span class="co">#&gt;  [79] yulab.utils_0.2.4           splines_4.6.1              </span></span>
+<span><span class="co">#&gt;  [81] dplyr_1.2.1                 tweenr_2.0.3               </span></span>
+<span><span class="co">#&gt;  [83] treeio_1.37.0               lattice_0.22-9             </span></span>
+<span><span class="co">#&gt;  [85] tidyselect_1.2.1            DirichletMultinomial_1.55.0</span></span>
+<span><span class="co">#&gt;  [87] fontLiberation_0.1.0        knitr_1.51                 </span></span>
+<span><span class="co">#&gt;  [89] fontBitstreamVera_0.1.1     gridExtra_2.3.1            </span></span>
+<span><span class="co">#&gt;  [91] xfun_0.60                   graphlayouts_1.2.5         </span></span>
+<span><span class="co">#&gt;  [93] stringi_1.8.9               lazyeval_0.2.3             </span></span>
+<span><span class="co">#&gt;  [95] ggfun_0.2.1                 yaml_2.3.12                </span></span>
+<span><span class="co">#&gt;  [97] evaluate_1.0.5              codetools_0.2-20           </span></span>
+<span><span class="co">#&gt;  [99] gdtools_0.5.1               tibble_3.3.1               </span></span>
+<span><span class="co">#&gt; [101] BiocManager_1.30.27         ggplotify_0.1.3            </span></span>
+<span><span class="co">#&gt; [103] cli_3.6.6                   systemfonts_1.3.2          </span></span>
+<span><span class="co">#&gt; [105] jquerylib_0.1.4             Rcpp_1.1.2                 </span></span>
+<span><span class="co">#&gt; [107] parallel_4.6.1              ggh4x_0.3.1                </span></span>
+<span><span class="co">#&gt; [109] pkgdown_2.2.1               sparseMatrixStats_1.25.0   </span></span>
+<span><span class="co">#&gt; [111] decontam_1.33.0             viridisLite_0.4.3          </span></span>
+<span><span class="co">#&gt; [113] tidytree_0.4.8              ggiraph_0.9.6              </span></span>
+<span><span class="co">#&gt; [115] scales_1.4.0                purrr_1.2.2                </span></span>
+<span><span class="co">#&gt; [117] crayon_1.5.3                BiocStyle_2.41.0           </span></span>
+<span><span class="co">#&gt; [119] rlang_1.3.0</span></span></code></pre></div>
 </div>
 <div class="section level2 unnumbered">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
@@ -712,6 +866,14 @@ Amezquita, Robert A, Aaron T L Lun, Etienne Becht, et al. 2020.
 <span>“Orchestrating Single-Cell Analysis with
 <span>Bioconductor</span>.”</span> <em>Nature Methods</em> 17 (2):
 137–45. <a href="https://doi.org/10.1038/s41592-019-0654-x" class="external-link">https://doi.org/10.1038/s41592-019-0654-x</a>.
+</div>
+<div id="ref-hintikka2021" class="csl-entry">
+Hintikka, Jukka, Sanna Lensu, Elina Mäkinen, et al. 2021.
+<span>“Xylo-Oligosaccharides in Prevention of Hepatic Steatosis and
+Adipose Tissue Inflammation: Associating Taxonomic and Metabolomic
+Patterns in Fecal Microbiomes with Biclustering.”</span>
+<em>International Journal of Environmental Research and Public
+Health</em> 18 (8). <a href="https://doi.org/10.3390/ijerph18084049" class="external-link">https://doi.org/10.3390/ijerph18084049</a>.
 </div>
 <div id="ref-Huang2021" class="csl-entry">
 <span class="nocase">Huang, Ruizhu, Charlotte Soneson, Felix G. M.
@@ -736,11 +898,11 @@ Moreno-Indias, Isabel, Leo Lahti, Miroslava Nedyalkova, et al. 2021.
 Studies: Contemporary Challenges and Solutions.”</span> <em>Frontiers in
 Microbiology</em> 12: 277. <a href="https://doi.org/10.3389/fmicb.2021.635781" class="external-link">https://doi.org/10.3389/fmicb.2021.635781</a>.
 </div>
-<div id="ref-Pasolli2017" class="csl-entry">
-Pasolli, Edoardo, Lucas Schiffer, Paolo Manghi, et al. 2017.
-<span>“Accessible, Curated Metagenomic Data Through
-<span>ExperimentHub</span>.”</span> <em>Nature Methods</em> 14 (11):
-1023–24. https://doi.org/<a href="https://doi.org/10.1038/nmeth.4468" class="external-link">https://doi.org/10.1038/nmeth.4468</a>.
+<div id="ref-vargas2026" class="csl-entry">
+Vargas, Bianca Cordazzo, Cameron Martino, Amanda Hazel Dilmore, et al.
+2026. <span>“<span>Joint-RPCA</span>: Domain-Aware Multi-Omics
+Integration for Systems Microbiology.”</span> <em>Molecular Systems
+Biology</em>.
 </div>
 </div>
 </div>
