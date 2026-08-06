@@ -62,14 +62,11 @@ session will follow
 [a tutorial](https://microbiome.github.io/OMATutorials/),
 with participants running the tutorial alongside the instructor.
 
-To facilitate this, Galaxy & Bioconductor provide
-[pre-installed virtual machines with all necessary packages](https://workshop.bioconductor.org/).
-
 ### _R_ / _Bioconductor_ packages used
 
 In this training session, we will cover a common methods and packages for
-microbiome data science in `r BiocStyle::Biocpkg("SummarizedExperiment")` ecosystem. We will have
-specific focus on `r BiocStyle::Biocpkg("mia")`,
+microbiome data science in `r BiocStyle::Biocpkg("SummarizedExperiment")`
+ecosystem. We will have specific focus on `r BiocStyle::Biocpkg("mia")`,
 which provides essential methods for conducting microbiome analysis.
 
 ### Time outline
@@ -247,58 +244,50 @@ ggplot(timeline_data, aes(x = year, y = 0)) +
 
 #### Start your engines!
 
-- Go to [workshop.bioconductor.org](https://workshop.bioconductor.org/)
+- Follow the instructions of instructor
 - Or prepare your local R session
 
 #### Import data
 
-The curated metagenomic data project provides free access to a collection of
-curated microbiome datasets, which are available through the
-_curatedMetagenomicData_ R package [@Pasolli2017]. Currently, it contains over
-20,000 samples
-from 100 studies, which can be imported directly to `TreeSE` format. You can
-see the full list of available datasets from
-[the documentation](https://waldronlab.io/curatedMetagenomicData/index.html).
+Many publicly available microbiome datasets can be accessed directly from
+Bioconductor packages.
 
-Below, we we load a dataset containing 60 samples from healthy controls and
-patients with colorectal cancer (CRC).
+In this workshop, we use an example dataset from the
+`r BiocStyle::Biocpkg("mia")` package [@hintikka2021]. The study compares mice
+fed either a high-fat or low-fat diet, with and without prebiotic
+supplementation. The dataset contains multiple data types, including:
+
+- 16S rRNA amplicon sequencing, which measures microbial abundances.
+- Metabolomics, which measures metabolite concentrations.
+
+We first load the dataset and keep these two layers.
 
 ```{r}
 #| label: import_data
-#| eval: false
-library(curatedMetagenomicData)
+library(mia)
 
-res <- curatedMetagenomicData(
-    pattern = "GuptaA_2019.relative_abundance",
-    dryrun = FALSE,
-    rownames = "short"
-)
+data("HintikkaXOData")
+mae <- HintikkaXOData
+mae <- mae[, , c(1, 2)]
+mae
 ```
 
-Once loaded, we can see that the data includes a list of single
-`r BiocStyle::Biocpkg("TreeSummarizedExperiment")` object, which
-including taxonomy annotations. We select it from the
-list and store it into a variable named `tse`.
+The dataset is stored as a `r BiocStyle::Biocpkg("MultiAssayExperiment")`, a
+container designed for multi-omics data. It keeps multiple datasets together
+while maintaining the links between samples.
+
+For most of this tutorial, we focus only on the microbiome data. Although
+keeping everything in a `r BiocStyle::Biocpkg("MultiAssayExperiment")` is
+generally recommended, extracting a single dataset makes it easier to introduc
+the basic analysis workflow.
+
+The microbiome data is stored as a
+`r BiocStyle::Biocpkg("TreeSummarizedExperiment")`.
 
 ```{r}
 #| label: import_data2
-#| eval: false
-tse <- res[[1]]
-```
-
-```{r}
-#| label: save_data
-#| eval: false
-#| include: false
-saveRDS(tse, "data/GuptaA_2019_tse.rds")
-```
-
-```{r}
-#| label: read_data
-#| eval: true
-#| include: false
-library(TreeSummarizedExperiment)
-tse <- readRDS("data/GuptaA_2019_tse.rds")
+tse <- getWithColData(mae, 1)
+tse
 ```
 
 #### Data container
@@ -323,8 +312,7 @@ Slots can be accessed with dedicated accessor functions. For instance,
 
 ```{r}
 #| label: show_coldata
-# Show only first five rows and columns
-colData(tse)[1:5, 1:5]
+colData(tse) |> head()
 ```
 
 #### Data processing
@@ -342,8 +330,6 @@ Below, we agglomerate the data into all available taxonomy levels.
 
 ```{r}
 #| label: agglomerate
-library(mia)
-
 tse <- agglomerateByRanks(tse)
 ```
 
@@ -356,7 +342,7 @@ command:
 
 ```{r}
 #| label: access_phyla
-altExp(tse, "phylum")
+altExp(tse, "Phylum")
 ```
 
 The data looks similar to original data; only the number of rows has changed.
@@ -365,17 +351,16 @@ to keep it in the `altExp` slot, as it maintains consistent sample mapping for
 us. Later, we will use `swapAltExp` to do this.
 
 Another data processing step where microbiome analysis has unique approaches is
-transformation. Below, we apply centered lo-ratio (CLR) transformation which
+transformation. Below, we apply centered log-ratio (CLR) transformations which
 respect the compositional nature of microbiome data.
 
 ```{r}
 #| label: transformation
-
 tse <- transformAssay(
     tse,
-    assay.type = "relative_abundance",
-    method = "clr",
-    pseudocount = TRUE
+    assay.type = "counts",
+    method = "rclr",
+    altexp = altExpNames(tse)
 )
 ```
 
@@ -385,36 +370,33 @@ We can access the transformed data with the following command:
 
 ```{r}
 #| label: access_clr
-
-assay(tse, "clr")[1:5, 1:5]
+assay(tse, "rclr") |> head()
 ```
 
 #### Community summaries
 
-While `r BiocStyle::Biocpkg("mia")` package include common methods for analysis, `r BiocStyle::Biocpkg("miaViz")` provides
-methods for visualizing microbiome data. For instance, we can visualize
-abundance of phyla with a bar plot. To compare controls and CRC patients, we can
-visualize the groups separately.
+While `r BiocStyle::Biocpkg("mia")` package include common methods for analysis,
+`r BiocStyle::Biocpkg("miaViz")` provides methods for visualizing microbiome
+data. For instance, we can visualize abundance of phyla with a bar plot. To
+compare study groups, we can visualize them separately.
 
 ```{r}
 #| label: plot_abundance
 library(miaViz)
 
 # Get phylum-level data
-tse <- swapAltExp(tse, name = "phylum", withColData = FALSE)
+tse <- swapAltExp(tse, name = "Phylum", withColData = FALSE, saved = "main")
 
 # Create a bar plot
 plotAbundance(
     tse,
-    assay.type = "relative_abundance",
-    col.var = "disease",
+    assay.type = "counts",
+    as.relative = TRUE,
+    col.var = c("Fat", "XOS"),
     facet.cols = TRUE,
     scales = "free"
 )
 ```
-
-From the figure, we observe that especially abundance of _Euryarchaeota_ seems
-to differ between the groups.
 
 ```{r}
 #| label: swap_back_to_main
@@ -431,53 +413,116 @@ each with a different emphasis.
 
 ```{r}
 #| label: calculate_alpha
-tse <- addAlpha(tse, assay.type = "relative_abundance")
+tse <- addAlpha(tse, assay.type = "counts")
 ```
 
 The results are stored in `colData`. By default, `addAlpha()` returns a set of
-indices that considers different aspects of diversity. Below, we visualize
-Faith's diversity that assess the phylogenetic diversity of samples.
+indices that considers different aspects of diversity. Commonly, the results
+are visualized with a box plot.
 
 ```{r}
 #| label: visualize_alpha
-library(scater)
-
-plotColData(tse, x = "disease", y = "shannon_diversity")
+plotBoxplot(tse, x = "Fat", col.var = "shannon_diversity")
 ```
-
-From the figure, we can observe that CRC patients have more diverse microbiomes.
-This may suggest that their gut is colonized by microbes that are not typically
-present in a healthy gut.
 
 #### Beta diversity
 
 While alpha diversity reflects within-sample diversity, beta diversity measures
 diversity between samples. This allows us to assess whether there are patterns
-in microbial profiles associated with covariates &mdash; such as diagnosis,
-in this case.
+in microbial profiles associated with covariates.
 
-Below, we calculate perform principal coordinate analysis (PCoA) also known
-as multidimensional scaling (MDS). We apply UniFrac dissimilarity that takes
-into account phylogeny.
+Below, we calculate perform principal component analysis (PCA). The standard
+choice is to apply it to CLR-transformed data
 
 ```{r}
-#| label: calculate_mds
-tse <- addMDS(
+#| label: calculate_pca
+library(scater)
+tse <- runPCA(
     tse,
-    assay.type = "relative_abundance",
-    method = "bray"
+    assay.type = "rclr"
 )
 ```
 
 After calculating the results, we can visualize them with the diagnosis.
 
 ```{r}
-#| label: visualize_mds
-plotReducedDim(tse, dimred = "MDS", colour_by = "disease")
+#| label: visualize_pca
+plotOrdination(tse, dimred = "PCA", colour.by = "Fat", add.ellipse = TRUE)
 ```
 
-We can see clear pattern: microbial profiles of CRC patients are distinct from
-healthy controls.
+### Multi-omics
+
+Integrating multiple omics layers has become increasingly common in microbiome
+research. While `r BiocStyle::Biocpkg("MultiAssayExperiment")` provides a
+convenient container for storing multi-omics data, until recently relatively
+few analysis methods worked directly with it. As a result, users often had to
+extract individual assays before applying downstream methods.
+
+Fortunately, this is changing. An increasing number of packages now support
+`r BiocStyle::Biocpkg("MultiAssayExperiment")` directly, making it easier to
+build streamlined workflows for multi-omics analysis.
+
+Let's return to our `r BiocStyle::Biocpkg("MultiAssayExperiment")` object. It
+stores one `r BiocStyle::Biocpkg("SummarizedExperiment")` for each omics layer
+and uses a `sampleMap` to match samples across assays.
+
+```{r}
+#| label: show_mae
+# Lets put the TreeSE back to MAE
+tse <- swapAltExp(tse, "Family")
+mae[[1]] <- tse
+mae
+```
+
+One simple integration strategy is to calculate correlations between microbial
+taxa and metabolites. This approach is easy to interpret and can be further
+improved by restricting the analysis to biologically plausible feature pairs.
+The `r BiocStyle::Biocpkg("anansi")` package provides tools for this type of
+knowledge-guided analysis.
+
+However, microbial communities often act collectively rather than as individual
+taxa. Consequently, pairwise correlations may miss more complex relationships.
+
+An alternative is Joint Robust PCA (Joint-RPCA) [@vargas2026], which identifies
+variation that is shared across multiple omics datasets.
+
+The method works in two stages:
+
+1. It estimates a joint low-rank representation of the datasets, reducing noise while preserving variation shared across omics layers.
+
+2. It performs PCA on this shared representation to visualize the dominant patterns across all datasets.
+
+The following example performs Joint-RPCA using the microbiome and metabolomics
+data.
+
+```{r}
+#| label: joint-rpca
+
+# Apply CLR without imputation
+mae[[1]] <- transformAssay(
+    mae[[1]],
+    assay.type = "counts",
+    method = "rclr",
+    impute = FALSE,
+    name = "rclr_non_imputed")
+    
+# Apply log10 for metabolomics
+mae[[2]] <- transformAssay(
+    mae[[2]],
+    assay.type = "nmr",
+    method = "log10"
+)
+
+# Run joint-RPCA
+mae <- addJointRPCA(
+    mae,
+    experiments = c(1, 2),
+    assay.types = c("rclr_non_imputed", "log10")
+)
+
+# Visualize results
+plotJointRPCA(mae, "JointRPCA", colour.by = "Fat", add.ellipse = TRUE, ntop = 5)
+```
 
 ### Time to try things out on your own!
 
@@ -497,7 +542,7 @@ healthy controls.
 #| eval: false
 library(maaslin3)
 
-res <- maaslin3(tse, formula = ~ disease, output = "maaslin3_output")
+res <- maaslin3(tse, formula = ~ Fat, output = "maaslin3_output")
 ```
 
 ```{r}
